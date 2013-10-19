@@ -8,3 +8,12 @@ fabric
 factory_boy
 mock
 selenium
+
+django-author
+-e git+git://github.com/django/django.git@stable/1.6.x#egg=Django
+south
+PIL
+django-finegrained-permissions
+psycopg2
+django-colorful
+-e git+https://github.com/PetrDlouhy/django-constance.git#egg=django-constance[database]

@@ -38,6 +38,8 @@ dev_requires = [
 
 install_requires = [
     'django',
+    'colorful',
+    'django-author',
 ]
 
 
