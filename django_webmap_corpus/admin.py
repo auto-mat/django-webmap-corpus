@@ -84,13 +84,17 @@ class PoiStatusFilter(SimpleListFilter):
         if self.value() == "unvisible":
             return queryset.exclude(Q(status__show_to_mapper = True) & Q(marker__status__show_to_mapper = True) & Q(marker__layer__status__show_to_mapper = True))
 
+class PhotoInline(admin.TabularInline):
+    model = Photo
+    readonly_fields = ('author', 'updated_by')
+
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     model = Poi
-    list_display = ['name','status','marker','url','photo_thumb', 'desc', 'id' ]
+    list_display = ['name','status','marker','url', 'desc', 'id' ]
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
     exclude = ('properties_cache', )
-    readonly_fields = ("created_at", "author")
+    readonly_fields = ("created_at", "last_modification", "author", "updated_by")
     raw_id_fields = ('marker',)
     search_fields = ('name',)
     ordering = ('name',)
@@ -98,6 +102,7 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     search_fields = ['name']
     list_select_related = True
     filter_horizontal = ('properties',)
+    inlines = [PhotoInline]
     list_max_show_all = 10000
 
     if USE_GOOGLE_TERRAIN_TILES:
@@ -151,11 +156,6 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     #debug = False
     #widget = OpenLayersWidget
 
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            obj.author = request.user # no need to check for it.
-        obj.save()
-
 class SectorAdmin(OSMGeoAdmin):
     list_display = ('name',)
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
@@ -189,7 +189,7 @@ class MapaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
 
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'as_filter', 'status')
+    list_display = ('name', 'as_filter', 'status', 'order')
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
     model = Property
 
@@ -222,6 +222,9 @@ class MarkerAdmin(admin.ModelAdmin):
 
 class StatusAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc', 'show', 'show_to_mapper')
+
+class LicenseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'desc')
     
 admin.site.register(Poi   , PoiAdmin   )
 admin.site.register(Layer, LayerAdmin)
@@ -229,6 +232,7 @@ admin.site.register(Sector, SectorAdmin)
 admin.site.register(Marker, MarkerAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Property, PropertyAdmin)
+admin.site.register(License, LicenseAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

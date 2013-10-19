@@ -6,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.gis.db import models
 from django.utils.safestring import mark_safe
 from django.core.cache import cache
+from django.forms import ModelForm
+from author.decorators import with_author
 
 from django.contrib.auth.models import User
 from colorful.fields import RGBColorField
@@ -93,11 +95,10 @@ class Sector(models.Model):
         verbose_name = _(u"sector")
         verbose_name_plural = _(u"sectors")
 
+@with_author
 @fgp.guard('importance', 'status', name='can_edit_advanced_fields')
 class Poi(models.Model):
     "Place in map"
-    author = models.ForeignKey(User, verbose_name=_(u"author"))
-
     name   = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Exact place name"))
     
     # Relationships
@@ -122,17 +123,12 @@ class Poi(models.Model):
     url     = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Link to the web page of the place."))
     remark  = models.TextField(null=True, blank=True, verbose_name=_(u"Internal remark"), help_text=_(u"Internal information about POI."))
 
-    # navzdory nazvu jde o fotku v plnem rozliseni
-    photo_thumb  = models.ImageField(null=True, blank=True,
-                                    upload_to='photo', storage=SlugifyFileSystemStorage(),
-                                    verbose_name=_(u"photo"),
-                                    help_text=u"Nahrajte fotku v plné velikosti.",
-                                   )
     # zde se ulozi slugy vsech vlastnosti, aby se pri renederovani kml
     # nemusel delat db dotaz pro kazde Poi na jeho vlastnosti
     properties_cache = models.CharField(max_length=255, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True,  verbose_name=_("created at"))
+    last_modification = models.DateTimeField(auto_now=True,  verbose_name=_("last modification at"))
     
     viditelne = VisibleManager()
     
@@ -149,10 +145,6 @@ class Poi(models.Model):
         self.save()
     def get_absolute_url(self):
         return "/misto/%i/" % self.id
-
-    def save(self, *args, **kwargs):
-        self.created_at = datetime.datetime.now()
-        super(Poi, self).save(*args, **kwargs)
 
 from django.db.models.signals import m2m_changed, post_save, post_delete
 def update_properties_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -185,3 +177,27 @@ class Property(models.Model):
 	ordering = ['order']
     def __unicode__(self):
         return self.name
+
+class License(models.Model):
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
+    class Meta:
+        verbose_name = _(u"license")
+        verbose_name_plural = _(u"licenses")
+    def __unicode__(self):
+        return self.name
+
+@with_author
+class Photo(models.Model):
+    poi     = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
+    licence = models.ForeignKey(License, verbose_name=_("license"))
+    order   = models.PositiveIntegerField(verbose_name=_("order"))
+
+    photo   = models.ImageField(null=False, blank=False,
+                                    upload_to='photo', storage=SlugifyFileSystemStorage(),
+                                    verbose_name=_(u"photo"),
+                                    help_text=_(u"Upload photo in full resolution."),
+                                   )
+
