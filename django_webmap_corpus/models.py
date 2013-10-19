@@ -2,6 +2,7 @@
 import datetime
 import fgp
 
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.gis.db import models
 from django.utils.safestring import mark_safe
 from django.core.cache import cache
@@ -13,140 +14,134 @@ from .utils import SlugifyFileSystemStorage
 
 class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
-    name    = models.CharField(unique=True, max_length=255, help_text=u"Název statutu")
-    desc    = models.TextField(null=True, blank=True, help_text=u"Popis")
-    show    = models.BooleanField(help_text=u"Zobrazit uživateli zvenčí")
-    show_to_mapper = models.BooleanField(help_text=u"Zobrazit editorovi mapy")
+    name    = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Status description."))
+    show    = models.BooleanField(help_text=_(u"Show to map user"), verbose_name=_("show"))
+    show_to_mapper = models.BooleanField(help_text=_(u"Show to mapper"), verbose_name=_("show to mapper"))
 
     class Meta:
-        verbose_name_plural = "statuty"
+        verbose_name = _(u"status")
+        verbose_name_plural = _("statuses")
     def __unicode__(self):
         return self.name
 
 class Layer(models.Model):
     "Vrstvy, ktere se zobrazi v konkretni mape"
-    name    = models.CharField(max_length=255)                      # Name of the layer
-    slug    = models.SlugField(unique=True, verbose_name=u"název v URL")  # Vrstva v URL
-    desc    = models.TextField(null=True, blank=True)               # Description
-    status  = models.ForeignKey(Status)              # zobrazovaci status
-    order   = models.PositiveIntegerField()
-    remark  = models.TextField(null=True, blank=True, help_text=u"interni informace o objektu, ktere se nebudou zobrazovat")
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"))
+    slug    = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_("Layer description."))
+    status  = models.ForeignKey(Status, verbose_name=_("status"))
+    order   = models.PositiveIntegerField(verbose_name=_("order"))
+    remark  = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
 
     class Meta:
-        verbose_name_plural = u"vrstvy"
+        verbose_name = _(u"layer")
+        verbose_name_plural = _(u"layers")
         ordering = ['order']
     def __unicode__(self):
         return self.name
 
 class Marker(models.Model):
-    "Mapove znacky vcetne definice zobrazeni"
-    name    = models.CharField(unique=True, max_length=255)   # Name of the mark
+    "Map markers with display style definition."
+    name    = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_("Name of the marker."))
     
     # Relationships
-    layer  = models.ForeignKey(Layer)              # Kazda znacka lezi prave v jedne vrstve
-    status  = models.ForeignKey(Status)              # kvuli vypinani
-    
-    # icon: Neni zde, ale v tabulce znacky a vztahuje se k rozlicnym zobrazenim 
-    # Pro zjednoduseni mame image "default_icon", ale to je jen nouzove reseni, 
-    # ktere nesmi nahradit system znacek zavislych na zobrazeni, etc.
+    layer  = models.ForeignKey(Layer, verbose_name=_("layer"))
+    status  = models.ForeignKey(Status, verbose_name=_("status"))
     
     # content 
-    desc    = models.TextField(null=True, blank=True, help_text=u"podrobny popis znacky")
-    remark  = models.TextField(null=True, blank=True, help_text=u"interni informace o objektu, ktere se nebudou zobrazovat")
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Detailed marker descrption."))
+    remark  = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
     
     # Base icon and zoom dependent display range
-    default_icon = models.ImageField(null=True, blank=True, upload_to='ikony', storage=SlugifyFileSystemStorage())
-    minzoom = models.PositiveIntegerField(default=1)
-    maxzoom = models.PositiveIntegerField(default=10)
+    default_icon = models.ImageField(null=True, blank=True, upload_to='icons', storage=SlugifyFileSystemStorage(), verbose_name=_("default icon"))
+    minzoom = models.PositiveIntegerField(default=1, verbose_name=_("Minimal zoom"), help_text=_(u"Minimal zoom in which the POIs of this marker will be shown on the map."))
+    maxzoom = models.PositiveIntegerField(default=10, verbose_name=_("Maximal zoom"), help_text=_(u"Maximal zoom in which the POIs of this marker will be shown on the map."))
 
     # Linear elements style
-    line_width = models.FloatField( verbose_name=u"šířka čáry", default=2,)
-    line_color = RGBColorField(default="#ffc90e")
+    line_width = models.FloatField( verbose_name=_(u"line width"), default=2,)
+    line_color = RGBColorField(default="#ffc90e", verbose_name=_("line color"))
     def line_color_kml(this):
         color = this.line_color[1:]
         return "88" + color[4:6] + color[2:4] + color[0:2]
 
-    url     = models.URLField(null=True, blank=True, help_text=u"ukáže se u všech míst s touto značkou, pokud nemají vlastní url")
-    
     class Meta:
         permissions = [
             ("can_only_view", "Can only view"),
         ]
-        verbose_name_plural = "značky"
+        verbose_name = _(u"marker")
+        verbose_name_plural = _(u"markers")
         ordering = ['-layer__order', 'name']
 
     def __unicode__(self):
         return self.name
 
-class VisiblePoiManager(models.GeoManager):
-    "Pomocny manazer pro dotazy na Poi se zobrazitelnym statuem"
+class VisibleManager(models.GeoManager):
+    "Manager that will return objects visible on the map"
     def get_query_set(self):
-        return super(VisiblePoiManager, self).get_query_set().filter(status__show=True, znacka__status__show=True)
+        return super(VisibleManager, self).get_query_set().filter(status__show=True, znacka__status__show=True)
 
 class Sector(models.Model):
-    "Sektor mapy"
-    name    = models.CharField(max_length=255)
-    slug    = models.SlugField(unique=True, verbose_name="Slug")
+    "Map sector"
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"))
+    slug    = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     
-    geom    = models.PolygonField(verbose_name=u"plocha",srid=4326, help_text=u"Plocha sektoru")
+    geom    = models.PolygonField(verbose_name=_(u"area"),srid=4326, help_text=_(u"Sector area"))
     objects = models.GeoManager()
 
     class Meta:
-        verbose_name_plural = u"sektory"
+        verbose_name = _(u"sector")
+        verbose_name_plural = _(u"sectors")
 
-@fgp.guard('dulezitost', 'status', name='can_edit_advanced_fields')
+@fgp.guard('importance', 'status', name='can_edit_advanced_fields')
 class Poi(models.Model):
-    "Misto - bod v mape"
-    author = models.ForeignKey(User, verbose_name="Autor")
+    "Place in map"
+    author = models.ForeignKey(User, verbose_name=_(u"author"))
 
-    name   = models.CharField(max_length=255, verbose_name=u"název", help_text=u"Přesný název místa.")
+    name   = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Exact place name"))
     
     # Relationships
-    marker  = models.ForeignKey(Marker, limit_choices_to = {'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=u"značka", help_text="Zde vyberte ikonu, která se zobrazí na mapě.", related_name="pois")
-    status  = models.ForeignKey(Status, default=2, help_text="Status místa; určuje, kde všude se místo zobrazí.")
-    properties = models.ManyToManyField('Property', blank=True, null=True, help_text="Určete, jaké má místo vlastnosti. Postupujte podle manuálu.<br/>")
+    marker  = models.ForeignKey(Marker, limit_choices_to = {'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois")
+    status  = models.ForeignKey(Status, default=2, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
+    properties = models.ManyToManyField('Property', blank=True, null=True, help_text=_("POI properties"), verbose_name=_("properties"))
     
-    # "dulezitost" - modifikator minimalniho zoomu, ve kterem se misto zobrazuje. 
-    dulezitost = models.SmallIntegerField(default=0, verbose_name=u"důležitost",
-                 help_text=u"""Modifikátor minimalniho zoomu, ve kterém se místo zobrazuje (20+ bude vidět vždy).<br/>
-                               Cíl je mít výběr základních objektů viditelných ve velkých měřítcích
-                               a zabránit přetížení mapy značkami v přehledce.<br/>
-                               Lze použít pro placenou reklamu! ("Váš podnik bude vidět hned po otevření mapy")""")
+    importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
+                 help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
     
     # Geographical intepretation
-    geom    = models.GeometryField(verbose_name=u"poloha",srid=4326, help_text=u"""Vložení bodu: Klikněte na tužku s plusem a umístěte bod na mapu<br/>
-            Kreslení linie: Klikněte na ikonu linie a klikáním do mapy určete lomenou čáru. Kreslení ukončíte dvouklikem.<br/>
-            Kreslení oblasti: Klikněte na ikonu oblasti a klikáním do mapy definujte oblast. Kreslení ukončíte dvouklikem.<br/>
-            Úprava vložených objektů: Klikněte na první ikonu a potom klikněte na objekt v mapě. Tažením přesouváte body, body uprostřed úseků slouží k vkládání nových bodů do úseku.""")
+    geom    = models.GeometryField(verbose_name=_(u"place geometry"),srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
+            Add line: Select line icon and by clicking to map draw the line. Finish drawing with double click.<br/>
+            Add area: Select area icon and by clicking to mapy draw the area. Finish drawing with double click.<br/>
+            Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""))
     objects = models.GeoManager()
     
     # Own content (facultative)
 
-    desc    = models.TextField(null=True, blank=True, verbose_name=u"popis", help_text=u"Text, který se zobrazí na mapě po kliknutí na ikonu.")
-    desc_extra = models.TextField(null=True, blank=True, verbose_name=u"podrobný popis", help_text="Text, který rozšiřuje informace výše.")
-    url     = models.URLField(null=True, blank=True, help_text=u"Odkaz na webovou stránku místa.")
-    remark  = models.TextField(null=True, blank=True, verbose_name=u"interní poznámka", help_text=u"Interní informace o objektu, které se nebudou zobrazovat.")
+    desc    = models.TextField(null=True, blank=True, verbose_name=_(u"description"), help_text=_(u"Text that will be shown after selecting POI."))
+    desc_extra = models.TextField(null=True, blank=True, verbose_name=_(u"detailed description"), help_text=_("Text that extends the description."))
+    url     = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Link to the web page of the place."))
+    remark  = models.TextField(null=True, blank=True, verbose_name=_(u"Internal remark"), help_text=_(u"Internal information about POI."))
 
     # navzdory nazvu jde o fotku v plnem rozliseni
-    foto_thumb  = models.ImageField(null=True, blank=True,
-                                    upload_to='foto', storage=SlugifyFileSystemStorage(),
-                                    verbose_name=u"fotka",
+    photo_thumb  = models.ImageField(null=True, blank=True,
+                                    upload_to='photo', storage=SlugifyFileSystemStorage(),
+                                    verbose_name=_(u"photo"),
                                     help_text=u"Nahrajte fotku v plné velikosti.",
                                    )
     # zde se ulozi slugy vsech vlastnosti, aby se pri renederovani kml
     # nemusel delat db dotaz pro kazde Poi na jeho vlastnosti
     properties_cache = models.CharField(max_length=255, null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True,  verbose_name="Posledni zmena")
+    created_at = models.DateTimeField(auto_now_add=True,  verbose_name=_("created at"))
     
-    viditelne = VisiblePoiManager()
+    viditelne = VisibleManager()
     
     class Meta:
         permissions = [
             ("can_only_own_data_only", "Can only edit his own data"),
         ]
-        verbose_name = "místo"
-        verbose_name_plural = "místa"
+        verbose_name = _("place")
+        verbose_name_plural = _("places")
     def __unicode__(self):
         return self.name
     def save_properties_cache(self):
@@ -173,19 +168,20 @@ post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
     
 class Property(models.Model):
-    "Vlastnosti mist"
-    name    = models.CharField(max_length=255)   # Name of the property
-    status  = models.ForeignKey(Status)          # "Statuty"  - tj. active/inactive. Mozny je i boolean "active"
-    as_filter  = models.BooleanField()              # Pouzit v levem menu, filtrovat???
-    order   = models.PositiveIntegerField()
+    "Place properties"
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
+    status  = models.ForeignKey(Status, verbose_name=_("status"))
+    as_filter  = models.BooleanField(verbose_name=_("as filter?"), help_text=_(u"Show as a filter in right map menu?"))
+    order   = models.PositiveIntegerField(verbose_name=_("order"))
     # content 
-    slug    = models.SlugField(unique=True, verbose_name="Slug")  # Popis tagu v URL
-    desc    = models.TextField(null=True, blank=True) # podrobny popis vlastnosti
-    remark  = models.TextField(null=True, blank=True, help_text=u"interni informace o objektu, ktere se nebudou zobrazovat")
-    default_icon = models.ImageField(null=True, blank=True, upload_to='ikony', storage=SlugifyFileSystemStorage())
+    slug    = models.SlugField(unique=True, verbose_name=_("Name in URL"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Property description."))
+    remark  = models.TextField(null=True, blank=True, verbose_name=_(u"Internal remark"), help_text=_(u"Internal information about the property."))
+    default_icon = models.ImageField(null=True, blank=True, upload_to='icons', storage=SlugifyFileSystemStorage(), verbose_name=_("default icon"))
    
     class Meta:
-        verbose_name_plural = u"properties"
+        verbose_name = _(u"property")
+        verbose_name_plural = _(u"properties")
 	ordering = ['order']
     def __unicode__(self):
         return self.name

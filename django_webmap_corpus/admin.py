@@ -42,11 +42,11 @@ class UserAdmin(UserAdmin):
 
 
 class SectorFilter(SimpleListFilter):
-    title = (u"Sector")
-    parameter_name = u"sector"
+    title = _(u"sector")
+    parameter_name = _(u"sector")
 
     def lookups(self, request, model_admin):
-        return [("outer", u"Mimo sektory")] + [(sector.slug, sector.name) for sector in Sector.objects.all()]
+        return [("outer", _(u"Out of sectors"))] + [(sector.slug, sector.name) for sector in Sector.objects.all()]
 
     def queryset(self, request, queryset):
         if not self.value():
@@ -58,13 +58,13 @@ class SectorFilter(SimpleListFilter):
         return queryset.filter(geom__contained = Sector.objects.get(slug = self.value()).geom)
 
 class PoiStatusFilter(SimpleListFilter):
-    title = (u"Všechny statuty")
-    parameter_name = u"statuses"
+    title = _(u"all statuses")
+    parameter_name = _(u"statuses")
 
     def lookups(self, request, model_admin):
-        return ((None, u"Viditelné"),
+        return ((None, _(u"Visible")),
                 ('all', _('All')),
-                ("unvisible", u"Skryté"))
+                ("unvisible", _(u"Unvisible")))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
@@ -87,7 +87,7 @@ class PoiStatusFilter(SimpleListFilter):
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     model = Poi
-    list_display = ['name','status','marker','url','foto_thumb', 'desc', 'id' ]
+    list_display = ['name','status','marker','url','photo_thumb', 'desc', 'id' ]
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "author")
@@ -202,7 +202,7 @@ class MarkerAdmin(admin.ModelAdmin):
     def default_icon_image(self, obj):
         if obj.default_icon:
             return '<img src="%s"/>' % obj.default_icon.url
-    default_icon_image.short_description = "icon"
+    default_icon_image.short_description = _("icon")
     default_icon_image.allow_tags = True
 
     def get_form(self, request, obj=None, **kwargs):
@@ -217,7 +217,7 @@ class MarkerAdmin(admin.ModelAdmin):
     def poi_count(self, obj):
         url = reverse('admin:django_webmap_corpus_poi_changelist')
         return '<a href="{0}?marker__id__exact={1}&amp;statuses=all">{2}</a>'.format(url, obj.id, obj.pois.count())
-    poi_count.short_description = "Count"
+    poi_count.short_description = _("count")
     poi_count.allow_tags = True
 
 class StatusAdmin(admin.ModelAdmin):
