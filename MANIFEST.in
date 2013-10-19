@@ -1,0 +1,9 @@
+include AUTHORS
+include LICENSE
+include DESCRIPTION
+include CHANGELOG.txt
+include README.md
+graft django_webmap_corpus
+global-exclude *.orig *.pyc *.log *.swp
+prune django_webmap_corpus/tests/coverage
+prune django_webmap_corpus/.ropeproject
