@@ -13,19 +13,19 @@ from .utils import SlugifyFileSystemStorage
 
 class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
-    nazev   = models.CharField(unique=True, max_length=255, help_text=u"Název statutu")
+    name    = models.CharField(unique=True, max_length=255, help_text=u"Název statutu")
     desc    = models.TextField(null=True, blank=True, help_text=u"Popis")
     show    = models.BooleanField(help_text=u"Zobrazit uživateli zvenčí")
-    show_TU = models.BooleanField(help_text=u"Zobrazit editorovi mapy")
+    show_to_mapper = models.BooleanField(help_text=u"Zobrazit editorovi mapy")
 
     class Meta:
         verbose_name_plural = "statuty"
     def __unicode__(self):
-        return self.nazev
+        return self.name
 
-class Vrstva(models.Model):
+class Layer(models.Model):
     "Vrstvy, ktere se zobrazi v konkretni mape"
-    nazev   = models.CharField(max_length=255)                      # Name of the layer
+    name    = models.CharField(max_length=255)                      # Name of the layer
     slug    = models.SlugField(unique=True, verbose_name=u"název v URL")  # Vrstva v URL
     desc    = models.TextField(null=True, blank=True)               # Description
     status  = models.ForeignKey(Status)              # zobrazovaci status
@@ -36,14 +36,14 @@ class Vrstva(models.Model):
         verbose_name_plural = u"vrstvy"
         ordering = ['order']
     def __unicode__(self):
-        return self.nazev
+        return self.name
 
-class Znacka(models.Model):
+class Marker(models.Model):
     "Mapove znacky vcetne definice zobrazeni"
-    nazev   = models.CharField(unique=True, max_length=255)   # Name of the mark
+    name    = models.CharField(unique=True, max_length=255)   # Name of the mark
     
     # Relationships
-    vrstva  = models.ForeignKey(Vrstva)              # Kazda znacka lezi prave v jedne vrstve
+    layer  = models.ForeignKey(Layer)              # Kazda znacka lezi prave v jedne vrstve
     status  = models.ForeignKey(Status)              # kvuli vypinani
     
     # icon: Neni zde, ale v tabulce znacky a vztahuje se k rozlicnym zobrazenim 
@@ -73,23 +73,22 @@ class Znacka(models.Model):
             ("can_only_view", "Can only view"),
         ]
         verbose_name_plural = "značky"
-        ordering = ['-vrstva__order', 'nazev']
+        ordering = ['-layer__order', 'name']
 
     def __unicode__(self):
-        return self.nazev
+        return self.name
 
-class ViditelneManager(models.GeoManager):
+class VisiblePoiManager(models.GeoManager):
     "Pomocny manazer pro dotazy na Poi se zobrazitelnym statuem"
     def get_query_set(self):
-        return super(ViditelneManager, self).get_query_set().filter(status__show=True, znacka__status__show=True)
+        return super(VisiblePoiManager, self).get_query_set().filter(status__show=True, znacka__status__show=True)
 
-class Sektor(models.Model):
+class Sector(models.Model):
     "Sektor mapy"
-    nazev   = models.CharField(max_length=255)
+    name    = models.CharField(max_length=255)
     slug    = models.SlugField(unique=True, verbose_name="Slug")
     
     geom    = models.PolygonField(verbose_name=u"plocha",srid=4326, help_text=u"Plocha sektoru")
-    stred   = models.PointField(verbose_name=u"Poloha středu sektoru",srid=4326, null=True)
     objects = models.GeoManager()
 
     class Meta:
@@ -100,12 +99,12 @@ class Poi(models.Model):
     "Misto - bod v mape"
     author = models.ForeignKey(User, verbose_name="Autor")
 
-    nazev   = models.CharField(max_length=255, verbose_name=u"název", help_text=u"Přesný název místa.")
+    name   = models.CharField(max_length=255, verbose_name=u"název", help_text=u"Přesný název místa.")
     
     # Relationships
-    znacka  = models.ForeignKey(Znacka, limit_choices_to = {'status__show_TU': 'True', 'vrstva__status__show_TU': 'True'}, verbose_name=u"značka", help_text="Zde vyberte ikonu, která se zobrazí na mapě.", related_name="pois")
+    marker  = models.ForeignKey(Marker, limit_choices_to = {'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=u"značka", help_text="Zde vyberte ikonu, která se zobrazí na mapě.", related_name="pois")
     status  = models.ForeignKey(Status, default=2, help_text="Status místa; určuje, kde všude se místo zobrazí.")
-    vlastnosti    = models.ManyToManyField('Vlastnost', blank=True, null=True, help_text="Určete, jaké má místo vlastnosti. Postupujte podle manuálu.<br/>")
+    properties = models.ManyToManyField('Property', blank=True, null=True, help_text="Určete, jaké má místo vlastnosti. Postupujte podle manuálu.<br/>")
     
     # "dulezitost" - modifikator minimalniho zoomu, ve kterem se misto zobrazuje. 
     dulezitost = models.SmallIntegerField(default=0, verbose_name=u"důležitost",
@@ -136,11 +135,11 @@ class Poi(models.Model):
                                    )
     # zde se ulozi slugy vsech vlastnosti, aby se pri renederovani kml
     # nemusel delat db dotaz pro kazde Poi na jeho vlastnosti
-    vlastnosti_cache = models.CharField(max_length=255, null=True, blank=True)
+    properties_cache = models.CharField(max_length=255, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True,  verbose_name="Posledni zmena")
     
-    viditelne = ViditelneManager()
+    viditelne = VisiblePoiManager()
     
     class Meta:
         permissions = [
@@ -149,9 +148,9 @@ class Poi(models.Model):
         verbose_name = "místo"
         verbose_name_plural = "místa"
     def __unicode__(self):
-        return self.nazev
-    def save_vlastnosti_cache(self):
-        self.vlastnosti_cache = u",".join([v.slug for v in self.vlastnosti.filter(status__show=True)])
+        return self.name
+    def save_properties_cache(self):
+        self.properties_cache = u",".join([v.slug for v in self.properties.filter(status__show=True)])
         self.save()
     def get_absolute_url(self):
         return "/misto/%i/" % self.id
@@ -161,24 +160,24 @@ class Poi(models.Model):
         super(Poi, self).save(*args, **kwargs)
 
 from django.db.models.signals import m2m_changed, post_save, post_delete
-def update_vlastnosti_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
+def update_properties_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
     "Aktualizace cache vlastnosti pri ulozeni Poi. Je treba jeste vyresit smazani Vlastnosti"
     if action == 'post_add':
-        instance.save_vlastnosti_cache()
-m2m_changed.connect(update_vlastnosti_cache, Poi.vlastnosti.through) 
+        instance.save_properties_cache()
+m2m_changed.connect(update_properties_cache, Poi.properties.through) 
 
 def invalidate_cache(sender, instance, **kwargs):
-    if sender in [Status, Vrstva, Znacka, Poi, Vlastnost]:
+    if sender in [Status, Layer, Marker, Poi, Property]:
         cache.clear()
 post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
     
-class Vlastnost(models.Model):
+class Property(models.Model):
     "Vlastnosti mist"
-    nazev   = models.CharField(max_length=255)   # Name of the property
+    name    = models.CharField(max_length=255)   # Name of the property
     status  = models.ForeignKey(Status)          # "Statuty"  - tj. active/inactive. Mozny je i boolean "active"
-    filtr   = models.BooleanField()              # Pouzit v levem menu, filtrovat???
-    poradi  = models.PositiveIntegerField()
+    as_filter  = models.BooleanField()              # Pouzit v levem menu, filtrovat???
+    order   = models.PositiveIntegerField()
     # content 
     slug    = models.SlugField(unique=True, verbose_name="Slug")  # Popis tagu v URL
     desc    = models.TextField(null=True, blank=True) # podrobny popis vlastnosti
@@ -186,7 +185,7 @@ class Vlastnost(models.Model):
     default_icon = models.ImageField(null=True, blank=True, upload_to='ikony', storage=SlugifyFileSystemStorage())
    
     class Meta:
-        verbose_name_plural = u"vlastnosti"
-	ordering = ['poradi']
+        verbose_name_plural = u"properties"
+	ordering = ['order']
     def __unicode__(self):
-        return self.nazev
+        return self.name

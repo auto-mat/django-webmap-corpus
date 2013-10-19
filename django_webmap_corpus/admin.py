@@ -41,30 +41,30 @@ class UserAdmin(UserAdmin):
             return ", ".join([user_permission.name for user_permission in obj.user_permissions.all()])
 
 
-class SektorFilter(SimpleListFilter):
-    title = (u"Sektor")
-    parameter_name = u"sektor"
+class SectorFilter(SimpleListFilter):
+    title = (u"Sector")
+    parameter_name = u"sector"
 
     def lookups(self, request, model_admin):
-        return [("mimo", u"Mimo sektory")] + [(sektor.slug, sektor.nazev) for sektor in Sektor.objects.all()]
+        return [("outer", u"Mimo sektory")] + [(sector.slug, sector.name) for sector in Sector.objects.all()]
 
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
-        if self.value() == "mimo":
-            for sektor in Sektor.objects.all():
-                queryset = queryset.exclude(geom__contained = sektor.geom)
+        if self.value() == "outer":
+            for sector in Sector.objects.all():
+                queryset = queryset.exclude(geom__contained = sector.geom)
             return queryset
-        return queryset.filter(geom__contained = Sektor.objects.get(slug = self.value()).geom)
+        return queryset.filter(geom__contained = Sector.objects.get(slug = self.value()).geom)
 
 class PoiStatusFilter(SimpleListFilter):
     title = (u"Všechny statuty")
-    parameter_name = u"statuty"
+    parameter_name = u"statuses"
 
     def lookups(self, request, model_admin):
         return ((None, u"Viditelné"),
                 ('all', _('All')),
-                ("skryte", u"Skryté"))
+                ("unvisible", u"Skryté"))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
@@ -79,25 +79,25 @@ class PoiStatusFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value() == 'all':
             return queryset
-        if not self.value() or self.value() == "viditelne":
-            return queryset.filter(Q(status__show_TU = True) & Q(znacka__status__show_TU = True) & Q(znacka__vrstva__status__show_TU = True))
-        if self.value() == "skryte":
-            return queryset.exclude(Q(status__show_TU = True) & Q(znacka__status__show_TU = True) & Q(znacka__vrstva__status__show_TU = True))
+        if not self.value() or self.value() == "visible":
+            return queryset.filter(Q(status__show_to_mapper = True) & Q(marker__status__show_to_mapper = True) & Q(marker__layer__status__show_to_mapper = True))
+        if self.value() == "unvisible":
+            return queryset.exclude(Q(status__show_to_mapper = True) & Q(marker__status__show_to_mapper = True) & Q(marker__layer__status__show_to_mapper = True))
 
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     model = Poi
-    list_display = ['nazev','status','znacka','url','foto_thumb', 'desc', 'id' ]
-    list_filter = (PoiStatusFilter, 'status', SektorFilter, 'znacka__vrstva', 'znacka',)
-    exclude = ('vlastnosti_cache', )
+    list_display = ['name','status','marker','url','foto_thumb', 'desc', 'id' ]
+    list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
+    exclude = ('properties_cache', )
     readonly_fields = ("created_at", "author")
-    raw_id_fields = ('znacka',)
-    search_fields = ('nazev',)
-    ordering = ('nazev',)
+    raw_id_fields = ('marker',)
+    search_fields = ('name',)
+    ordering = ('name',)
     save_as = True
-    search_fields = ['nazev']
+    search_fields = ['name']
     list_select_related = True
-    filter_horizontal = ('vlastnosti',)
+    filter_horizontal = ('properties',)
     list_max_show_all = 10000
 
     if USE_GOOGLE_TERRAIN_TILES:
@@ -117,8 +117,8 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
          self.default_lon, self.default_lat = pnt.coords
 
          if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_own_data_only') and obj and obj.author != request.user:
-             self.fields = ('nazev', )
-             self.readonly_fields = ('nazev', )
+             self.fields = ('name', )
+             self.readonly_fields = ('name', )
          else:
              self.fields = PoiAdmin.fields
              self.readonly_fields = PoiAdmin.readonly_fields
@@ -156,9 +156,9 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
             obj.author = request.user # no need to check for it.
         obj.save()
 
-class SektorAdmin(OSMGeoAdmin):
-    list_display = ('nazev',)
-    prepopulated_fields = {'slug': ('nazev',) } # slug se automaticky vytvari z nazvu
+class SectorAdmin(OSMGeoAdmin):
+    list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
     if USE_GOOGLE_TERRAIN_TILES:
       map_template = 'gis/admin/google.html'
       extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
@@ -169,7 +169,7 @@ class SektorAdmin(OSMGeoAdmin):
          pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
          pnt.transform(900913)
          self.default_lon, self.default_lat = pnt.coords
-         return super(SektorAdmin, self).get_form(request, obj, **kwargs)
+         return super(SectorAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
     scrollable = False
@@ -177,26 +177,26 @@ class SektorAdmin(OSMGeoAdmin):
     map_height = 500
     map_srid = 900913
 
-class ZnackaInline(admin.TabularInline):
-    model = Znacka
+class MarkerInline(admin.TabularInline):
+    model = Marker
 
-class VrstvaAdmin(admin.ModelAdmin): #ImportExportModelAdmin):
-    prepopulated_fields = {'slug': ('nazev',) } # slug se automaticky vytvari z nazvu
-    list_display = ['nazev', 'status', 'order']
-    inlines = [ZnackaInline]
+class LayerAdmin(admin.ModelAdmin): #ImportExportModelAdmin):
+    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+    list_display = ['name', 'status', 'order']
+    inlines = [MarkerInline]
 
 class MapaAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('nazev',) } # slug se automaticky vytvari z nazvu
+    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
 
-class VlastnostAdmin(admin.ModelAdmin):
-    list_display = ('nazev', 'filtr', 'status')
-    prepopulated_fields = {'slug': ('nazev',) } # slug se automaticky vytvari z nazvu
-    model = Vlastnost
+class PropertyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'as_filter', 'status')
+    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+    model = Property
 
-class ZnackaAdmin(admin.ModelAdmin):
-    list_display = ('nazev', 'desc', 'vrstva', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count')
-    list_filter = ('vrstva','status',)
-    search_fields = ('nazev', 'desc',)
+class MarkerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count')
+    list_filter = ('layer','status',)
+    search_fields = ('name', 'desc',)
     readonly_fields = ('poi_count',)
 
     def default_icon_image(self, obj):
@@ -207,28 +207,28 @@ class ZnackaAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_view'):
-            self.fields = ('nazev', )
-            self.readonly_fields = ('nazev', )
+            self.fields = ('name', )
+            self.readonly_fields = ('name', )
         else:
-            self.fields = ZnackaAdmin.fields
-            self.readonly_fields = ZnackaAdmin.readonly_fields
-        return super(ZnackaAdmin, self).get_form(request, obj, **kwargs)
+            self.fields = MarkerAdmin.fields
+            self.readonly_fields = MarkerAdmin.readonly_fields
+        return super(MarkerAdmin, self).get_form(request, obj, **kwargs)
 
     def poi_count(self, obj):
         url = reverse('admin:django_webmap_corpus_poi_changelist')
-        return '<a href="{0}?znacka__id__exact={1}&amp;statuty=all">{2}</a>'.format(url, obj.id, obj.pois.count())
+        return '<a href="{0}?marker__id__exact={1}&amp;statuses=all">{2}</a>'.format(url, obj.id, obj.pois.count())
     poi_count.short_description = "Count"
     poi_count.allow_tags = True
 
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ('nazev', 'desc', 'show', 'show_TU')
+    list_display = ('name', 'desc', 'show', 'show_to_mapper')
     
 admin.site.register(Poi   , PoiAdmin   )
-admin.site.register(Vrstva, VrstvaAdmin)
-admin.site.register(Sektor, SektorAdmin)
-admin.site.register(Znacka, ZnackaAdmin)
+admin.site.register(Layer, LayerAdmin)
+admin.site.register(Sector, SectorAdmin)
+admin.site.register(Marker, MarkerAdmin)
 admin.site.register(Status, StatusAdmin)
-admin.site.register(Vlastnost, VlastnostAdmin)
+admin.site.register(Property, PropertyAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
