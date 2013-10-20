@@ -148,7 +148,7 @@ class Poi(models.Model):
 
 from django.db.models.signals import m2m_changed, post_save, post_delete
 def update_properties_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
-    "Aktualizace cache vlastnosti pri ulozeni Poi. Je treba jeste vyresit smazani Vlastnosti"
+    "Property cache actualization at POI save. It will not work yet after property removal."
     if action == 'post_add':
         instance.save_properties_cache()
 m2m_changed.connect(update_properties_cache, Poi.properties.through) 
@@ -201,3 +201,6 @@ class Photo(models.Model):
                                     help_text=_(u"Upload photo in full resolution."),
                                    )
 
+    class Meta:
+        verbose_name = _(u"photo")
+        verbose_name_plural = _(u"photographies")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-19 23:38+0200\n"
+"POT-Creation-Date: 2013-10-20 11:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Petr Dlouhý <petr.dlouhy@email.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,10 +323,14 @@ msgstr "licence"
 msgid "poi"
 msgstr "poi"
 
-#: models.py:200
+#: models.py:200 models.py:205
 msgid "photo"
 msgstr "fotografie"
 
 #: models.py:201
 msgid "Upload photo in full resolution."
 msgstr "Nahrajte fotografii v plném rozlišení."
+
+#: models.py:206
+msgid "photographies"
+msgstr "fotografie"
