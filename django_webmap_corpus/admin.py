@@ -205,14 +205,10 @@ class MarkerAdmin(admin.ModelAdmin):
     default_icon_image.short_description = _("icon")
     default_icon_image.allow_tags = True
 
-    def get_form(self, request, obj=None, **kwargs):
-        if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_view'):
-            self.fields = ('name', )
-            self.readonly_fields = ('name', )
-        else:
-            self.fields = MarkerAdmin.fields
-            self.readonly_fields = MarkerAdmin.readonly_fields
-        return super(MarkerAdmin, self).get_form(request, obj, **kwargs)
+    def has_change_permission(self, request, obj = None):
+        if obj == None and request.user.has_perm(u'django_webmap_corpus.can_only_view'):
+            return True
+        return super(MarkerAdmin, self).has_change_permission(request, obj)
 
     def poi_count(self, obj):
         url = reverse('admin:django_webmap_corpus_poi_changelist')
