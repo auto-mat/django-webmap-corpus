@@ -16,9 +16,7 @@ To get the latest commit from GitHub
 
 .. code-block:: bash
 
-    pip install -e git+git://https://github.com/PetrDlouhy/django-webmap-corpus.git#egg=django_webmap_corpus
-
-TODO: Describe further installation steps (edit / remove the examples below):
+    pip install -e git+https://github.com/PetrDlouhy/django-webmap-corpus.git#egg=django_webmap_corpus
 
 Add ``django_webmap_corpus`` to your ``INSTALLED_APPS``
 
@@ -26,24 +24,29 @@ Add ``django_webmap_corpus`` to your ``INSTALLED_APPS``
 
     INSTALLED_APPS = (
         ...,
+        'constance.backends.database',
         'django_webmap_corpus',
     )
 
-Add the ``django_webmap_corpus`` URLs to your ``urls.py``
+Add Author middleware
 
 .. code-block:: python
 
-    urlpatterns = patterns('',
-        ...
-        url(r'^webmap/', include('django_webmap_corpus.urls')),
+    MIDDLEWARE_CLASSES = (
+        ...,
+        "author.middlewares.AuthorDefaultBackendMiddleware",
     )
 
-Before your tags/filters are available in your templates, load them by using
+Add Constance settings
 
-.. code-block:: html
-
-	{% load django_webmap_corpus_tags %}
-
+.. code-block:: python
+    CONSTANCE_APP_NAME = "django_webmap_corpus"
+    CONSTANCE_CONFIG = {
+        'MAP_BASELON': (14.4211, u'zeměpisná délka základní polohy mapy'),
+        'MAP_BASELAT': (50.08741, u'zeměpisná délka základní polohy mapy'),
+        'MAP_BOUNDS': ("14.22, 49.95, 14.8, 50.18", u'hranice zobrazení mapy'),
+    }
+    CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 Don't forget to migrate your database
 
