@@ -38,8 +38,12 @@ dev_requires = [
 
 install_requires = [
     'django',
-    'colorful',
+    'django-colorful',
     'django-author',
+    'psycopg2',
+    'django-finegrained-permissions',
+    'django-constance[database]',
+    'PIL',
 ]
 
 
