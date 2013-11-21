@@ -201,6 +201,11 @@ class Photo(models.Model):
                                     help_text=_(u"Upload photo in full resolution."),
                                    )
 
+    def image_tag(self):
+        return u'<a href="%(url)s"><img style="max-height: 100px; max-width: 100px" src="%(url)s" /></a>' % {'url': self.photo.url}
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
+
     class Meta:
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")

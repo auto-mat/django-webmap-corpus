@@ -86,7 +86,7 @@ class PoiStatusFilter(SimpleListFilter):
 
 class PhotoInline(admin.TabularInline):
     model = Photo
-    readonly_fields = ('author', 'updated_by')
+    readonly_fields = ('image_tag', 'author', 'updated_by')
 
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
