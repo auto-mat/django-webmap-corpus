@@ -81,7 +81,7 @@ class Marker(models.Model):
 class VisibleManager(models.GeoManager):
     "Manager that will return objects visible on the map"
     def get_query_set(self):
-        return super(VisibleManager, self).get_query_set().filter(status__show=True, znacka__status__show=True)
+        return super(VisibleManager, self).get_query_set().filter(status__show=True, marker__status__show=True)
 
 class Sector(models.Model):
     "Map sector"
@@ -130,7 +130,7 @@ class Poi(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,  verbose_name=_("created at"))
     last_modification = models.DateTimeField(auto_now=True,  verbose_name=_("last modification at"))
     
-    viditelne = VisibleManager()
+    visible = VisibleManager()
     
     class Meta:
         permissions = [

@@ -1,12 +1,9 @@
 """URLs for the django_webmap_corpus app."""
-# from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
+from django_webmap_corpus import views
 
-# from . import views
 
-
-# urlpatterns = patterns(
-#     '',
-#     url(r'^$',
-#         views.YourView.as_view(),
-#         name='django_webmap_corpus_default'),
-# )
+urlpatterns = patterns(
+    '',
+    (r'^kml/([-\w]+)/$', views.kml_view),
+)

@@ -1,0 +1,24 @@
+{% extends "gis/kml/base.kml" %}
+{% block placemarks %}
+{% for place in places %}
+  <Placemark id="{{place.id}}">
+    <name>{{ place }}</name>
+    <minZoom>{{ place.marker.minzoom }}</minZoom>
+    {% if place.marker.default_icon and place.marker.default_icon.url %}
+       <ikona>{{ place.marker.default_icon.url }}</ikona>
+       <height>{{ place.marker.default_icon.height }}</height>
+       <width>{{ place.marker.default_icon.width }}</width>
+    {% endif %}
+    {% if place.geom.geom_type == 'Point' %}
+       <zindex>3</zindex>
+    {% elif place.geom.geom_type == 'LineString' %}
+       <zindex>2</zindex>
+    {% elif place.geom.geom_type == 'Polygon' %}
+       <zindex>1</zindex>
+    {% endif %}
+    <line_width>{{ place.marker.line_width|floatformat:-1 }}</line_width>
+    <line_color>{{ place.marker.line_color }}</line_color>
+    {{ place.geom.kml|safe }}
+  </Placemark>
+{% endfor %}
+{% endblock %}
