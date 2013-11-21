@@ -24,6 +24,8 @@ Add ``django_webmap_corpus`` to your ``INSTALLED_APPS``
 
     INSTALLED_APPS = (
         ...,
+        'author',
+        'django.contrib.gis',
         'constance.backends.database',
         'django_webmap_corpus',
     )
@@ -47,6 +49,15 @@ Add Constance settings
         'MAP_BOUNDS': ("14.22, 49.95, 14.8, 50.18", u'hranice zobrazení mapy'),
     }
     CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+Add the ``django_webmap_corpus`` URLs to your ``urls.py``
+
+.. code-block:: python
+
+    urlpatterns = patterns('',
+        ...
+        url(r'^webmap/', include('django_webmap_corpus.urls')),
+    )
 
 Don't forget to migrate your database
 
