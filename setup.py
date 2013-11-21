@@ -27,10 +27,18 @@ For more information on creating source distributions, see
 http://docs.python.org/2/distutils/sourcedist.html
 
 """
+import sys
 import os
 from setuptools import setup, find_packages
 import django_webmap_corpus as app
 
+# Make sure the django.mo file also exists:
+try:
+    os.chdir('django_webmap_corpus')
+    from django.core.management.commands.compilemessages import compile_messages
+    compile_messages(sys.stderr)
+finally:
+    os.chdir('..')
 
 dev_requires = [
     'flake8',
