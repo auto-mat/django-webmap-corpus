@@ -91,7 +91,7 @@ class PhotoInline(admin.TabularInline):
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     model = Poi
-    list_display = ['name','status','marker','url', 'desc', 'id' ]
+    list_display = ['name','status', 'properties_list', 'marker','url', 'desc', 'id' ]
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
@@ -161,7 +161,7 @@ class MarkerInline(admin.TabularInline):
 
 class LayerAdmin(admin.ModelAdmin): #ImportExportModelAdmin):
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
-    list_display = ['name', 'status', 'order']
+    list_display = ['name', 'slug', 'status', 'order']
     inlines = [MarkerInline]
 
 class MapaAdmin(admin.ModelAdmin):

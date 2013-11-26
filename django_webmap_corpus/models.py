@@ -145,6 +145,8 @@ class Poi(models.Model):
         self.save()
     def get_absolute_url(self):
         return "/misto/%i/" % self.id
+    def properties_list(self):
+        return u", ".join([p.name for p in self.properties.all()])
 
 from django.db.models.signals import m2m_changed, post_save, post_delete
 def update_properties_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
