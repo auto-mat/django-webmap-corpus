@@ -43,7 +43,7 @@ class UserAdmin(UserAdmin):
 
 class SectorFilter(SimpleListFilter):
     title = _(u"sector")
-    parameter_name = _(u"sector")
+    parameter_name = u"sector"
 
     def lookups(self, request, model_admin):
         return [("outer", _(u"Out of sectors"))] + [(sector.slug, sector.name) for sector in Sector.objects.all()]
@@ -59,7 +59,7 @@ class SectorFilter(SimpleListFilter):
 
 class PoiStatusFilter(SimpleListFilter):
     title = _(u"all statuses")
-    parameter_name = _(u"statuses")
+    parameter_name = u"statuses"
 
     def lookups(self, request, model_admin):
         return ((None, _(u"Visible")),
