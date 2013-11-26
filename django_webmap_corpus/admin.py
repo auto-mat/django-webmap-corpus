@@ -130,31 +130,10 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
          return super(PoiAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
-    #display_wkt = False
-    #display_srid = False
-    #extra_js = []
-    #num_zoom = 18
-    #max_zoom = False
-    #min_zoom = False
-    #units = False
-    #max_resolution = False
-    #max_extent = False
-    #modifiable = True
-    #mouse_position = True
-    #scale_text = True
-    #layerswitcher = True
     scrollable = False
-    #admin_media_prefix = settings.ADMIN_MEDIA_PREFIX
     map_width = 700
     map_height = 500
     map_srid = 900913
-    #map_template = 'gis/admin/openlayers.html'
-    #openlayers_url = 'http://openlayers.org/api/2.6/OpenLayers.js'
-    #wms_url = 'http://labs.metacarta.com/wms/vmap0'
-    #wms_layer = 'basic'
-    #wms_name = 'OpenLayers WMS'
-    #debug = False
-    #widget = OpenLayersWidget
 
 class SectorAdmin(OSMGeoAdmin):
     list_display = ('name',)
