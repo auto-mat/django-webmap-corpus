@@ -121,6 +121,7 @@ class Poi(models.Model):
     desc    = models.TextField(null=True, blank=True, verbose_name=_(u"description"), help_text=_(u"Text that will be shown after selecting POI."))
     desc_extra = models.TextField(null=True, blank=True, verbose_name=_(u"detailed description"), help_text=_("Text that extends the description."))
     url     = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Link to the web page of the place."))
+    address = models.CharField(max_length=255, null=True, blank=True, verbose_name=_(u"adress"), help_text=_(u"Poi address (street, house number)"))
     remark  = models.TextField(null=True, blank=True, verbose_name=_(u"Internal remark"), help_text=_(u"Internal information about POI."))
 
     # zde se ulozi slugy vsech vlastnosti, aby se pri renederovani kml

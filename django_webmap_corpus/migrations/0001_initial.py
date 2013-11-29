@@ -66,6 +66,7 @@ class Migration(SchemaMigration):
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('desc_extra', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('address', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('remark', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('properties_cache', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
@@ -231,6 +232,7 @@ class Migration(SchemaMigration):
         },
         u'django_webmap_corpus.poi': {
             'Meta': {'object_name': 'Poi'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'poi_create'", 'null': 'True', 'to': u"orm['auth.User']"}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
