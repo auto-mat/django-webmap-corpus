@@ -1,5 +1,5 @@
 develop: setup-git
-	pip install "file://`pwd`#egg=django_webmap_corpus[dev]"
+	pip install "file://`pwd`#egg=webmap[dev]"
 	pip install -e .
 
 setup-git:
@@ -8,5 +8,5 @@ setup-git:
 
 lint-python:
 	@echo "Linting Python files"
-	PYFLAKES_NODOCTEST=1 flake8 django_webmap_corpus
+	PYFLAKES_NODOCTEST=1 flake8 webmap
 	@echo ""

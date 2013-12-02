@@ -9,33 +9,33 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'Status'
-        db.create_table(u'django_webmap_corpus_status', (
+        db.create_table(u'webmap_status', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('show', self.gf('django.db.models.fields.BooleanField')()),
             ('show_to_mapper', self.gf('django.db.models.fields.BooleanField')()),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Status'])
+        db.send_create_signal(u'webmap', ['Status'])
 
         # Adding model 'Layer'
-        db.create_table(u'django_webmap_corpus_layer', (
+        db.create_table(u'webmap_layer', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_webmap_corpus.Status'])),
+            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Status'])),
             ('order', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('remark', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Layer'])
+        db.send_create_signal(u'webmap', ['Layer'])
 
         # Adding model 'Marker'
-        db.create_table(u'django_webmap_corpus_marker', (
+        db.create_table(u'webmap_marker', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=255)),
-            ('layer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_webmap_corpus.Layer'])),
-            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_webmap_corpus.Status'])),
+            ('layer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Layer'])),
+            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Status'])),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('remark', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('default_icon', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
@@ -44,23 +44,23 @@ class Migration(SchemaMigration):
             ('line_width', self.gf('django.db.models.fields.FloatField')(default=2)),
             ('line_color', self.gf('colorful.fields.RGBColorField')(default='#ffc90e', max_length=7)),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Marker'])
+        db.send_create_signal(u'webmap', ['Marker'])
 
         # Adding model 'Sector'
-        db.create_table(u'django_webmap_corpus_sector', (
+        db.create_table(u'webmap_sector', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
             ('geom', self.gf('django.contrib.gis.db.models.fields.PolygonField')()),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Sector'])
+        db.send_create_signal(u'webmap', ['Sector'])
 
         # Adding model 'Poi'
-        db.create_table(u'django_webmap_corpus_poi', (
+        db.create_table(u'webmap_poi', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('marker', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pois', to=orm['django_webmap_corpus.Marker'])),
-            ('status', self.gf('django.db.models.fields.related.ForeignKey')(default=2, to=orm['django_webmap_corpus.Status'])),
+            ('marker', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pois', to=orm['webmap.Marker'])),
+            ('status', self.gf('django.db.models.fields.related.ForeignKey')(default=2, to=orm['webmap.Status'])),
             ('importance', self.gf('django.db.models.fields.SmallIntegerField')(default=0)),
             ('geom', self.gf('django.contrib.gis.db.models.fields.GeometryField')()),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
@@ -74,22 +74,22 @@ class Migration(SchemaMigration):
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='poi_create', null=True, to=orm['auth.User'])),
             ('updated_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='poi_update', null=True, to=orm['auth.User'])),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Poi'])
+        db.send_create_signal(u'webmap', ['Poi'])
 
         # Adding M2M table for field properties on 'Poi'
-        m2m_table_name = db.shorten_name(u'django_webmap_corpus_poi_properties')
+        m2m_table_name = db.shorten_name(u'webmap_poi_properties')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('poi', models.ForeignKey(orm[u'django_webmap_corpus.poi'], null=False)),
-            ('property', models.ForeignKey(orm[u'django_webmap_corpus.property'], null=False))
+            ('poi', models.ForeignKey(orm[u'webmap.poi'], null=False)),
+            ('property', models.ForeignKey(orm[u'webmap.property'], null=False))
         ))
         db.create_unique(m2m_table_name, ['poi_id', 'property_id'])
 
         # Adding model 'Property'
-        db.create_table(u'django_webmap_corpus_property', (
+        db.create_table(u'webmap_property', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_webmap_corpus.Status'])),
+            ('status', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Status'])),
             ('as_filter', self.gf('django.db.models.fields.BooleanField')()),
             ('order', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
@@ -97,58 +97,58 @@ class Migration(SchemaMigration):
             ('remark', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('default_icon', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Property'])
+        db.send_create_signal(u'webmap', ['Property'])
 
         # Adding model 'License'
-        db.create_table(u'django_webmap_corpus_license', (
+        db.create_table(u'webmap_license', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['License'])
+        db.send_create_signal(u'webmap', ['License'])
 
         # Adding model 'Photo'
-        db.create_table(u'django_webmap_corpus_photo', (
+        db.create_table(u'webmap_photo', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('poi', self.gf('django.db.models.fields.related.ForeignKey')(related_name='photos', to=orm['django_webmap_corpus.Poi'])),
+            ('poi', self.gf('django.db.models.fields.related.ForeignKey')(related_name='photos', to=orm['webmap.Poi'])),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('desc', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('license', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['django_webmap_corpus.License'])),
+            ('license', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.License'])),
             ('order', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('photo', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='photo_create', null=True, to=orm['auth.User'])),
             ('updated_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='photo_update', null=True, to=orm['auth.User'])),
         ))
-        db.send_create_signal(u'django_webmap_corpus', ['Photo'])
+        db.send_create_signal(u'webmap', ['Photo'])
 
 
     def backwards(self, orm):
         # Deleting model 'Status'
-        db.delete_table(u'django_webmap_corpus_status')
+        db.delete_table(u'webmap_status')
 
         # Deleting model 'Layer'
-        db.delete_table(u'django_webmap_corpus_layer')
+        db.delete_table(u'webmap_layer')
 
         # Deleting model 'Marker'
-        db.delete_table(u'django_webmap_corpus_marker')
+        db.delete_table(u'webmap_marker')
 
         # Deleting model 'Sector'
-        db.delete_table(u'django_webmap_corpus_sector')
+        db.delete_table(u'webmap_sector')
 
         # Deleting model 'Poi'
-        db.delete_table(u'django_webmap_corpus_poi')
+        db.delete_table(u'webmap_poi')
 
         # Removing M2M table for field properties on 'Poi'
-        db.delete_table(db.shorten_name(u'django_webmap_corpus_poi_properties'))
+        db.delete_table(db.shorten_name(u'webmap_poi_properties'))
 
         # Deleting model 'Property'
-        db.delete_table(u'django_webmap_corpus_property')
+        db.delete_table(u'webmap_property')
 
         # Deleting model 'License'
-        db.delete_table(u'django_webmap_corpus_license')
+        db.delete_table(u'webmap_license')
 
         # Deleting model 'Photo'
-        db.delete_table(u'django_webmap_corpus_photo')
+        db.delete_table(u'webmap_photo')
 
 
     models = {
@@ -188,7 +188,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'django_webmap_corpus.layer': {
+        u'webmap.layer': {
             'Meta': {'ordering': "['order']", 'object_name': 'Layer'},
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -196,41 +196,41 @@ class Migration(SchemaMigration):
             'order': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'remark': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_webmap_corpus.Status']"})
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['webmap.Status']"})
         },
-        u'django_webmap_corpus.license': {
+        u'webmap.license': {
             'Meta': {'object_name': 'License'},
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
-        u'django_webmap_corpus.marker': {
+        u'webmap.marker': {
             'Meta': {'ordering': "['-layer__order', 'name']", 'object_name': 'Marker'},
             'default_icon': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'layer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_webmap_corpus.Layer']"}),
+            'layer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['webmap.Layer']"}),
             'line_color': ('colorful.fields.RGBColorField', [], {'default': "'#ffc90e'", 'max_length': '7'}),
             'line_width': ('django.db.models.fields.FloatField', [], {'default': '2'}),
             'maxzoom': ('django.db.models.fields.PositiveIntegerField', [], {'default': '10'}),
             'minzoom': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'remark': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_webmap_corpus.Status']"})
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['webmap.Status']"})
         },
-        u'django_webmap_corpus.photo': {
+        u'webmap.photo': {
             'Meta': {'object_name': 'Photo'},
             'author': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'photo_create'", 'null': 'True', 'to': u"orm['auth.User']"}),
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'license': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_webmap_corpus.License']"}),
+            'license': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['webmap.License']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'order': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'poi': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'photos'", 'to': u"orm['django_webmap_corpus.Poi']"}),
+            'poi': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'photos'", 'to': u"orm['webmap.Poi']"}),
             'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'photo_update'", 'null': 'True', 'to': u"orm['auth.User']"})
         },
-        u'django_webmap_corpus.poi': {
+        u'webmap.poi': {
             'Meta': {'object_name': 'Poi'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'poi_create'", 'null': 'True', 'to': u"orm['auth.User']"}),
@@ -241,16 +241,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'importance': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'last_modification': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'marker': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pois'", 'to': u"orm['django_webmap_corpus.Marker']"}),
+            'marker': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pois'", 'to': u"orm['webmap.Marker']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'properties': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['django_webmap_corpus.Property']", 'null': 'True', 'blank': 'True'}),
+            'properties': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['webmap.Property']", 'null': 'True', 'blank': 'True'}),
             'properties_cache': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'remark': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'default': '2', 'to': u"orm['django_webmap_corpus.Status']"}),
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'default': '2', 'to': u"orm['webmap.Status']"}),
             'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'poi_update'", 'null': 'True', 'to': u"orm['auth.User']"}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
-        u'django_webmap_corpus.property': {
+        u'webmap.property': {
             'Meta': {'ordering': "['order']", 'object_name': 'Property'},
             'as_filter': ('django.db.models.fields.BooleanField', [], {}),
             'default_icon': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
@@ -260,16 +260,16 @@ class Migration(SchemaMigration):
             'order': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'remark': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['django_webmap_corpus.Status']"})
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['webmap.Status']"})
         },
-        u'django_webmap_corpus.sector': {
+        u'webmap.sector': {
             'Meta': {'object_name': 'Sector'},
             'geom': ('django.contrib.gis.db.models.fields.PolygonField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
         },
-        u'django_webmap_corpus.status': {
+        u'webmap.status': {
             'Meta': {'object_name': 'Status'},
             'desc': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -279,4 +279,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['django_webmap_corpus']
+    complete_apps = ['webmap']

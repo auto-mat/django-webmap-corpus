@@ -1,6 +1,6 @@
-"""URLs for the django_webmap_corpus app."""
+"""URLs for the webmap app."""
 from django.conf.urls import patterns, url
-from django_webmap_corpus import views
+from webmap import views
 
 
 urlpatterns = patterns(

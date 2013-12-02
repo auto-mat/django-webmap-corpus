@@ -185,12 +185,12 @@ class MarkerAdmin(admin.ModelAdmin):
     default_icon_image.allow_tags = True
 
     def has_change_permission(self, request, obj = None):
-        if obj == None and request.user.has_perm(u'django_webmap_corpus.can_only_view'):
+        if obj == None and request.user.has_perm(u'webmap.can_only_view'):
             return True
         return super(MarkerAdmin, self).has_change_permission(request, obj)
 
     def poi_count(self, obj):
-        url = reverse('admin:django_webmap_corpus_poi_changelist')
+        url = reverse('admin:webmap_poi_changelist')
         return '<a href="{0}?marker__id__exact={1}&amp;statuses=all">{2}</a>'.format(url, obj.id, obj.pois.count())
     poi_count.short_description = _("count")
     poi_count.allow_tags = True

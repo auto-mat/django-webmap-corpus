@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
-Python setup file for the django_webmap_corpus app.
+Python setup file for the webmap app.
 
 In order to register your app at pypi.python.org, create an account at
 pypi.python.org and login, then register your new app like so:
@@ -21,7 +21,7 @@ If all looks good, you can make your first release:
     python setup.py sdist upload
 
 For new releases, you need to bump the version number in
-django_webmap_corpus/__init__.py and re-run the above command.
+webmap/__init__.py and re-run the above command.
 
 For more information on creating source distributions, see
 http://docs.python.org/2/distutils/sourcedist.html
@@ -30,11 +30,11 @@ http://docs.python.org/2/distutils/sourcedist.html
 import sys
 import os
 from setuptools import setup, find_packages
-import django_webmap_corpus as app
+import webmap as app
 
 # Make sure the django.mo file also exists:
 try:
-    os.chdir('django_webmap_corpus')
+    os.chdir('webmap')
     from django.core.management.commands.compilemessages import compile_messages
     compile_messages(sys.stderr)
 finally:

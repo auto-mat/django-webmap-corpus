@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^webmap/', include('django_webmap_corpus.urls')),
+    url(r'^webmap/', include('webmap.urls')),
 )
 
 

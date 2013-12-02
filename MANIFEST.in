@@ -3,7 +3,7 @@ include LICENSE
 include DESCRIPTION
 include CHANGELOG.txt
 include README.md
-graft django_webmap_corpus
+graft webmap
 global-exclude *.orig *.pyc *.log *.swp
-prune django_webmap_corpus/tests/coverage
-prune django_webmap_corpus/.ropeproject
+prune webmap/tests/coverage
+prune webmap/.ropeproject

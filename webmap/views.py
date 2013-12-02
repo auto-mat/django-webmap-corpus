@@ -1,7 +1,7 @@
-"""Views for the django_webmap_corpus app."""
+"""Views for the webmap app."""
 # from django.views.generic import TemplateView
 
-from django_webmap_corpus import models
+from webmap import models
 from django.views.decorators.gzip import *
 from django.views.decorators.cache import never_cache, cache_page
 from django.shortcuts import get_object_or_404
@@ -16,5 +16,5 @@ def kml_view(request, layer_name):
 
     # all enabled pois in this layer
     points = models.Poi.visible.filter(marker__layer=v).kml()
-    return render_to_kml("django_webmap_corpus/gis/kml/layer.kml", { 'places' : points})
+    return render_to_kml("webmap/gis/kml/layer.kml", { 'places' : points})
 

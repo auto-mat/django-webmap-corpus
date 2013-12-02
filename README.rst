@@ -16,9 +16,9 @@ To get the latest commit from GitHub
 
 .. code-block:: bash
 
-    pip install -e git+https://github.com/PetrDlouhy/django-webmap-corpus.git#egg=django_webmap_corpus
+    pip install -e git+https://github.com/PetrDlouhy/django-webmap-corpus.git#egg=webmap
 
-Add ``django_webmap_corpus`` to your ``INSTALLED_APPS``
+Add ``webmap`` to your ``INSTALLED_APPS``
 
 .. code-block:: python
 
@@ -27,7 +27,8 @@ Add ``django_webmap_corpus`` to your ``INSTALLED_APPS``
         'author',
         'django.contrib.gis',
         'constance.backends.database',
-        'django_webmap_corpus',
+        'constance',
+        'webmap',
     )
 
 Add Author middleware
@@ -36,13 +37,13 @@ Add Author middleware
 
     MIDDLEWARE_CLASSES = (
         ...,
-        "author.middlewares.AuthorDefaultBackendMiddleware",
+        'author.middlewares.AuthorDefaultBackendMiddleware',
     )
 
 Add Constance settings
 
 .. code-block:: python
-    CONSTANCE_APP_NAME = "django_webmap_corpus"
+    CONSTANCE_APP_NAME = "webmap"
     CONSTANCE_CONFIG = {
         'MAP_BASELON': (14.4211, u'zeměpisná délka základní polohy mapy'),
         'MAP_BASELAT': (50.08741, u'zeměpisná délka základní polohy mapy'),
@@ -50,20 +51,20 @@ Add Constance settings
     }
     CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
-Add the ``django_webmap_corpus`` URLs to your ``urls.py``
+Add the ``webmap`` URLs to your ``urls.py``
 
 .. code-block:: python
 
     urlpatterns = patterns('',
         ...
-        url(r'^webmap/', include('django_webmap_corpus.urls')),
+        url(r'^webmap/', include('webmap.urls')),
     )
 
 Don't forget to migrate your database
 
 .. code-block:: bash
 
-    ./manage.py migrate django_webmap_corpus
+    ./manage.py migrate webmap
 
 
 Usage

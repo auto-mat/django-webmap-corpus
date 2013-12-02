@@ -8,17 +8,21 @@ SITE_ID = 1
 APP_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'webmap-corpus',
+        'USER': 'webmap',
+        'PASSWORD': 'webmap',
+        'HOST': 'localhost',
+        'PORT': '',
+    },
 }
 
-ROOT_URLCONF = 'django_webmap_corpus.tests.urls'
+ROOT_URLCONF = 'webmap.tests.urls'
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(APP_ROOT, '../app_static')
 MEDIA_ROOT = os.path.join(APP_ROOT, '../app_media')
 STATICFILES_DIRS = (
@@ -36,6 +40,10 @@ COVERAGE_MODULE_EXCLUDES = [
     'migrations', 'fixtures', 'admin$', 'django_extensions',
 ]
 
+MIDDLEWARE_CLASSES = (
+    'author.middlewares.AuthorDefaultBackendMiddleware',
+)
+
 EXTERNAL_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -51,8 +59,8 @@ EXTERNAL_APPS = [
 ]
 
 INTERNAL_APPS = [
-    'django_webmap_corpus',
-    'django_webmap_corpus.tests.test_app',
+    'webmap',
+    'webmap.tests.test_app',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS

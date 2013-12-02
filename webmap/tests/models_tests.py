@@ -1,4 +1,4 @@
-"""Tests for the models of the django_webmap_corpus app."""
+"""Tests for the models of the webmap app."""
 from django.test import TestCase
 
 # from .factories import YourModelFactory
