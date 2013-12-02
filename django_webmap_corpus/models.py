@@ -195,7 +195,7 @@ class Photo(models.Model):
     poi     = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
     name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
     desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
-    licence = models.ForeignKey(License, verbose_name=_("license"))
+    license = models.ForeignKey(License, verbose_name=_("license"))
     order   = models.PositiveIntegerField(verbose_name=_("order"))
 
     photo   = models.ImageField(null=False, blank=False,
