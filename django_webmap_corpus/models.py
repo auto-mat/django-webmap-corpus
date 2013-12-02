@@ -182,8 +182,8 @@ class Property(models.Model):
         return self.name
 
 class License(models.Model):
-    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
-    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"License name"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"License description."))
     class Meta:
         verbose_name = _(u"license")
         verbose_name_plural = _(u"licenses")
