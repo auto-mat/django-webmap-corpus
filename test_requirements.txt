@@ -10,7 +10,7 @@ mock
 selenium
 
 django-author
--e git+git://github.com/django/django.git@stable/1.6.x#egg=Django
+Django
 south
 PIL
 django-finegrained-permissions
