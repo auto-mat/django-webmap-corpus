@@ -17,3 +17,4 @@ django-finegrained-permissions
 psycopg2
 django-colorful
 -e git+https://github.com/PetrDlouhy/django-constance.git#egg=django-constance[database]
+django-positions

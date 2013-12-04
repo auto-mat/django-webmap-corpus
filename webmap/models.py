@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django.core.cache import cache
 from django.forms import ModelForm
 from author.decorators import with_author
+from positions import PositionField
 
 from django.contrib.auth.models import User
 from colorful.fields import RGBColorField
@@ -33,7 +34,7 @@ class Layer(models.Model):
     slug    = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_("Layer description."))
     status  = models.ForeignKey(Status, verbose_name=_("status"))
-    order   = models.PositiveIntegerField(verbose_name=_("order"))
+    order   = PositionField(verbose_name=_("order"))
     remark  = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
 
     class Meta:
@@ -167,7 +168,7 @@ class Property(models.Model):
     name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
     status  = models.ForeignKey(Status, verbose_name=_("status"))
     as_filter  = models.BooleanField(verbose_name=_("as filter?"), help_text=_(u"Show as a filter in right map menu?"))
-    order   = models.PositiveIntegerField(verbose_name=_("order"))
+    order   = PositionField(verbose_name=_("order"))
     # content 
     slug    = models.SlugField(unique=True, verbose_name=_("Name in URL"))
     desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Property description."))
@@ -190,19 +191,32 @@ class License(models.Model):
     def __unicode__(self):
         return self.name
 
+class BaseLayer(models.Model):
+    name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Base layer name"))
+    url     = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Base layer tiles url. e.g. "))
+    position   = PositionField(verbose_name=_("position"))
+    class Meta:
+        verbose_name = _(u"base layer")
+        verbose_name_plural = _(u"base layers")
+    def __unicode__(self):
+        return self.name
+
 @with_author
 class Photo(models.Model):
     poi     = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
     name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
     desc    = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
     license = models.ForeignKey(License, verbose_name=_("license"))
-    order   = models.PositiveIntegerField(verbose_name=_("order"))
+    order   = PositionField(verbose_name=_("order"))
 
     photo   = models.ImageField(null=False, blank=False,
                                     upload_to='photo', storage=SlugifyFileSystemStorage(),
                                     verbose_name=_(u"photo"),
                                     help_text=_(u"Upload photo in full resolution."),
                                    )
+
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_("created at"))
+    last_modification = models.DateTimeField(auto_now=True, null=True, blank=True,  verbose_name=_("last modification at"))
 
     def image_tag(self):
         return u'<a href="%(url)s"><img style="max-height: 100px; max-width: 100px" src="%(url)s" /></a>' % {'url': self.photo.url}

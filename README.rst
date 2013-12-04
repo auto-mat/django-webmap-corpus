@@ -25,6 +25,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
     INSTALLED_APPS = (
         ...,
         'author',
+        'positions',
         'django.contrib.gis',
         'constance.backends.database',
         'constance',

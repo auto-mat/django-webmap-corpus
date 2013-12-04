@@ -86,7 +86,8 @@ class PoiStatusFilter(SimpleListFilter):
 
 class PhotoInline(admin.TabularInline):
     model = Photo
-    readonly_fields = ('image_tag', 'author', 'updated_by')
+    extra = 1
+    readonly_fields = ('image_tag', 'author', 'updated_by', 'created_at', 'last_modification')
 
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
@@ -200,6 +201,12 @@ class StatusAdmin(admin.ModelAdmin):
 
 class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
+
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'poi', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
+
+class BaseLayerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'position')
     
 admin.site.register(Poi   , PoiAdmin   )
 admin.site.register(Layer, LayerAdmin)
@@ -208,6 +215,8 @@ admin.site.register(Marker, MarkerAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(License, LicenseAdmin)
+admin.site.register(Photo, PhotoAdmin)
+admin.site.register(BaseLayer, BaseLayerAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

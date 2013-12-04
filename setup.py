@@ -48,6 +48,7 @@ install_requires = [
     'django',
     'django-colorful',
     'django-author',
+    'django-positions',
     'psycopg2',
     'django-finegrained-permissions',
     'django-constance[database]',
