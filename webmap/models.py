@@ -157,8 +157,20 @@ def update_properties_cache(sender, instance, action, reverse, model, pk_set, **
         instance.save_properties_cache()
 m2m_changed.connect(update_properties_cache, Poi.properties.through) 
 
+class Legend(models.Model):
+    "map legend items of underlay"
+    name   = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"))
+    slug    = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
+    desc    = models.TextField(null=True, blank=True, verbose_name=_(u"description"))
+    image = models.ImageField(upload_to='ikony', storage=SlugifyFileSystemStorage(), verbose_name=_(u"image"))
+    class Meta:
+        verbose_name = _(u"legend item")
+        verbose_name_plural = _(u"legend items")
+    def __unicode__(self):
+        return self.name
+
 def invalidate_cache(sender, instance, **kwargs):
-    if sender in [Status, Layer, Marker, Poi, Property]:
+    if sender in [Status, Layer, Marker, Poi, Property, Legend]:
         cache.clear()
 post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)

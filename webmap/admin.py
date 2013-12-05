@@ -202,6 +202,15 @@ class StatusAdmin(admin.ModelAdmin):
 class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
+class LegendAdmin(admin.ModelAdmin):
+    list_display = ('name', 'image_tag', 'desc',)
+    prepopulated_fields = {'slug': ('name',) }
+    def image_tag(self, obj):
+        return u'<img style="max-height: 100px; max-width: 100px" src=%s>' % obj.image.url
+    image_tag.allow_tags = True
+    image_tag.short_description = _(u"image")
+
+
 class PhotoAdmin(admin.ModelAdmin):
     list_display = ('name', 'poi', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
 
@@ -215,6 +224,7 @@ admin.site.register(Marker, MarkerAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(License, LicenseAdmin)
+admin.site.register(Legend, LegendAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(BaseLayer, BaseLayerAdmin)
 
