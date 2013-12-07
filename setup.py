@@ -37,6 +37,8 @@ try:
     os.chdir('webmap')
     from django.core.management.commands.compilemessages import compile_messages
     compile_messages(sys.stderr)
+except ImportError:
+    pass
 finally:
     os.chdir('..')
 
