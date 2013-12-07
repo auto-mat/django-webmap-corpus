@@ -9,7 +9,7 @@ factory_boy
 mock
 selenium
 
-django-author
+-e git+https://github.com/lambdalisue/django-author.git#egg=django-author
 Django
 south
 PIL

@@ -44,16 +44,24 @@ finally:
 
 dev_requires = [
     'flake8',
+    'south',
+    'django_nose',
+    'django_jasmine',
+]
+
+dependency_links = [
+    'git+https://github.com/lambdalisue/django-author.git#egg=django-author-0.2',
+    'git+https://github.com/comoga/django-constance.git@e4bd353762#egg=django-constance-0.7',
 ]
 
 install_requires = [
     'django',
     'django-colorful',
-    'django-author',
+    'django-author>=0.2',
     'django-positions',
     'psycopg2',
     'django-finegrained-permissions',
-    'django-constance[database]',
+    'django-constance[database]>=0.7',
     'PIL',
 ]
 
@@ -77,6 +85,7 @@ setup(
     url="https://https://github.com/PetrDlouhy/django-webmap-corpus",
     packages=find_packages(),
     include_package_data=True,
+    dependency_links=dependency_links,
     install_requires=install_requires,
     extras_require={
         'dev': dev_requires,
