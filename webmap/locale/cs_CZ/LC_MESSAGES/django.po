@@ -81,11 +81,11 @@ msgstr "zobrazit"
 
 #: models.py:23
 msgid "Show to mapper"
-msgstr "Zobrazit mapaři"
+msgstr "Zobrazit mapařům"
 
 #: models.py:23
 msgid "show to mapper"
-msgstr "zobrazit mapaři"
+msgstr "zobrazit mapařům"
 
 #: models.py:26 models.py:36 models.py:53 models.py:107 models.py:181
 msgid "status"
