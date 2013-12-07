@@ -212,7 +212,8 @@ class LegendAdmin(admin.ModelAdmin):
 
 
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('name', 'poi', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
+    list_display = ('poi', 'name', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
+    readonly_fields = ('image_tag', 'author', 'updated_by', 'created_at', 'last_modification')
 
 class BaseLayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'url', 'position')
