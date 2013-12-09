@@ -10,7 +10,7 @@ To get the latest stable release from PyPi
 
 .. code-block:: bash
 
-    pip install django-webmap-corpus
+    pip install webmap
 
 To get the latest commit from GitHub
 
