@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import fgp
+import admin_image_widget
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.gis.db import models
@@ -168,6 +169,19 @@ class Legend(models.Model):
         verbose_name_plural = _(u"legend items")
     def __unicode__(self):
         return self.name
+    def image_tag(self):
+        import admin_image_widget
+        return admin_image_widget.list_display(self.image)
+    image_tag.allow_tags = True
+    image_tag.short_description = _(u"image")
+
+
+class LegendAdminForm(ModelForm):
+    class Meta:
+        model = Legend
+        widgets = {
+          'image':admin_image_widget.AdminImageWidget,
+        }
 
 def invalidate_cache(sender, instance, **kwargs):
     if sender in [Status, Layer, Marker, Poi, Property, Legend]:
@@ -193,6 +207,12 @@ class Property(models.Model):
 	ordering = ['order']
     def __unicode__(self):
         return self.name
+    def icon_tag(self):
+        import admin_image_widget
+        return admin_image_widget.list_display(self.default_icon)
+    icon_tag.allow_tags = True
+    icon_tag.short_description = _(u"icon")
+
 
 class License(models.Model):
     name    = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"License name"))
@@ -231,10 +251,18 @@ class Photo(models.Model):
     last_modification = models.DateTimeField(auto_now=True, null=True, blank=True,  verbose_name=_("last modification at"))
 
     def image_tag(self):
-        return u'<a href="%(url)s"><img style="max-height: 100px; max-width: 100px" src="%(url)s" /></a>' % {'url': self.photo.url}
-    image_tag.short_description = 'Image'
+        import admin_image_widget
+        return admin_image_widget.list_display(self.photo)
+    image_tag.short_description = _(u"image")
     image_tag.allow_tags = True
 
     class Meta:
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")
+
+class PhotoAdminForm(ModelForm):
+    class Meta:
+        model = Photo
+        widgets = {
+          'photo':admin_image_widget.AdminImageWidget,
+        }

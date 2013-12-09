@@ -60,6 +60,7 @@ install_requires = [
     'django-author>=0.2',
     'django-positions',
     'psycopg2',
+    'easy_thumbnails',
     'django-finegrained-permissions',
     'django-constance[database]>=0.7',
     'PIL',

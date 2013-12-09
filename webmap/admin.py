@@ -86,8 +86,9 @@ class PoiStatusFilter(SimpleListFilter):
 
 class PhotoInline(admin.TabularInline):
     model = Photo
+    form = PhotoAdminForm
     extra = 1
-    readonly_fields = ('image_tag', 'author', 'updated_by', 'created_at', 'last_modification')
+    readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
@@ -169,7 +170,7 @@ class MapaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
 
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'as_filter', 'status', 'order')
+    list_display = ('name', 'as_filter', 'icon_tag', 'status', 'order')
     prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
     model = Property
 
@@ -203,17 +204,14 @@ class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
 class LegendAdmin(admin.ModelAdmin):
+    form = LegendAdminForm
     list_display = ('name', 'image_tag', 'desc',)
     prepopulated_fields = {'slug': ('name',) }
-    def image_tag(self, obj):
-        return u'<img style="max-height: 100px; max-width: 100px" src=%s>' % obj.image.url
-    image_tag.allow_tags = True
-    image_tag.short_description = _(u"image")
-
 
 class PhotoAdmin(admin.ModelAdmin):
+    form = PhotoAdminForm
     list_display = ('poi', 'name', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
-    readonly_fields = ('image_tag', 'author', 'updated_by', 'created_at', 'last_modification')
+    readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
 class BaseLayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'url', 'position')
