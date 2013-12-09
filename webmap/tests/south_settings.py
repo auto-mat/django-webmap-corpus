@@ -50,4 +50,3 @@ CONSTANCE_CONFIG = {
     'MAP_BOUNDS': ("14.22, 49.95, 14.8, 50.18", u'hranice zobrazení mapy'),
 }
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
-

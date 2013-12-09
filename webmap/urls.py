@@ -1,5 +1,5 @@
 """URLs for the webmap app."""
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns
 from webmap import views
 
 

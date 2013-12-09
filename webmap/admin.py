@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # admin.py
 
-from django.conf import settings # needed if we use the GOOGLE_MAPS_API_KEY from settings
+from django.conf import settings  # needed if we use the GOOGLE_MAPS_API_KEY from settings
 
 # Import the admin site reference from django.contrib.admin
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 #from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin, User
 from django.db.models import Q
 from constance import config
 import fgp
@@ -25,9 +25,10 @@ from django.contrib.gis.geos import Point
 # Finally, import our model from the working project
 # the geographic_admin folder must be on your python path
 # for this import to work correctly
-from models import *
+from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Layer, Sector, Status, License, BaseLayer
 
 USE_GOOGLE_TERRAIN_TILES = False
+
 
 class UserAdmin(UserAdmin):
     list_display = ('__unicode__', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'get_groups', 'get_user_permissions')
@@ -53,9 +54,10 @@ class SectorFilter(SimpleListFilter):
             return queryset
         if self.value() == "outer":
             for sector in Sector.objects.all():
-                queryset = queryset.exclude(geom__contained = sector.geom)
+                queryset = queryset.exclude(geom__contained=sector.geom)
             return queryset
-        return queryset.filter(geom__contained = Sector.objects.get(slug = self.value()).geom)
+        return queryset.filter(geom__contained=Sector.objects.get(slug=self.value()).geom)
+
 
 class PoiStatusFilter(SimpleListFilter):
     title = _(u"all statuses")
@@ -80,9 +82,10 @@ class PoiStatusFilter(SimpleListFilter):
         if self.value() == 'all':
             return queryset
         if not self.value() or self.value() == "visible":
-            return queryset.filter(Q(status__show_to_mapper = True) & Q(marker__status__show_to_mapper = True) & Q(marker__layer__status__show_to_mapper = True))
+            return queryset.filter(Q(status__show_to_mapper=True) & Q(marker__status__show_to_mapper=True) & Q(marker__layer__status__show_to_mapper=True))
         if self.value() == "unvisible":
-            return queryset.exclude(Q(status__show_to_mapper = True) & Q(marker__status__show_to_mapper = True) & Q(marker__layer__status__show_to_mapper = True))
+            return queryset.exclude(Q(status__show_to_mapper=True) & Q(marker__status__show_to_mapper=True) & Q(marker__layer__status__show_to_mapper=True))
+
 
 class PhotoInline(admin.TabularInline):
     model = Photo
@@ -90,10 +93,11 @@ class PhotoInline(admin.TabularInline):
     extra = 1
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
+
 @fgp.enforce
-class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
+class PoiAdmin(OSMGeoAdmin):  # , ImportExportModelAdmin):
     model = Poi
-    list_display = ['name','status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id' ]
+    list_display = ['name', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
@@ -108,75 +112,81 @@ class PoiAdmin(OSMGeoAdmin):#, ImportExportModelAdmin):
     list_max_show_all = 10000
 
     if USE_GOOGLE_TERRAIN_TILES:
-      map_template = 'gis/admin/google.html'
-      extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
+        map_template = 'gis/admin/google.html'
+        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
     else:
-      pass # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
+        pass  # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
 
     # Default GeoDjango OpenLayers map options
     # Uncomment and modify as desired
     # To learn more about this jargon visit:
     # www.openlayers.org
-    
-    def get_form(self, request, obj=None, **kwargs):
-         pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-         pnt.transform(900913)
-         self.default_lon, self.default_lat = pnt.coords
 
-         if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_own_data_only') and obj and obj.author != request.user:
-             self.fields = ('name', )
-             self.readonly_fields = ('name', )
-         else:
-             self.fields = PoiAdmin.fields
-             self.readonly_fields = PoiAdmin.readonly_fields
-         return super(PoiAdmin, self).get_form(request, obj, **kwargs)
+    def get_form(self, request, obj=None, **kwargs):
+        pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
+        pnt.transform(900913)
+        self.default_lon, self.default_lat = pnt.coords
+
+        if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_own_data_only') and obj and obj.author != request.user:
+            self.fields = ('name', )
+            self.readonly_fields = ('name', )
+        else:
+            self.fields = PoiAdmin.fields
+            self.readonly_fields = PoiAdmin.readonly_fields
+        return super(PoiAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
     scrollable = False
     map_width = 700
     map_height = 500
     map_srid = 900913
+
 
 class SectorAdmin(OSMGeoAdmin):
     list_display = ('name',)
-    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+    prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     if USE_GOOGLE_TERRAIN_TILES:
-      map_template = 'gis/admin/google.html'
-      extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
+        map_template = 'gis/admin/google.html'
+        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
     else:
-      pass # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
+        pass  # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
 
     def get_form(self, request, obj=None, **kwargs):
-         pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-         pnt.transform(900913)
-         self.default_lon, self.default_lat = pnt.coords
-         return super(SectorAdmin, self).get_form(request, obj, **kwargs)
+        pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
+        pnt.transform(900913)
+        self.default_lon, self.default_lat = pnt.coords
+        return super(SectorAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
     scrollable = False
     map_width = 700
     map_height = 500
     map_srid = 900913
+
 
 class MarkerInline(admin.TabularInline):
     model = Marker
 
-class LayerAdmin(admin.ModelAdmin): #ImportExportModelAdmin):
-    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+
+class LayerAdmin(admin.ModelAdmin):  # ImportExportModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     list_display = ['name', 'slug', 'status', 'order']
     inlines = [MarkerInline]
 
+
 class MapaAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+    prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
+
 
 class PropertyAdmin(admin.ModelAdmin):
     list_display = ('name', 'as_filter', 'icon_tag', 'status', 'order')
-    prepopulated_fields = {'slug': ('name',) } # slug se automaticky vytvari z nazvu
+    prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     model = Property
+
 
 class MarkerAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count')
-    list_filter = ('layer','status',)
+    list_filter = ('layer', 'status',)
     search_fields = ('name', 'desc',)
     readonly_fields = ('poi_count',)
 
@@ -186,8 +196,8 @@ class MarkerAdmin(admin.ModelAdmin):
     default_icon_image.short_description = _("icon")
     default_icon_image.allow_tags = True
 
-    def has_change_permission(self, request, obj = None):
-        if obj == None and request.user.has_perm(u'webmap.can_only_view'):
+    def has_change_permission(self, request, obj=None):
+        if obj is None and request.user.has_perm(u'webmap.can_only_view'):
             return True
         return super(MarkerAdmin, self).has_change_permission(request, obj)
 
@@ -197,26 +207,31 @@ class MarkerAdmin(admin.ModelAdmin):
     poi_count.short_description = _("count")
     poi_count.allow_tags = True
 
+
 class StatusAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc', 'show', 'show_to_mapper')
+
 
 class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
+
 class LegendAdmin(admin.ModelAdmin):
     form = LegendAdminForm
     list_display = ('name', 'image_tag', 'desc',)
-    prepopulated_fields = {'slug': ('name',) }
+    prepopulated_fields = {'slug': ('name',)}
+
 
 class PhotoAdmin(admin.ModelAdmin):
     form = PhotoAdminForm
     list_display = ('poi', 'name', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
+
 class BaseLayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'url', 'position')
-    
-admin.site.register(Poi   , PoiAdmin   )
+
+admin.site.register(Poi, PoiAdmin)
 admin.site.register(Layer, LayerAdmin)
 admin.site.register(Sector, SectorAdmin)
 admin.site.register(Marker, MarkerAdmin)
