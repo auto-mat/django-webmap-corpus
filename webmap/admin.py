@@ -224,7 +224,7 @@ class LegendAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(admin.ModelAdmin):
     form = PhotoAdminForm
-    list_display = ('poi', 'name', 'image_tag', 'author', 'created_at', 'last_modification', 'order', 'license', 'desc')
+    list_display = ('poi', 'name', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
 

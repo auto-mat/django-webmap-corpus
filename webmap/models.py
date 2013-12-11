@@ -267,6 +267,7 @@ class Photo(models.Model):
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
     license = models.ForeignKey(License, verbose_name=_("license"))
     order = PositionField(verbose_name=_("order"))
+    photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
 
     photo = models.ImageField(null=False, blank=False,
         upload_to='photo', storage=SlugifyFileSystemStorage(),

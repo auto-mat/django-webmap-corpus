@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 12:16+0100\n"
+"POT-Creation-Date: 2013-12-11 15:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Petr Dlouhý <petr.dlouhy@email.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin.py:45 models.py:96
+#: admin.py:46 models.py:103
 msgid "sector"
 msgstr "sektor"
 
-#: admin.py:49
+#: admin.py:50
 msgid "Out of sectors"
 msgstr "Mimo sektory"
 
-#: admin.py:61
+#: admin.py:63
 msgid "all statuses"
 msgstr "všechny statuty"
 
-#: admin.py:65
+#: admin.py:67
 msgid "Visible"
 msgstr "Viditelný"
 
-#: admin.py:66
+#: admin.py:68
 msgid "All"
 msgstr "Vše"
 
-#: admin.py:67
+#: admin.py:69
 msgid "Unvisible"
 msgstr "Skryté"
 
-#: admin.py:185
+#: admin.py:196 models.py:235
 msgid "icon"
 msgstr "ikona"
 
-#: admin.py:196
+#: admin.py:207
 msgid "count"
 msgstr "počet"
 
-#: admin.py:211 models.py:165
-msgid "image"
-msgstr "obrázek"
+#: admin_image_widget.py:52
+msgid "Currently:"
+msgstr "Aktuálně:"
 
-#: models.py:20 models.py:33 models.py:49 models.py:89 models.py:103
-#: models.py:162 models.py:180 models.py:198 models.py:207 models.py:219
+#: admin_image_widget.py:52
+msgid "Change:"
+msgstr "Změnit:"
+
+#: models.py:20 models.py:35 models.py:53 models.py:96 models.py:111
+#: models.py:177 models.py:213 models.py:239 models.py:251 models.py:266
 msgid "name"
 msgstr "název"
 
-#: models.py:20 models.py:180
+#: models.py:20 models.py:213
 msgid "Status name"
 msgstr "Název statusu"
 
-#: models.py:21 models.py:35 models.py:56 models.py:122 models.py:164
-#: models.py:186 models.py:199 models.py:220
+#: models.py:21 models.py:37 models.py:60 models.py:130 models.py:179
+#: models.py:219 models.py:240 models.py:267
 msgid "description"
 msgstr "popis"
 
@@ -87,7 +91,7 @@ msgstr "Zobrazit mapařům"
 msgid "show to mapper"
 msgstr "zobrazit mapařům"
 
-#: models.py:26 models.py:36 models.py:53 models.py:107 models.py:181
+#: models.py:26 models.py:38 models.py:57 models.py:115 models.py:214
 msgid "status"
 msgstr "status"
 
@@ -95,119 +99,119 @@ msgstr "status"
 msgid "statuses"
 msgstr "statuty"
 
-#: models.py:33
+#: models.py:35
 msgid "Name of the layer"
 msgstr "Název vrstvy"
 
-#: models.py:34 models.py:90 models.py:163
+#: models.py:36 models.py:97 models.py:178
 msgid "name in URL"
 msgstr "název v URL"
 
-#: models.py:35
+#: models.py:37
 msgid "Layer description."
 msgstr "Popis vrstvy."
 
-#: models.py:37 models.py:183 models.py:222
+#: models.py:39 models.py:216 models.py:269
 msgid "order"
 msgstr "pořadí"
 
-#: models.py:38 models.py:57
+#: models.py:40 models.py:61
 msgid "Internal information about layer."
 msgstr "Interní informace o vrstvě."
 
-#: models.py:38 models.py:57
+#: models.py:40 models.py:61
 msgid "internal remark"
 msgstr "interní poznámka"
 
-#: models.py:41 models.py:52
+#: models.py:43 models.py:56
 msgid "layer"
 msgstr "vrstva"
 
-#: models.py:42
+#: models.py:44
 msgid "layers"
 msgstr "vrstvy"
 
-#: models.py:49
+#: models.py:53
 msgid "Name of the marker."
 msgstr "Název značky"
 
-#: models.py:56
+#: models.py:60
 msgid "Detailed marker descrption."
 msgstr "Podrobný popis značky"
 
-#: models.py:60 models.py:188
+#: models.py:64 models.py:221
 msgid "default icon"
 msgstr "defaultní ikona"
 
-#: models.py:61
+#: models.py:65
 msgid "Minimal zoom"
 msgstr "Minimální zoom"
 
-#: models.py:61
+#: models.py:65
 msgid "Minimal zoom in which the POIs of this marker will be shown on the map."
 msgstr "Minimální zoom při kterém se místa této značky zobrazí na mapě."
 
-#: models.py:62
+#: models.py:66
 msgid "Maximal zoom"
 msgstr "Maximální zoom"
 
-#: models.py:62
+#: models.py:66
 msgid "Maximal zoom in which the POIs of this marker will be shown on the map."
 msgstr "Maximální zoom při kterém se místa této značky zobrazí na mapě."
 
-#: models.py:65
+#: models.py:69
 msgid "line width"
 msgstr "šířka čáry"
 
-#: models.py:66
+#: models.py:70
 msgid "line color"
 msgstr "barva čáry"
 
-#: models.py:75 models.py:106
+#: models.py:80 models.py:114
 msgid "marker"
 msgstr "značka"
 
-#: models.py:76
+#: models.py:81
 msgid "markers"
 msgstr "značky"
 
-#: models.py:92
+#: models.py:99
 msgid "area"
 msgstr "plocha"
 
-#: models.py:92
+#: models.py:99
 msgid "Sector area"
 msgstr "Plocha sektoru"
 
-#: models.py:97
+#: models.py:104
 msgid "sectors"
 msgstr "sektory"
 
-#: models.py:103
+#: models.py:111
 msgid "Exact place name"
 msgstr "Přesný název místa."
 
-#: models.py:106
+#: models.py:114
 msgid "Select icon, that will be shown in map"
 msgstr "Zde vyberte ikonu, která se zobrazí na mapě."
 
-#: models.py:107
+#: models.py:115
 msgid "POI status, determinse if it will be shown in map"
 msgstr "Status místa; určuje, kde všude se místo zobrazí."
 
-#: models.py:108
+#: models.py:116
 msgid "POI properties"
 msgstr "Určete, jaké má místo vlastnosti. Postupujte podle manuálu.<br/>"
 
-#: models.py:108 models.py:192
+#: models.py:116 models.py:225
 msgid "properties"
 msgstr "Vlastnosti"
 
-#: models.py:110
+#: models.py:118
 msgid "importance"
 msgstr "důležitost"
 
-#: models.py:111
+#: models.py:119
 msgid "Minimal zoom modificator (use 20+ to show always).<br/>"
 msgstr ""
 "Modifikátor minimalniho zoomu, ve kterém se místo zobrazuje (20+ bude vidět "
@@ -215,11 +219,11 @@ msgstr ""
 "měřítcícha zabránit přetížení mapy značkami v přehledce.<br/>Lze použít pro "
 "placenou reklamu! (\"Váš podnik bude vidět hned po otevření mapy\"))"
 
-#: models.py:114
+#: models.py:122
 msgid "place geometry"
 msgstr "geometrie místa"
 
-#: models.py:114
+#: models.py:122
 msgid ""
 "Add point: Select pencil with plus sign icon and place your point to the map."
 "<br/>\n"
@@ -239,146 +243,158 @@ msgstr ""
 "objekt v mapě. Tažením přesouváte body, body uprostřed úseků slouží k "
 "vkládání nových bodů do úseku."
 
-#: models.py:122
+#: models.py:130
 msgid "Text that will be shown after selecting POI."
 msgstr "Text, který se zobrazí na mapě výběru místa."
 
-#: models.py:123
+#: models.py:131
 msgid "detailed description"
 msgstr "detailní popis"
 
-#: models.py:123
+#: models.py:131
 msgid "Text that extends the description."
 msgstr "Text, který rozšiřuje popis místa."
 
-#: models.py:124 models.py:208
+#: models.py:132 models.py:252
 msgid "URL"
 msgstr "URL"
 
-#: models.py:124
+#: models.py:132
 msgid "Link to the web page of the place."
 msgstr "Odkaz na webovou stránku místa."
 
-#: models.py:125
+#: models.py:133
 msgid "adress"
 msgstr "adresa"
 
-#: models.py:125
+#: models.py:133
 msgid "Poi address (street, house number)"
 msgstr "Adresa místa (ulice, číslo domu)"
 
-#: models.py:126 models.py:187
+#: models.py:134 models.py:220
 msgid "Internal remark"
 msgstr "Interní poznámka"
 
-#: models.py:126
+#: models.py:134
 msgid "Internal information about POI."
 msgstr "Interní informace o místě."
 
-#: models.py:132 models.py:230
+#: models.py:140 models.py:278
 msgid "created at"
 msgstr "vytvořeno"
 
-#: models.py:133 models.py:231
+#: models.py:141 models.py:279
 msgid "last modification at"
 msgstr "naposledy upraveno"
 
-#: models.py:141
+#: models.py:149
 msgid "place"
 msgstr "místo"
 
-#: models.py:142
+#: models.py:150
 msgid "places"
 msgstr "místa"
 
-#: models.py:167
+#: models.py:180 models.py:193 models.py:284
+msgid "image"
+msgstr "obrázek"
+
+#: models.py:183
 msgid "legend item"
 msgstr "položka legendy"
 
-#: models.py:168
+#: models.py:184
 msgid "legend items"
 msgstr "položky legendy"
 
-#: models.py:182
+#: models.py:215
 msgid "as filter?"
 msgstr "jako filtr?"
 
-#: models.py:182
+#: models.py:215
 msgid "Show as a filter in right map menu?"
 msgstr "Ukázat jako filtr v pravém menu mapy?"
 
-#: models.py:185
+#: models.py:218
 msgid "Name in URL"
 msgstr "Název v URL"
 
-#: models.py:186
+#: models.py:219
 msgid "Property description."
 msgstr "Popis vlastnosti."
 
-#: models.py:187
+#: models.py:220
 msgid "Internal information about the property."
 msgstr "Interní informace o vlastnosti."
 
-#: models.py:191
+#: models.py:224
 msgid "property"
 msgstr "Vlastnost"
 
-#: models.py:198
+#: models.py:239
 msgid "License name"
 msgstr "Název licence"
 
-#: models.py:199
+#: models.py:240
 msgid "License description."
 msgstr "Popis licence."
 
-#: models.py:201 models.py:221
+#: models.py:243 models.py:268
 msgid "license"
 msgstr "licence"
 
-#: models.py:202
+#: models.py:244
 msgid "licenses"
 msgstr "licence"
 
-#: models.py:207
+#: models.py:251
 msgid "Base layer name"
 msgstr "Přesný název podkladové vrstvy."
 
-#: models.py:208
+#: models.py:252
 msgid "Base layer tiles url. e.g. "
 msgstr "URL dlaždic podkladové vrstvy"
 
-#: models.py:209
+#: models.py:253
 msgid "position"
 msgstr "pořadí"
 
-#: models.py:211
+#: models.py:256
 msgid "base layer"
 msgstr "podkladová vrstva"
 
-#: models.py:212
+#: models.py:257
 msgid "base layers"
 msgstr "podkladové vrstvy"
 
-#: models.py:218
+#: models.py:265
 msgid "poi"
 msgstr "poi"
 
-#: models.py:219
+#: models.py:266
 msgid "Photo name"
 msgstr "Název fotografie"
 
-#: models.py:220
+#: models.py:267
 msgid "Photo description."
 msgstr "Popis fotografie."
 
-#: models.py:226 models.py:239
+#: models.py:270
+msgid "Photography author"
+msgstr "Autor fotografie"
+
+#: models.py:270
+msgid "Full name of the author of the photography"
+msgstr "Plné jméno autora fotografie"
+
+#: models.py:274 models.py:288
 msgid "photo"
 msgstr "fotografie"
 
-#: models.py:227
+#: models.py:275
 msgid "Upload photo in full resolution."
 msgstr "Nahrajte fotografii v plném rozlišení."
 
-#: models.py:240
+#: models.py:289
 msgid "photographies"
 msgstr "fotografie"
