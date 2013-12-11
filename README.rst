@@ -30,6 +30,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
         'django.contrib.gis',
         'constance.backends.database',
         'constance',
+        'import_export',
         'webmap',
     )
 

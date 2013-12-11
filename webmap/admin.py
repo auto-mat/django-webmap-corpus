@@ -6,7 +6,7 @@ from django.conf import settings  # needed if we use the GOOGLE_MAPS_API_KEY fro
 # Import the admin site reference from django.contrib.admin
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-#from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin, User
 from django.db.models import Q
@@ -95,7 +95,7 @@ class PhotoInline(admin.TabularInline):
 
 
 @fgp.enforce
-class PoiAdmin(OSMGeoAdmin):  # , ImportExportModelAdmin):
+class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
     list_display = ['name', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
@@ -168,7 +168,7 @@ class MarkerInline(admin.TabularInline):
     model = Marker
 
 
-class LayerAdmin(admin.ModelAdmin):  # ImportExportModelAdmin):
+class LayerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     list_display = ['name', 'slug', 'status', 'order']
     inlines = [MarkerInline]
