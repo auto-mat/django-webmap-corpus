@@ -113,7 +113,7 @@ class Poi(models.Model):
     # Relationships
     marker = models.ForeignKey(Marker, limit_choices_to={'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois")
     status = models.ForeignKey(Status, default=config.DEFAULT_STATUS_ID, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
-    properties = models.ManyToManyField('Property', blank=True, null=True, help_text=_("POI properties"), verbose_name=_("properties"))
+    properties = models.ManyToManyField('Property', blank=True, null=True, help_text=_("POI properties"), verbose_name=_("properties"), limit_choices_to={'status__show_to_mapper': 'True'})
 
     importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
                  help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
