@@ -26,8 +26,11 @@ def list_display(image):
     file_name = str(image)
     if file_name:
         file_path = '%s%s' % (settings.MEDIA_URL, file_name)
-        Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
-        return '<a target="_blank" href="%s">%s</a>' % (file_path, thumbnail(file_name),)
+        try:            # is image
+            Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
+            return '<a target="_blank" href="%s">%s</a>' % (file_path, thumbnail(file_name),)
+        except IOError:  # not image
+            return None
 
 
 class AdminImageWidget(AdminFileWidget):
