@@ -88,7 +88,7 @@ class Marker(models.Model):
 class VisibleManager(models.GeoManager):
     "Manager that will return objects visible on the map"
     def get_query_set(self):
-        return super(VisibleManager, self).get_query_set().filter(status__show=True, marker__status__show=True)
+        return super(VisibleManager, self).get_query_set().filter(status__show=True, marker__status__show=True, marker__layer__status__show=True)
 
 
 class Sector(models.Model):
