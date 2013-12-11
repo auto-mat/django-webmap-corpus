@@ -48,5 +48,6 @@ CONSTANCE_CONFIG = {
     'MAP_BASELON': (14.4211, u'zeměpisná délka základní polohy mapy'),
     'MAP_BASELAT': (50.08741, u'zeměpisná délka základní polohy mapy'),
     'MAP_BOUNDS': ("14.22, 49.95, 14.8, 50.18", u'hranice zobrazení mapy'),
+    'DEFAULT_STATUS_ID': (13, u'id defaultního statusu'),
 }
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
