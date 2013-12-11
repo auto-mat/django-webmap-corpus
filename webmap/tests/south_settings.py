@@ -27,6 +27,7 @@ INSTALLED_APPS.append('south', )
 INSTALLED_APPS.append('author', )
 INSTALLED_APPS.append('django.contrib.gis', )
 INSTALLED_APPS.append('constance', )
+INSTALLED_APPS.append('import_export', )
 INSTALLED_APPS.append('positions', )
 INSTALLED_APPS.append('constance.backends.database', )
 

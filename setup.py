@@ -61,6 +61,7 @@ install_requires = [
     'django-positions',
     'psycopg2',
     'easy_thumbnails',
+    'django-import-export',
     'django-finegrained-permissions',
     'django-constance[database]>=0.7',
     'PIL',
