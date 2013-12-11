@@ -8,6 +8,7 @@ from django.core.cache import cache
 from django.forms import ModelForm
 from author.decorators import with_author
 from positions import PositionField
+from constance import config
 
 from colorful.fields import RGBColorField
 
@@ -111,7 +112,7 @@ class Poi(models.Model):
 
     # Relationships
     marker = models.ForeignKey(Marker, limit_choices_to={'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois")
-    status = models.ForeignKey(Status, default=2, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
+    status = models.ForeignKey(Status, default=config.DEFAULT_STATUS_ID, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
     properties = models.ManyToManyField('Property', blank=True, null=True, help_text=_("POI properties"), verbose_name=_("properties"))
 
     importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
