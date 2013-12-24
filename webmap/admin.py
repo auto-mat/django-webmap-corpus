@@ -185,10 +185,10 @@ class PropertyAdmin(admin.ModelAdmin):
 
 
 class MarkerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count')
+    list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count', 'created_at', 'last_modification', )
     list_filter = ('layer', 'status',)
     search_fields = ('name', 'desc',)
-    readonly_fields = ('poi_count',)
+    readonly_fields = ('poi_count', 'created_at', 'last_modification', )
 
     def default_icon_image(self, obj):
         if obj.default_icon:

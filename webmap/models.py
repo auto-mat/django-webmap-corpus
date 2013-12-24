@@ -69,6 +69,9 @@ class Marker(models.Model):
     line_width = models.FloatField(verbose_name=_(u"line width"), default=2,)
     line_color = RGBColorField(default="#ffc90e", verbose_name=_("line color"))
 
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
+    last_modification = models.DateTimeField(auto_now=True, verbose_name=_("last modification at"))
+
     def line_color_kml(this):
         color = this.line_color[1:]
         return "88" + color[4:6] + color[2:4] + color[0:2]
