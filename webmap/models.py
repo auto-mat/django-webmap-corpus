@@ -291,6 +291,8 @@ class Photo(models.Model):
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")
 
+    ordering = ['order']
+
 
 class PhotoAdminForm(ModelForm):
     class Meta:
