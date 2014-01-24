@@ -62,6 +62,7 @@ class Marker(models.Model):
 
     # Base icon and zoom dependent display range
     default_icon = models.ImageField(null=True, blank=True, upload_to='icons', storage=SlugifyFileSystemStorage(), verbose_name=_("default icon"))
+    menu_icon = models.ImageField(null=True, blank=True, upload_to='icons/marker/menu', storage=SlugifyFileSystemStorage(), verbose_name=_("menu icon"))
     minzoom = models.PositiveIntegerField(default=1, verbose_name=_("Minimal zoom"), help_text=_(u"Minimal zoom in which the POIs of this marker will be shown on the map."))
     maxzoom = models.PositiveIntegerField(default=10, verbose_name=_("Maximal zoom"), help_text=_(u"Maximal zoom in which the POIs of this marker will be shown on the map."))
 
