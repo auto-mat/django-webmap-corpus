@@ -69,6 +69,9 @@ class Marker(models.Model):
     line_width = models.FloatField(verbose_name=_(u"line width"), default=2,)
     line_color = RGBColorField(default="#ffc90e", verbose_name=_("line color"))
 
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
+    last_modification = models.DateTimeField(auto_now=True, verbose_name=_("last modification at"))
+
     def line_color_kml(this):
         color = this.line_color[1:]
         return "88" + color[4:6] + color[2:4] + color[0:2]
@@ -266,7 +269,7 @@ class Photo(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
     license = models.ForeignKey(License, verbose_name=_("license"))
-    order = PositionField(verbose_name=_("order"))
+    order = PositionField(verbose_name=_("order"), collection="poi")
     photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
 
     photo = models.ImageField(null=False, blank=False,
@@ -287,6 +290,8 @@ class Photo(models.Model):
     class Meta:
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")
+
+    ordering = ['order']
 
 
 class PhotoAdminForm(ModelForm):
