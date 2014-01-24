@@ -4,6 +4,8 @@
   <Placemark id="{{place.id}}">
     <name>{{ place }}</name>
     <minZoom>{{ place.marker.minzoom }}</minZoom>
+    <tag>{{ place.properties_cache }}</tag>
+    <markerId>{{ place.marker.id }}</markerId>
     {% if place.marker.default_icon and place.marker.default_icon.url %}
        <ikona>{{ place.marker.default_icon.url }}</ikona>
        <height>{{ place.marker.default_icon.height }}</height>
