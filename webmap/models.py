@@ -52,6 +52,7 @@ class Layer(models.Model):
 class Marker(models.Model):
     "Map markers with display style definition."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_("Name of the marker."))
+    slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"), null=True)
 
     # Relationships
     layer = models.ForeignKey(Layer, verbose_name=_("layer"))
