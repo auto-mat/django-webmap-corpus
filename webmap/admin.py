@@ -170,7 +170,7 @@ class MarkerInline(admin.TabularInline):
 
 class LayerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
-    list_display = ['name', 'slug', 'status', 'order']
+    list_display = ['name', 'slug', 'status', 'order', 'enabled']
     inlines = [MarkerInline]
 
 
