@@ -70,6 +70,8 @@ Don't forget to migrate your database
 
     ./manage.py migrate webmap
 
+Note: If you don't have Constance migrated yet, remove the 'webmap' line from INSTALLED_APPS, then migrate Constance and then the line re-add and migrate again.
+
 
 Usage
 -----
