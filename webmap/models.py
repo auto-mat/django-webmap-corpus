@@ -38,6 +38,7 @@ class Layer(models.Model):
     status = models.ForeignKey(Status, verbose_name=_("status"))
     order = PositionField(verbose_name=_("order"))
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
+    enabled = models.BooleanField(verbose_name=_(u"Enabled by defalut"), help_text=_(u"True = the layer is enabled on map load"), default=True)
 
     class Meta:
         verbose_name = _(u"layer")
