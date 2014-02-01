@@ -54,9 +54,9 @@ class SectorFilter(SimpleListFilter):
             return queryset
         if self.value() == "outer":
             for sector in Sector.objects.all():
-                queryset = queryset.exclude(geom__contained=sector.geom)
+                queryset = queryset.exclude(geom__intersects=sector.geom)
             return queryset
-        return queryset.filter(geom__contained=Sector.objects.get(slug=self.value()).geom)
+        return queryset.filter(geom__intersects=Sector.objects.get(slug=self.value()).geom)
 
 
 class PoiStatusFilter(SimpleListFilter):
