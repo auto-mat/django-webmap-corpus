@@ -25,7 +25,7 @@ from django.contrib.gis.geos import Point
 # Finally, import our model from the working project
 # the geographic_admin folder must be on your python path
 # for this import to work correctly
-from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Layer, Sector, Status, License, BaseLayer, OverlayLayer
+from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer
 
 USE_GOOGLE_TERRAIN_TILES = False
 
@@ -174,11 +174,6 @@ class OverlayLayerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     inlines = [MarkerInline]
 
 
-class LayerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
-    list_display = ['name', 'slug', 'status', 'order', 'enabled']
-
-
 class MapaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
@@ -238,7 +233,6 @@ class BaseLayerAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
 admin.site.register(Poi, PoiAdmin)
-admin.site.register(Layer, LayerAdmin)
 admin.site.register(OverlayLayer, OverlayLayerAdmin)
 admin.site.register(Sector, SectorAdmin)
 admin.site.register(Marker, MarkerAdmin)
