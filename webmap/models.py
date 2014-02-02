@@ -214,7 +214,7 @@ class LegendAdminForm(ModelForm):
 
 
 def invalidate_cache(sender, instance, **kwargs):
-    if sender in [Status, Layer, Marker, Poi, Property, Legend]:
+    if sender in [Status, Layer, Marker, Poi, Property, Legend, Sector]:
         cache.clear()
 post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
