@@ -32,7 +32,7 @@ class Status(models.Model):
 
 class Layer(models.Model):
     "Vrstvy, ktere se zobrazi v konkretni mape"
-    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"))
+    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"), default="")
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_("Layer description."))
     status = models.ForeignKey(Status, verbose_name=_("status"))
@@ -49,13 +49,19 @@ class Layer(models.Model):
         return self.name
 
 
+class OverlayLayer(Layer):
+    class Meta:
+        verbose_name = _(u"overlay layer")
+        verbose_name_plural = _(u"overlay layers")
+
+
 class Marker(models.Model):
     "Map markers with display style definition."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_("Name of the marker."))
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"), null=True)
 
     # Relationships
-    layer = models.ForeignKey(Layer, verbose_name=_("layer"))
+    layer = models.ForeignKey(OverlayLayer, verbose_name=_("layer"))
     status = models.ForeignKey(Status, verbose_name=_("status"))
 
     # content
@@ -253,10 +259,8 @@ class License(models.Model):
         return self.name
 
 
-class BaseLayer(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Base layer name"))
+class BaseLayer(Layer):
     url = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Base layer tiles url. e.g. "))
-    position = PositionField(verbose_name=_("position"))
 
     class Meta:
         verbose_name = _(u"base layer")
