@@ -162,7 +162,9 @@ class Poi(models.Model):
         verbose_name_plural = _("places")
 
     def __unicode__(self):
-        return self.name
+        if self.nazev:
+            return self.nazev
+        return unicode(self.znacka)
 
     def save_properties_cache(self):
         self.properties_cache = u",".join([v.slug for v in self.properties.filter(status__show=True)])

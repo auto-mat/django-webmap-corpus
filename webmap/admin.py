@@ -97,7 +97,7 @@ class PhotoInline(admin.TabularInline):
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
-    list_display = ['name', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
+    list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
