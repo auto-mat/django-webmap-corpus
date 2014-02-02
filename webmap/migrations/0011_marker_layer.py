@@ -8,52 +8,11 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'OverlayLayer'
-        db.create_table(u'webmap_overlaylayer', (
-            (u'layer_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['webmap.Layer'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'webmap', ['OverlayLayer'])
-
-        # Deleting field 'BaseLayer.position'
-        db.delete_column(u'webmap_baselayer', 'position')
-
-        # Deleting field 'BaseLayer.id'
-        db.delete_column(u'webmap_baselayer', u'id')
-
-        # Deleting field 'BaseLayer.name'
-        db.delete_column(u'webmap_baselayer', 'name')
-
-        # Adding field 'BaseLayer.layer_ptr'
-        db.add_column(u'webmap_baselayer', u'layer_ptr',
-                      self.gf('django.db.models.fields.related.OneToOneField')(default=1, to=orm['webmap.Layer'], unique=True, primary_key=True),
-                      keep_default=False)
-
+        # Changing field 'Marker.layer'
+        db.alter_column(u'webmap_marker', 'layer_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.OverlayLayer']))
 
     def backwards(self, orm):
-        # Deleting model 'OverlayLayer'
-        db.delete_table(u'webmap_overlaylayer')
-
-        # Adding field 'BaseLayer.position'
-        db.add_column(u'webmap_baselayer', 'position',
-                      self.gf('django.db.models.fields.IntegerField')(default=-1),
-                      keep_default=False)
-
-        # Adding field 'BaseLayer.id'
-        db.add_column(u'webmap_baselayer', u'id',
-                      self.gf('django.db.models.fields.AutoField')(default=1, primary_key=True),
-                      keep_default=False)
-
-        # Adding field 'BaseLayer.name'
-        db.add_column(u'webmap_baselayer', 'name',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=255),
-                      keep_default=False)
-
-        # Deleting field 'BaseLayer.layer_ptr'
-        db.delete_column(u'webmap_baselayer', u'layer_ptr_id')
-
-
-        # Changing field 'Marker.layer'
-        db.alter_column(u'webmap_marker', 'layer_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Layer']))
+        pass
 
     models = {
         u'auth.group': {

@@ -1,59 +1,22 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Adding model 'OverlayLayer'
-        db.create_table(u'webmap_overlaylayer', (
-            (u'layer_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['webmap.Layer'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'webmap', ['OverlayLayer'])
-
-        # Deleting field 'BaseLayer.position'
-        db.delete_column(u'webmap_baselayer', 'position')
-
-        # Deleting field 'BaseLayer.id'
-        db.delete_column(u'webmap_baselayer', u'id')
-
-        # Deleting field 'BaseLayer.name'
-        db.delete_column(u'webmap_baselayer', 'name')
-
-        # Adding field 'BaseLayer.layer_ptr'
-        db.add_column(u'webmap_baselayer', u'layer_ptr',
-                      self.gf('django.db.models.fields.related.OneToOneField')(default=1, to=orm['webmap.Layer'], unique=True, primary_key=True),
-                      keep_default=False)
+        "Write your forwards methods here."
+        # Note: Don't use "from appname.models import ModelName". 
+        # Use orm.ModelName to refer to models in this application,
+        # and orm['appname.ModelName'] for models in other applications.
+        for layer in orm.layer.objects.all():
+            db.execute("insert into webmap_overlaylayer (layer_ptr_id) values (%i);" % layer.id)
 
 
     def backwards(self, orm):
-        # Deleting model 'OverlayLayer'
-        db.delete_table(u'webmap_overlaylayer')
-
-        # Adding field 'BaseLayer.position'
-        db.add_column(u'webmap_baselayer', 'position',
-                      self.gf('django.db.models.fields.IntegerField')(default=-1),
-                      keep_default=False)
-
-        # Adding field 'BaseLayer.id'
-        db.add_column(u'webmap_baselayer', u'id',
-                      self.gf('django.db.models.fields.AutoField')(default=1, primary_key=True),
-                      keep_default=False)
-
-        # Adding field 'BaseLayer.name'
-        db.add_column(u'webmap_baselayer', 'name',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=255),
-                      keep_default=False)
-
-        # Deleting field 'BaseLayer.layer_ptr'
-        db.delete_column(u'webmap_baselayer', u'layer_ptr_id')
-
-
-        # Changing field 'Marker.layer'
-        db.alter_column(u'webmap_marker', 'layer_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['webmap.Layer']))
+        "Write your backwards methods here."
 
     models = {
         u'auth.group': {
@@ -209,3 +172,4 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['webmap']
+    symmetrical = True
