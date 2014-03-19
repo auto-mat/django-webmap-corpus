@@ -1,5 +1,5 @@
 Django webmap corpus
-============
+====================
 
 Corpus for making web map applications.
 
@@ -10,7 +10,7 @@ To get the latest stable release from PyPi
 
 .. code-block:: bash
 
-    pip install webmap
+    pip install django-webmap-corpus
 
 To get the latest commit from GitHub
 
@@ -46,6 +46,7 @@ Add Author middleware
 Add Constance settings
 
 .. code-block:: python
+
     CONSTANCE_APP_NAME = "webmap"
     CONSTANCE_CONFIG = {
         'MAP_BASELON': (14.4211, u'zeměpisná délka základní polohy mapy'),

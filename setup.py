@@ -79,7 +79,7 @@ setup(
     version=app.__version__,
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
-    license='The MIT License',
+    license='GNU Affero General Public License, Version 3.0',
     platforms=['OS Independent'],
     keywords='django, map',
     author='Petr Dlouhý',
@@ -92,4 +92,19 @@ setup(
     extras_require={
         'dev': dev_requires,
     },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Software Development :: Libraries :: Application Frameworks',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ]
 )
