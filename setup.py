@@ -50,14 +50,13 @@ dev_requires = [
 ]
 
 dependency_links = [
-    'git+https://github.com/lambdalisue/django-author.git#egg=django-author-0.2',
     'git+https://github.com/comoga/django-constance.git@e4bd353762#egg=django-constance-0.7',
 ]
 
 install_requires = [
     'django',
     'django-colorful',
-    'django-author>=0.2',
+    'django-author',
     'django-positions',
     'psycopg2',
     'easy_thumbnails',
