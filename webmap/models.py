@@ -62,7 +62,7 @@ class Marker(models.Model):
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"), null=True)
 
     # Relationships
-    layer = models.ForeignKey(OverlayLayer, verbose_name=_("layer"))
+    layer = models.ForeignKey(Layer, verbose_name=_("layer"))
     status = models.ForeignKey(Status, verbose_name=_("status"))
 
     # content
