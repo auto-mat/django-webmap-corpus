@@ -233,9 +233,9 @@ class PhotoAdmin(admin.ModelAdmin):
             return super(PhotoAdmin, self).has_change_permission(request, obj)
         return False
 
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         if request.user.has_perm(u'webmap.can_view_photo_list'):
-            return super(PhotoAdmin, self).has_add_permission(request, obj)
+            return super(PhotoAdmin, self).has_add_permission(request)
         return False
 
 
