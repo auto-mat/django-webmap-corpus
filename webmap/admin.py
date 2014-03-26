@@ -227,6 +227,16 @@ class PhotoAdmin(admin.ModelAdmin):
     list_display = ('poi', 'name', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
+    def has_change_permission(self, request, obj=None):
+        if request.user.has_perm(u'webmap.can_view_photo_list'):
+            return super(PhotoAdmin, self).has_change_permission(request, obj)
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        if request.user.has_perm(u'webmap.can_view_photo_list'):
+            return super(PhotoAdmin, self).has_add_permission(request, obj)
+        return False
+
 
 class BaseLayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'url', 'order')

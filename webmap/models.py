@@ -306,6 +306,9 @@ class Photo(models.Model):
     image_tag.allow_tags = True
 
     class Meta:
+        permissions = [
+            ("can_view_photo_list", "Can view photo list"),
+        ]
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")
 
