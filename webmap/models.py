@@ -8,7 +8,6 @@ from django.contrib.gis.db import models
 from django.core.cache import cache
 from django.forms import ModelForm
 from author.decorators import with_author
-from positions import PositionField
 from constance import config
 
 from colorful.fields import RGBColorField
@@ -37,7 +36,7 @@ class Layer(models.Model):
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_("Layer description."))
     status = models.ForeignKey(Status, verbose_name=_("status"))
-    order = PositionField(verbose_name=_("order"))
+    order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
     enabled = models.BooleanField(verbose_name=_(u"Enabled by defalut"), help_text=_(u"True = the layer is enabled on map load"), default=True)
 
@@ -236,7 +235,7 @@ class Property(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
     status = models.ForeignKey(Status, verbose_name=_("status"))
     as_filter = models.BooleanField(verbose_name=_("as filter?"), help_text=_(u"Show as a filter in right map menu?"))
-    order = PositionField(verbose_name=_("order"))
+    order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     # content
     slug = models.SlugField(unique=True, verbose_name=_("Name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Property description."))
@@ -246,7 +245,7 @@ class Property(models.Model):
     class Meta:
         verbose_name = _(u"property")
         verbose_name_plural = _(u"properties")
-    ordering = ['order']
+        ordering = ['order']
 
     def __unicode__(self):
         return self.name
@@ -287,7 +286,7 @@ class Photo(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
     license = models.ForeignKey(License, verbose_name=_("license"))
-    order = PositionField(verbose_name=_("order"), collection="poi")
+    order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
 
     photo = models.ImageField(null=False, blank=False,
@@ -312,7 +311,7 @@ class Photo(models.Model):
         verbose_name = _(u"photo")
         verbose_name_plural = _(u"photographies")
 
-    ordering = ['order']
+        ordering = ['order', ]
 
 
 class PhotoAdminForm(ModelForm):

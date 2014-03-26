@@ -57,7 +57,7 @@ install_requires = [
     'django',
     'django-colorful',
     'django-author',
-    'django-positions',
+    'django-admin-sortable2',
     'psycopg2',
     'easy_thumbnails',
     'django-import-export',

@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext_lazy as _
+from adminsortable.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib.auth.admin import UserAdmin, User
 from django.db.models import Q
 from constance import config
@@ -87,10 +88,10 @@ class PoiStatusFilter(SimpleListFilter):
             return queryset.exclude(Q(status__show_to_mapper=True) & Q(marker__status__show_to_mapper=True) & Q(marker__layer__status__show_to_mapper=True))
 
 
-class PhotoInline(admin.TabularInline):
+class PhotoInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Photo
     form = PhotoAdminForm
-    extra = 1
+    extra = 0
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
 
@@ -168,7 +169,7 @@ class MarkerInline(admin.TabularInline):
     model = Marker
 
 
-class OverlayLayerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class OverlayLayerAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     list_display = ['name', 'slug', 'status', 'order', 'enabled']
     inlines = [MarkerInline]
@@ -178,7 +179,7 @@ class MapaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
 
-class PropertyAdmin(admin.ModelAdmin):
+class PropertyAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'as_filter', 'icon_tag', 'status', 'order')
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
     model = Property
@@ -238,7 +239,7 @@ class PhotoAdmin(admin.ModelAdmin):
         return False
 
 
-class BaseLayerAdmin(admin.ModelAdmin):
+class BaseLayerAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'slug', 'url', 'order')
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 

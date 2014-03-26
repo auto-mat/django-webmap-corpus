@@ -18,4 +18,4 @@ psycopg2
 django-import-export
 django-colorful
 -e git+https://github.com/PetrDlouhy/django-constance.git#egg=django-constance[database]
-django-positions
+django-admin-sortable2
