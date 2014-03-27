@@ -26,7 +26,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
         ...,
         'author',
         'colorful',
-        'positions',
+        'adminsortable',
         'django.contrib.gis',
         'constance.backends.database',
         'constance',
