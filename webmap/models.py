@@ -115,6 +115,9 @@ class Sector(models.Model):
         verbose_name = _(u"sector")
         verbose_name_plural = _(u"sectors")
 
+    def __unicode__(self):
+        return self.name
+
 
 @with_author
 @fgp.guard('importance', 'status', name='can_edit_advanced_fields')
