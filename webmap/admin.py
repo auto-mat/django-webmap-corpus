@@ -137,7 +137,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
         return super(PoiAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
-    scrollable = False
+    scrollable = True
     map_width = 700
     map_height = 500
     map_srid = 900913
@@ -159,7 +159,7 @@ class SectorAdmin(OSMGeoAdmin):
         return super(SectorAdmin, self).get_form(request, obj, **kwargs)
 
     default_zoom = 12
-    scrollable = False
+    scrollable = True
     map_width = 700
     map_height = 500
     map_srid = 900913
