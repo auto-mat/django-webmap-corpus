@@ -56,7 +56,7 @@ dependency_links = [
 install_requires = [
     'django',
     'django-colorful',
-    'django-author',
+    'django-author>=0.2',
     'django-admin-sortable2',
     'psycopg2',
     'easy_thumbnails',
