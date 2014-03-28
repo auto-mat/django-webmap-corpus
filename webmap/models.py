@@ -286,7 +286,7 @@ class BaseLayer(Layer):
 @with_author
 class Photo(models.Model):
     poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
-    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"))
+    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"), blank=True)
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
     license = models.ForeignKey(License, verbose_name=_("license"))
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
@@ -309,6 +309,11 @@ class Photo(models.Model):
         return admin_image_widget.list_display(self.photo)
     image_tag.short_description = _(u"image")
     image_tag.allow_tags = True
+
+    def __unicode__(self):
+       if self.name:
+          return self.name
+       return self.poi.name
 
     class Meta:
         permissions = [
