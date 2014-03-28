@@ -48,16 +48,25 @@ class SectorFilter(SimpleListFilter):
     parameter_name = u"sector"
 
     def lookups(self, request, model_admin):
+        self.model_admin = model_admin
         return [("outer", _(u"Out of sectors"))] + [(sector.slug, sector.name) for sector in Sector.objects.all()]
 
     def queryset(self, request, queryset):
+        prefix = ""
+        if isinstance(self.model_admin, PhotoAdmin):
+            prefix = "poi__"
+
         if not self.value():
             return queryset
         if self.value() == "outer":
             for sector in Sector.objects.all():
-                queryset = queryset.exclude(geom__intersects=sector.geom)
+                qfilter = {}
+                qfilter[prefix + 'geom__intersects'] = sector.geom
+                queryset = queryset.exclude(**qfilter)
             return queryset
-        return queryset.filter(geom__intersects=Sector.objects.get(slug=self.value()).geom)
+        qfilter = {}
+        qfilter[prefix + 'geom__intersects'] = Sector.objects.get(slug=self.value()).geom
+        return queryset.filter(**qfilter)
 
 
 class PoiStatusFilter(SimpleListFilter):
@@ -227,6 +236,8 @@ class PhotoAdmin(admin.ModelAdmin):
     form = PhotoAdminForm
     list_display = ('poi', 'name', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
+    list_filter = ('license', SectorFilter)
+    list_per_page = 20
 
     def has_change_permission(self, request, obj=None):
         if request.user.has_perm(u'webmap.can_view_photo_list'):

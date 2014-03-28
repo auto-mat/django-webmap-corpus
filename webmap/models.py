@@ -301,6 +301,9 @@ class Photo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_("created at"))
     last_modification = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name=_("last modification at"))
 
+    # if we want to filter photos by poi position
+    objects = models.GeoManager()
+
     def image_tag(self):
         import admin_image_widget
         return admin_image_widget.list_display(self.photo)
