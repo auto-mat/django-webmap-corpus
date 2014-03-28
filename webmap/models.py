@@ -45,6 +45,13 @@ class Layer(models.Model):
         verbose_name_plural = _(u"layers")
         ordering = ['order']
 
+    def __init__(self, *args, **kwargs):
+        try:
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+        except django.db.utils.ProgrammingError:
+            pass
+        return super(Layer, self).__init__(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
 
@@ -84,6 +91,13 @@ class Marker(models.Model):
     def line_color_kml(this):
         color = this.line_color[1:]
         return "88" + color[4:6] + color[2:4] + color[0:2]
+
+    def __init__(self, *args, **kwargs):
+        try:
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+        except django.db.utils.ProgrammingError:
+            pass
+        return super(Marker, self).__init__(*args, **kwargs)
 
     class Meta:
         permissions = [
@@ -258,6 +272,13 @@ class Property(models.Model):
         return admin_image_widget.list_display(self.default_icon)
     icon_tag.allow_tags = True
     icon_tag.short_description = _(u"icon")
+
+    def __init__(self, *args, **kwargs):
+        try:
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+        except django.db.utils.ProgrammingError:
+            pass
+        return super(Property, self).__init__(*args, **kwargs)
 
 
 class License(models.Model):
