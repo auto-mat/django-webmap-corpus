@@ -236,6 +236,7 @@ class PhotoAdmin(admin.ModelAdmin):
     form = PhotoAdminForm
     list_display = ('__unicode__', 'poi', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
+    search_fields = ('name', 'poi__name', )
     raw_id_fields = ('poi', )
     list_filter = ('license', SectorFilter)
     list_per_page = 20
