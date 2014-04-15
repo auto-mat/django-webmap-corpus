@@ -108,7 +108,7 @@ class PhotoInline(SortableInlineAdminMixin, admin.TabularInline):
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
     list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
-    list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker',)
+    list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker', 'properties')
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
     raw_id_fields = ('marker',)
