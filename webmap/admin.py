@@ -10,6 +10,7 @@ from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext_lazy as _
 from adminsortable.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib.auth.admin import UserAdmin, User
+from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q
 from constance import config
 import fgp
@@ -104,6 +105,11 @@ class PhotoInline(SortableInlineAdminMixin, admin.TabularInline):
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
 
 
+def export_kml(modeladmin, request, queryset):
+    points = queryset.kml()
+    return render_to_kml("webmap/gis/kml/layer.kml", {'places': points})
+
+
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
@@ -120,6 +126,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     filter_horizontal = ('properties',)
     inlines = [PhotoInline]
     list_max_show_all = 10000
+    actions = [ export_kml, ]
 
     if USE_GOOGLE_TERRAIN_TILES:
         map_template = 'gis/admin/google.html'
