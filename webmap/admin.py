@@ -238,7 +238,7 @@ class PhotoAdmin(admin.ModelAdmin):
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
     search_fields = ('name', 'poi__name', )
     raw_id_fields = ('poi', )
-    list_filter = ('license', SectorFilter, 'author')
+    list_filter = ('license', SectorFilter, 'author', 'poi__properties')
     list_per_page = 20
 
     def has_change_permission(self, request, obj=None):
