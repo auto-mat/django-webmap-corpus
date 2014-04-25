@@ -232,7 +232,7 @@ class LegendAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-class PhotoAdmin(admin.ModelAdmin):
+class PhotoAdmin(ImportExportModelAdmin, admin. ModelAdmin):
     form = PhotoAdminForm
     list_display = ('__unicode__', 'poi', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
