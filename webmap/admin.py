@@ -141,7 +141,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-        pnt.transform(900913)
+        pnt.transform(3857)
         self.default_lon, self.default_lat = pnt.coords
 
         if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_own_data_only') and obj and obj.author != request.user:
@@ -156,7 +156,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     scrollable = True
     map_width = 700
     map_height = 500
-    map_srid = 900913
+    map_srid = 3857
 
 
 class SectorAdmin(OSMGeoAdmin):
@@ -170,7 +170,7 @@ class SectorAdmin(OSMGeoAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-        pnt.transform(900913)
+        pnt.transform(3857)
         self.default_lon, self.default_lat = pnt.coords
         return super(SectorAdmin, self).get_form(request, obj, **kwargs)
 
@@ -178,7 +178,7 @@ class SectorAdmin(OSMGeoAdmin):
     scrollable = True
     map_width = 700
     map_height = 500
-    map_srid = 900913
+    map_srid = 3857
 
 
 class MarkerInline(admin.TabularInline):
