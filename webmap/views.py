@@ -8,6 +8,7 @@ from django.views.decorators.cache import never_cache, cache_page
 from django.shortcuts import get_object_or_404
 from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q
+from django.contrib.sites.models import get_current_site
 
 
 @gzip_page
@@ -19,7 +20,10 @@ def kml_view(request, layer_name):
 
     # all enabled pois in this layer
     points = models.Poi.visible.filter(marker__layer=v).kml()
-    return render_to_kml("webmap/gis/kml/layer.kml", {'places': points})
+    return render_to_kml("webmap/gis/kml/layer.kml", {
+        'places': points,
+        'site': get_current_site(request).domain,
+        })
 
 
 def search_view(request, query):
