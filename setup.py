@@ -63,7 +63,7 @@ install_requires = [
     'django-import-export',
     'django-finegrained-permissions',
     'django-constance[database]>=0.7',
-    'PIL',
+    'pillow',
 ]
 
 

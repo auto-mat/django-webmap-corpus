@@ -12,7 +12,7 @@ selenium
 -e git+https://github.com/PetrDlouhy/django-author.git#egg=django-author
 Django
 south
-PIL
+pillow
 django-finegrained-permissions
 psycopg2
 django-import-export
