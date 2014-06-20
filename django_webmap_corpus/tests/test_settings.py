@@ -19,6 +19,7 @@ DATABASES = {
 ROOT_URLCONF = 'django_webmap_corpus.tests.urls'
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(APP_ROOT, '../app_static')
 MEDIA_ROOT = os.path.join(APP_ROOT, '../app_media')
 STATICFILES_DIRS = (
