@@ -3,6 +3,7 @@
 {% for place in places %}
   <Placemark id="{{place.id}}">
     <name>{{ place }}</name>
+    <markerId>{{ place.marker.id }}</markerId>
     <minZoom>{{ place.marker.minzoom }}</minZoom>
     {% if place.marker.default_icon and place.marker.default_icon.url %}
        <ikona>{{ place.marker.default_icon.url }}</ikona>
