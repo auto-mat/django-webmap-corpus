@@ -50,7 +50,7 @@ dev_requires = [
 ]
 
 dependency_links = [
-    'git+https://github.com/comoga/django-constance.git@e4bd353762#egg=django-constance-0.7',
+    'git+https://github.com/comoga/django-constance.git@b3f849e0fb#egg=django-constance-0.7',
 ]
 
 install_requires = [

@@ -19,8 +19,8 @@ class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Status description."))
-    show = models.BooleanField(help_text=_(u"Show to map user"), verbose_name=_("show"))
-    show_to_mapper = models.BooleanField(help_text=_(u"Show to mapper"), verbose_name=_("show to mapper"))
+    show = models.BooleanField(help_text=_(u"Show to map user"), default=False, verbose_name=_("show"))
+    show_to_mapper = models.BooleanField(help_text=_(u"Show to mapper"), default=False, verbose_name=_("show to mapper"))
 
     class Meta:
         verbose_name = _(u"status")
@@ -47,7 +47,8 @@ class Layer(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            pass
+            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Layer, self).__init__(*args, **kwargs)
@@ -94,7 +95,8 @@ class Marker(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            pass
+            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Marker, self).__init__(*args, **kwargs)
@@ -195,7 +197,8 @@ class Poi(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            pass
+            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Poi, self).__init__(*args, **kwargs)
@@ -251,7 +254,7 @@ class Property(models.Model):
     "Place properties"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
     status = models.ForeignKey(Status, verbose_name=_("status"))
-    as_filter = models.BooleanField(verbose_name=_("as filter?"), help_text=_(u"Show as a filter in right map menu?"))
+    as_filter = models.BooleanField(verbose_name=_("as filter?"), default=False, help_text=_(u"Show as a filter in right map menu?"))
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     # content
     slug = models.SlugField(unique=True, verbose_name=_("Name in URL"))
@@ -275,7 +278,8 @@ class Property(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            pass
+            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Property, self).__init__(*args, **kwargs)
