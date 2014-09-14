@@ -3,6 +3,7 @@
 {% for place in places %}
   <Placemark id="{{place.id}}">
     <name>{{ place }}</name>
+    <markerId>{{ place.marker.id }}</markerId>
     <minZoom>{{ place.marker.minzoom }}</minZoom>
     <tag>{{ place.properties_cache }}</tag>
     <markerId>{{ place.marker.id }}</markerId>
