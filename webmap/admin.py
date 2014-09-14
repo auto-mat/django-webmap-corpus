@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from adminsortable.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib.auth.admin import UserAdmin, User
 from django.contrib.gis.shortcuts import render_to_kml
-from django.db.models import Q
+from django.db.models import Q, Count
 from constance import config
 import fgp
 from django.core.urlresolvers import reverse
@@ -113,7 +113,7 @@ def export_kml(modeladmin, request, queryset):
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
-    list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id']
+    list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id', 'photo__count']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker', 'properties')
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
@@ -151,6 +151,15 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
             self.fields = PoiAdmin.fields
             self.readonly_fields = PoiAdmin.readonly_fields
         return super(PoiAdmin, self).get_form(request, obj, **kwargs)
+
+    def queryset(self, request):
+        qs = super(PoiAdmin, self).queryset(request)
+        qs = qs.annotate(Count('photos'))
+        return qs
+
+    def photo__count(self, obj):
+        return obj.photos.count()
+    photo__count.admin_order_field = 'photos__count'
 
     default_zoom = 12
     scrollable = True
