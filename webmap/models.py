@@ -8,7 +8,7 @@ from django.contrib.gis.db import models
 from django.core.cache import cache
 from django.forms import ModelForm
 from author.decorators import with_author
-from constance import config
+from constance.admin import config
 
 from colorful.fields import RGBColorField
 
@@ -197,8 +197,7 @@ class Poi(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            pass
-            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Poi, self).__init__(*args, **kwargs)
@@ -278,8 +277,7 @@ class Property(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            pass
-            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Property, self).__init__(*args, **kwargs)

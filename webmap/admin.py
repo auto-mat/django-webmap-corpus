@@ -12,7 +12,7 @@ from adminsortable.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib.auth.admin import UserAdmin, User
 from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q, Count
-from constance import config
+from constance.admin import config
 import fgp
 from django.core.urlresolvers import reverse
 
