@@ -25,7 +25,6 @@ class Migration(migrations.Migration):
                 ('order', models.IntegerField(default=0, verbose_name='order')),
                 ('remark', models.TextField(help_text='Internal information about layer.', null=True, verbose_name='internal remark', blank=True)),
                 ('enabled', models.BooleanField(default=True, help_text='True = the layer is enabled on map load', verbose_name='Enabled by defalut')),
-                ('icon', models.ImageField(storage=webmap.utils.SlugifyFileSystemStorage(), upload_to=b'layer_icons', null=True, verbose_name='layer icon', blank=True)),
             ],
             options={
                 'ordering': ['order'],

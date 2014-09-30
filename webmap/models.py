@@ -39,6 +39,7 @@ class Layer(models.Model):
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
     enabled = models.BooleanField(verbose_name=_(u"Enabled by defalut"), help_text=_(u"True = the layer is enabled on map load"), default=True)
+    icon = models.ImageField(null=True, blank=True, upload_to='layer_icons', storage=SlugifyFileSystemStorage(), verbose_name=_("layer icon"))
 
     class Meta:
         verbose_name = _(u"layer")
@@ -333,9 +334,9 @@ class Photo(models.Model):
     image_tag.allow_tags = True
 
     def __unicode__(self):
-       if self.name:
-          return self.name
-       return self.poi.name
+        if self.name:
+            return self.name
+        return self.poi.name
 
     class Meta:
         permissions = [
