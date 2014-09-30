@@ -44,7 +44,6 @@ finally:
 
 dev_requires = [
     'flake8',
-    'south',
     'django_nose',
     'django_jasmine',
 ]

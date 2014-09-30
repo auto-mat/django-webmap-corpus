@@ -1,3 +1,4 @@
+Django<1.8
 django-nose
 coverage
 django-coverage
@@ -10,12 +11,11 @@ mock
 selenium
 
 -e git+https://github.com/PetrDlouhy/django-author.git#egg=django-author
-Django
 south
 pillow
 django-finegrained-permissions
 psycopg2
 django-import-export
 django-colorful
--e git+https://github.com/PetrDlouhy/django-constance.git#egg=django-constance[database]
+-e git+https://github.com/PetrDlouhy/django-constance.git@b3f849e0fb#egg=django-constance[database]
 django-admin-sortable2

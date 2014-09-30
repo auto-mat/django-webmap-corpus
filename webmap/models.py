@@ -113,8 +113,8 @@ class Marker(models.Model):
 
 class VisibleManager(models.GeoManager):
     "Manager that will return objects visible on the map"
-    def get_query_set(self):
-        return super(VisibleManager, self).get_query_set().filter(status__show=True, marker__status__show=True, marker__layer__status__show=True)
+    def get_queryset(self):
+        return super(VisibleManager, self).get_queryset().filter(status__show=True, marker__status__show=True, marker__layer__status__show=True)
 
 
 class Sector(models.Model):
@@ -235,6 +235,7 @@ class Legend(models.Model):
 class LegendAdminForm(ModelForm):
     class Meta:
         model = Legend
+        exclude = {}
         widgets = {
             'image': admin_image_widget.AdminImageWidget,
         }
@@ -349,6 +350,7 @@ class Photo(models.Model):
 class PhotoAdminForm(ModelForm):
     class Meta:
         model = Photo
+        exclude = {}
         widgets = {
             'photo': admin_image_widget.AdminImageWidget,
         }
