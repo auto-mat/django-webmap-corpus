@@ -47,8 +47,7 @@ class Layer(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            pass
-            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Layer, self).__init__(*args, **kwargs)
@@ -95,8 +94,7 @@ class Marker(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            pass
-            #self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
         except django.db.utils.ProgrammingError:
             pass
         return super(Marker, self).__init__(*args, **kwargs)
