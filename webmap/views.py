@@ -41,4 +41,5 @@ def search_view(request, query):
     points = list(name_qs.kml()) + list(extra_qs.kml())
     return render_to_kml("webmap/gis/kml/layer.kml", {
                          'places': points,
+                         'site': get_current_site(request).domain,
                          })
