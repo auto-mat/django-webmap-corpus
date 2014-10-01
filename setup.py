@@ -48,10 +48,6 @@ dev_requires = [
     'django_jasmine',
 ]
 
-dependency_links = [
-    'git+https://github.com/comoga/django-constance.git@b3f849e0fb#egg=django-constance-0.7',
-]
-
 install_requires = [
     'django',
     'django-colorful',
@@ -61,7 +57,7 @@ install_requires = [
     'easy_thumbnails',
     'django-import-export',
     'django-finegrained-permissions',
-    'django-constance>=0.7',
+    'django-constance-updated',
     'pillow',
 ]
 
