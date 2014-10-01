@@ -61,7 +61,7 @@ install_requires = [
     'easy_thumbnails',
     'django-import-export',
     'django-finegrained-permissions',
-    'django-constance[database]>=0.7',
+    'django-constance>=0.7',
     'pillow',
 ]
 
