@@ -48,6 +48,8 @@ dev_requires = [
     'django_jasmine',
 ]
 
+dependency_links = []
+
 install_requires = [
     'django',
     'django-colorful',
