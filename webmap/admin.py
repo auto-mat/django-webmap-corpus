@@ -127,6 +127,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     inlines = [PhotoInline]
     list_max_show_all = 10000
     actions = [ export_kml, ]
+    openlayers_url = 'django_webmap_corpus/js/OpenLayers.js'
 
     if USE_GOOGLE_TERRAIN_TILES:
         map_template = 'gis/admin/google.html'
