@@ -88,6 +88,7 @@ class Marker(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
     last_modification = models.DateTimeField(auto_now=True, verbose_name=_("last modification at"))
+    order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
 
     def line_color_kml(this):
         color = this.line_color[1:]
@@ -106,7 +107,7 @@ class Marker(models.Model):
         ]
         verbose_name = _(u"marker")
         verbose_name_plural = _(u"markers")
-        ordering = ['-layer__order', 'name']
+        ordering = ['order', ]
 
     def __unicode__(self):
         return self.name

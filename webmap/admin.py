@@ -211,11 +211,40 @@ class PropertyAdmin(SortableAdminMixin, admin.ModelAdmin):
     model = Property
 
 
-class MarkerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count', 'created_at', 'last_modification', )
-    list_filter = ('layer', 'status',)
+class MarkerStatusFilter(SimpleListFilter):
+    title = _(u"all statuses")
+    parameter_name = u"statuses"
+
+    def lookups(self, request, model_admin):
+        return ((None, _(u"Visible")),
+                ('all', _('All')),
+                ("unvisible", _(u"Unvisible")))
+
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == lookup,
+                'query_string': cl.get_query_string({
+                    self.parameter_name: lookup,
+                }, []),
+                'display': title,
+            }
+
+    def queryset(self, request, queryset):
+        if self.value() == 'all':
+            return queryset
+        if not self.value() or self.value() == "visible":
+            return queryset.filter(Q(status__show_to_mapper=True) & Q(layer__status__show_to_mapper=True))
+        if self.value() == "unvisible":
+            return queryset.exclude(Q(status__show_to_mapper=True) & Q(layer__status__show_to_mapper=True))
+
+
+class MarkerAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ('name', 'desc', 'layer', 'minzoom', 'status', 'default_icon_image', 'id', 'poi_count', 'created_at', 'last_modification')
+    list_filter = (MarkerStatusFilter, 'layer', 'status',)
     search_fields = ('name', 'desc',)
     readonly_fields = ('poi_count', 'created_at', 'last_modification', )
+    prepopulated_fields = {'slug': ('name',)}
 
     def default_icon_image(self, obj):
         if obj.default_icon:
