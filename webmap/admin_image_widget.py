@@ -1,4 +1,4 @@
-#originated from https://djangosnippets.org/snippets/2455/
+# originated from https://djangosnippets.org/snippets/2455/
 
 from django.contrib.admin.widgets import AdminFileWidget
 from django.utils.translation import ugettext as _

@@ -126,7 +126,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     filter_horizontal = ('properties',)
     inlines = [PhotoInline]
     list_max_show_all = 10000
-    actions = [ export_kml, ]
+    actions = [export_kml, ]
     openlayers_url = 'django_webmap_corpus/js/OpenLayers.js'
 
     if USE_GOOGLE_TERRAIN_TILES:

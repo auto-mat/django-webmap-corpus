@@ -23,7 +23,7 @@ def kml_view(request, layer_name):
     return render_to_kml("webmap/gis/kml/layer.kml", {
         'places': points,
         'site': get_current_site(request).domain,
-        })
+    })
 
 
 def search_view(request, query):
