@@ -63,7 +63,7 @@ install_requires = [
     'django-finegrained-permissions',
     'django-constance[database]==0.7',
     'pillow',
-    'rest_framework',
+    'djangorestframework',
 ]
 
 
