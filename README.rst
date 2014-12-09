@@ -32,6 +32,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
         'constance',
         'import_export',
         'webmap',
+        'rest_framework',
     )
 
 Add Author middleware
