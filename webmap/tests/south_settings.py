@@ -28,6 +28,7 @@ INSTALLED_APPS.append('django.contrib.gis', )
 INSTALLED_APPS.append('constance', )
 INSTALLED_APPS.append('import_export', )
 INSTALLED_APPS.append('positions', )
+INSTALLED_APPS.append('rest_framework', )
 INSTALLED_APPS.append('constance.backends.database', )
 
 MIDDLEWARE_CLASSES = (
