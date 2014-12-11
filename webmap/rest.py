@@ -25,7 +25,7 @@ class PoiSerializer(serializers.ModelSerializer):
 
 # ViewSets define the view behavior.
 class PoiViewSet(viewsets.ModelViewSet):
-    queryset = Poi.objects.all()
+    queryset = Poi.visible.all()
     serializer_class = PoiSerializer
 
 
