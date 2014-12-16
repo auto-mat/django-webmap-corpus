@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.forms import ModelForm
 from author.decorators import with_author
 from constance.admin import config
+from easy_thumbnails.files import get_thumbnailer
 
 from colorful.fields import RGBColorField
 
@@ -324,6 +325,9 @@ class Photo(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_("created at"))
     last_modification = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name=_("last modification at"))
+
+    def thumb_url(self):
+        return get_thumbnailer(self.photo)['photo_thumb'].url
 
     # if we want to filter photos by poi position
     objects = models.GeoManager()

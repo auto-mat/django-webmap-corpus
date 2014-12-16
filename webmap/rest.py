@@ -6,10 +6,12 @@ class PhotoItemSerializer(serializers.ModelSerializer):
     license = serializers.StringRelatedField()
     author = serializers.StringRelatedField()
     updated_by = serializers.StringRelatedField()
+    thumb_url = serializers.StringRelatedField()
 
     class Meta:
         model = Photo
         exclude = ('poi',)
+
 
 class MarkerItemSerializer(serializers.ModelSerializer):
     layer = serializers.SlugRelatedField(slug_field='slug', read_only=True)
@@ -17,6 +19,7 @@ class MarkerItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Marker
         fields = ('id', 'slug', 'name', 'layer')
+
 
 class PropertyItemSerializer(serializers.ModelSerializer):
     status = serializers.StringRelatedField()
