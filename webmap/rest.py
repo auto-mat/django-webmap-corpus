@@ -1,5 +1,5 @@
 from rest_framework import routers, serializers, viewsets
-from models import Poi, Photo, Property, Marker
+from models import Poi, Photo, Property, Marker, Layer
 from rest_framework import filters
 
 
@@ -20,6 +20,11 @@ class MarkerItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Marker
         fields = ('id', 'slug', 'name', 'layer')
+
+
+class LayerItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Layer
 
 
 class PropertyItemSerializer(serializers.ModelSerializer):
@@ -59,6 +64,24 @@ class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoItemSerializer
 
 
+class MarkerViewSet(viewsets.ModelViewSet):
+    queryset = Marker.objects.filter(status__show=True, layer__status__show=True)
+    serializer_class = MarkerItemSerializer
+
+
+class LayerViewSet(viewsets.ModelViewSet):
+    queryset = Layer.objects.filter(status__show=True)
+    serializer_class = LayerItemSerializer
+
+
+class PropertyViewSet(viewsets.ModelViewSet):
+    queryset = Property.objects.filter(status__show=True)
+    serializer_class = PropertyItemSerializer
+
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'pois', PoiViewSet)
+router.register(r'markers', MarkerViewSet)
+router.register(r'properties', PropertyViewSet)
+router.register(r'layers', LayerViewSet)
