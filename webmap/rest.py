@@ -1,5 +1,6 @@
 from rest_framework import routers, serializers, viewsets
 from models import Poi, Photo, Property, Marker
+from rest_framework import filters
 
 
 class PhotoItemSerializer(serializers.ModelSerializer):
@@ -46,6 +47,9 @@ class PoiSerializer(serializers.ModelSerializer):
 # ViewSets define the view behavior.
 class PoiViewSet(viewsets.ModelViewSet):
     queryset = Poi.visible.all()
+    filter_fields = ('author', 'marker__id', 'marker__name', 'properties__id', 'properties__name', 'marker__layer__slug', 'marker__layer__id', 'marker__layer__name')
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,)
+    search_fields = ('name', 'desc')
     serializer_class = PoiSerializer
 
 

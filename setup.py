@@ -64,6 +64,7 @@ install_requires = [
     'django-constance[database]==0.7',
     'pillow',
     'djangorestframework',
+    'django-filter',
 ]
 
 
