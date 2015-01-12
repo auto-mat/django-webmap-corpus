@@ -308,6 +308,16 @@ class BaseLayer(Layer):
         return self.name
 
 
+class MapPreset(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
+    base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base_layer"))
+    overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, null=True, verbose_name=_("overlay layers"))
+    icon = models.ImageField(null=False, blank=False,
+        upload_to='preset_icons', storage=SlugifyFileSystemStorage(),
+        verbose_name=_(u"preset icon"),
+    )
+
+
 @with_author
 class Photo(models.Model):
     poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))

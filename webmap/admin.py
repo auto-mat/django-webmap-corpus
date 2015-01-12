@@ -27,7 +27,7 @@ from django.contrib.gis.geos import Point
 # Finally, import our model from the working project
 # the geographic_admin folder must be on your python path
 # for this import to work correctly
-from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer
+from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
 
 USE_GOOGLE_TERRAIN_TILES = False
 
@@ -272,6 +272,10 @@ class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
 
+class MapPresetAdmin(admin.ModelAdmin):
+    list_display = ('name', 'base_layer')
+
+
 class LegendAdmin(admin.ModelAdmin):
     form = LegendAdminForm
     list_display = ('name', 'image_tag', 'desc',)
@@ -312,6 +316,7 @@ admin.site.register(License, LicenseAdmin)
 admin.site.register(Legend, LegendAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(BaseLayer, BaseLayerAdmin)
+admin.site.register(MapPreset, MapPresetAdmin)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
