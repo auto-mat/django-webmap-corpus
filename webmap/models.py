@@ -310,12 +310,15 @@ class BaseLayer(Layer):
 
 class MapPreset(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
-    base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base_layer"))
-    overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, null=True, verbose_name=_("overlay layers"))
+    base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
+    overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, null=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
     icon = models.ImageField(null=False, blank=False,
         upload_to='preset_icons', storage=SlugifyFileSystemStorage(),
         verbose_name=_(u"preset icon"),
     )
+
+    def base_layer_names(self):
+       return [l.name for l in self.overlay_layers.all()]
 
 
 @with_author

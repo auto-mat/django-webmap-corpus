@@ -274,6 +274,7 @@ class LicenseAdmin(admin.ModelAdmin):
 
 class MapPresetAdmin(admin.ModelAdmin):
     list_display = ('name', 'base_layer')
+    filter_horizontal = ('overlay_layers',)
 
 
 class LegendAdmin(admin.ModelAdmin):
