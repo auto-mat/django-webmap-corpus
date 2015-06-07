@@ -309,9 +309,15 @@ class BaseLayer(Layer):
 
 
 class MapPreset(models.Model):
+    class Meta:
+        verbose_name = _(u"map preset")
+        verbose_name_plural = _(u"map presets")
+        ordering = ['order', ]
+
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
     base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
     overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, null=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
+    order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     icon = models.ImageField(null=False, blank=False,
         upload_to='preset_icons', storage=SlugifyFileSystemStorage(),
         verbose_name=_(u"preset icon"),

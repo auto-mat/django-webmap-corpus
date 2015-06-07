@@ -272,8 +272,8 @@ class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
 
-class MapPresetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'base_layer')
+class MapPresetAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ('name', 'base_layer', 'order')
     filter_horizontal = ('overlay_layers',)
 
 
