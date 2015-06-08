@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext_lazy as _
-from adminsortable.admin import SortableInlineAdminMixin, SortableAdminMixin
+from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminMixin
 from django.contrib.auth.admin import UserAdmin, User
 from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q, Count
