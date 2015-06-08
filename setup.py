@@ -49,7 +49,6 @@ dev_requires = [
 ]
 
 dependency_links = [
-    'git+https://github.com/comoga/django-constance.git#egg=django-constance-0.7'
 ]
 
 install_requires = [
@@ -61,7 +60,7 @@ install_requires = [
     'easy_thumbnails',
     'django-import-export',
     'django-finegrained-permissions',
-    'django-constance[database]==0.7',
+    'django-constance[database]',
     'pillow',
     'djangorestframework',
     'django-filter',
