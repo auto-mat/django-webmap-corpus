@@ -17,7 +17,9 @@ django-finegrained-permissions
 psycopg2
 django-import-export
 django-colorful
--e git+https://github.com/PetrDlouhy/django-constance.git@b3f849e0fb#egg=django-constance[database]
+django-constance[database]
 django-admin-sortable2
 djangorestframework
 django-positions
+django-filter
+easy_thumbnails

@@ -11,9 +11,9 @@ APP_ROOT = os.path.abspath(
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'webmap-corpus',
-        'USER': 'webmap',
-        'PASSWORD': 'webmap',
+        'NAME': 'travis_ci',
+        'USER': 'postgres',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     },
@@ -59,8 +59,8 @@ EXTERNAL_APPS = [
 ]
 
 INTERNAL_APPS = [
-    'webmap',
-    'webmap.tests.test_app',
+    #'webmap',
+    #'webmap.tests.test_app',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS

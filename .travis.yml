@@ -1,5 +1,7 @@
 language: python
 python:
   - "2.7"
-install: pip install -r test_requirements.txt --use-mirrors
+install: pip install -r test_requirements.txt
 script: python webmap/tests/runtests.py
+addons:
+  postgresql: "9.3"
