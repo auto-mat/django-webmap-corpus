@@ -11,7 +11,7 @@ APP_ROOT = os.path.abspath(
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'travis_ci',
+        'NAME': 'travis_ci_test',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': 'localhost',
