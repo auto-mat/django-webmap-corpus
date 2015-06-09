@@ -145,7 +145,7 @@ class Poi(models.Model):
     # Relationships
     marker = models.ForeignKey(Marker, limit_choices_to={'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois")
     status = models.ForeignKey(Status, default=0, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
-    properties = models.ManyToManyField('Property', blank=True, null=True, help_text=_("POI properties"), verbose_name=_("properties"), limit_choices_to={'status__show_to_mapper': 'True'})
+    properties = models.ManyToManyField('Property', blank=True, help_text=_("POI properties"), verbose_name=_("properties"), limit_choices_to={'status__show_to_mapper': 'True'})
 
     importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
                  help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
@@ -316,7 +316,7 @@ class MapPreset(models.Model):
 
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
     base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
-    overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, null=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
+    overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     icon = models.ImageField(null=False, blank=False,
         upload_to='preset_icons', storage=SlugifyFileSystemStorage(),
