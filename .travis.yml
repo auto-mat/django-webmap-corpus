@@ -1,7 +1,9 @@
 language: python
 python:
   - "2.7"
-install: pip install -r test_requirements.txt
+install:
+  - pip install -r test_requirements.txt
+  - python manage.py migrate
 script: python webmap/tests/runtests.py
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
