@@ -193,6 +193,7 @@ class SectorAdmin(OSMGeoAdmin):
 
 class MarkerInline(admin.TabularInline):
     model = Marker
+    extra = 0
 
 
 class OverlayLayerAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
