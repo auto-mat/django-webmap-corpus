@@ -323,8 +323,8 @@ class MapPreset(models.Model):
         verbose_name=_(u"preset icon"),
     )
 
-    def base_layer_names(self):
-       return [l.name for l in self.overlay_layers.all()]
+    def overlay_layers_slugs(self):
+       return [l.slug for l in self.overlay_layers.all()]
 
 
 @with_author
