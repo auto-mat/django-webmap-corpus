@@ -315,6 +315,7 @@ class MapPreset(models.Model):
         ordering = ['order', ]
 
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
+    status = models.ForeignKey(Status, verbose_name=_("status"), default=None, null=True)
     base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
     overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
