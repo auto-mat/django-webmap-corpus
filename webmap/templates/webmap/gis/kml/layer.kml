@@ -1,5 +1,18 @@
 {% extends "gis/kml/base.kml" %}
 {% block placemarks %}
+{% for marker in markers %}
+    <Style id="icon_{{ marker.id }}">
+     <IconStyle>
+       <Icon>
+         <href>http://{{ site }}{{ marker.default_icon.url }}</href>
+       </Icon>
+     </IconStyle>
+     <LineStyle>
+       <color>ff{{ marker.line_color | cut:"#" }}</color>
+       <width>{{ marker.line_width }}</width>
+     </LineStyle>
+    </Style>
+{% endfor %}
 {% for place in places %}
   <Placemark id="{{place.id}}">
     <name>{{ place }}</name>
@@ -9,6 +22,7 @@
     <markerId>{{ place.marker.id }}</markerId>
     {% if place.marker.default_icon and place.marker.default_icon.url %}
        <ikona>http://{{ site }}{{ place.marker.default_icon.url }}</ikona>
+       <styleUrl>#icon_{{ place.marker.id }}</styleUrl>
        <height>{{ place.marker.default_icon.height }}</height>
        <width>{{ place.marker.default_icon.width }}</width>
     {% endif %}

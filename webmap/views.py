@@ -22,6 +22,7 @@ def kml_view(request, layer_name):
     points = models.Poi.visible.filter(marker__layer=v).kml()
     return render_to_kml("webmap/gis/kml/layer.kml", {
         'places': points,
+        'markers': models.Marker.objects.all(),
         'site': get_current_site(request).domain,
     })
 
