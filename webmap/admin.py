@@ -77,7 +77,7 @@ class PoiStatusFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return ((None, _(u"Visible")),
                 ('all', _('All')),
-                ("unvisible", _(u"Unvisible")))
+                ("unvisible", _(u"Invisible")))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
@@ -219,7 +219,7 @@ class MarkerStatusFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return ((None, _(u"Visible")),
                 ('all', _('All')),
-                ("unvisible", _(u"Unvisible")))
+                ("unvisible", _(u"Invisible")))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
