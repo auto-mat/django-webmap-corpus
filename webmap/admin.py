@@ -304,7 +304,7 @@ class PhotoAdmin(ImportExportModelAdmin, admin. ModelAdmin):
         return False
 
 
-class BaseLayerAdmin(SortableAdminMixin, admin.ModelAdmin):
+class BaseLayerAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'slug', 'url', 'order')
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
