@@ -2,11 +2,14 @@
 import fgp
 import admin_image_widget
 import django
+import gpxpy
 
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.gis.geos import Point, LineString, MultiLineString
 from django.contrib.gis.db import models
 from django.core.cache import cache
 from django.forms import ModelForm
+from django import forms
 from author.decorators import with_author
 from constance.admin import config
 from easy_thumbnails.files import get_thumbnailer
@@ -214,6 +217,32 @@ def update_properties_cache(sender, instance, action, reverse, model, pk_set, **
 m2m_changed.connect(update_properties_cache, Poi.properties.through)
 
 
+class GpxPoiForm(ModelForm):
+    gpx_file =  forms.FileField(required=False, help_text=_(u"Upload geometry by GPX file"))
+
+    class Meta:
+        model = Marker
+        exclude = ('geom',)
+
+    def clean(self):
+        cleaned_data = super(GpxPoiForm, self).clean()
+        if 'gpx_file' in self.cleaned_data:
+            gpx_file = self.cleaned_data['gpx_file']
+            if gpx_file:
+               gpx = gpxpy.parse(gpx_file.read())
+               if gpx.tracks:
+                   multiline = []
+                   for segment in gpx.tracks[0].segments:
+                       track_list_of_points = []
+                       for point in segment.points:
+                           point_in_segment = Point(point.longitude, point.latitude)
+                           track_list_of_points.append(point_in_segment.coords)
+
+                       if len(track_list_of_points) > 1:
+                           multiline.append(LineString(track_list_of_points))
+                   cleaned_data['geom'] = MultiLineString(multiline)
+
+
 class Legend(models.Model):
     "map legend items of underlay"
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"))
@@ -315,6 +344,7 @@ class MapPreset(models.Model):
         ordering = ['order', ]
 
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
+    desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Map preset description."))
     status = models.ForeignKey(Status, verbose_name=_("status"), default=None, null=True)
     base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
     overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})

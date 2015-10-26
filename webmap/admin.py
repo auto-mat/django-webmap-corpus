@@ -27,7 +27,7 @@ from django.contrib.gis.geos import Point
 # Finally, import our model from the working project
 # the geographic_admin folder must be on your python path
 # for this import to work correctly
-from models import Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
+from models import GpxPoiForm, Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
 
 USE_GOOGLE_TERRAIN_TILES = False
 
@@ -77,7 +77,7 @@ class PoiStatusFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return ((None, _(u"Visible")),
                 ('all', _('All')),
-                ("unvisible", _(u"Unvisible")))
+                ("unvisible", _(u"Invisible")))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
@@ -113,6 +113,7 @@ def export_kml(modeladmin, request, queryset):
 @fgp.enforce
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
+    form = GpxPoiForm
     list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id', 'photo__count']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker', 'properties')
     exclude = ('properties_cache', )
@@ -219,7 +220,7 @@ class MarkerStatusFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return ((None, _(u"Visible")),
                 ('all', _('All')),
-                ("unvisible", _(u"Unvisible")))
+                ("unvisible", _(u"Invisible")))
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
@@ -273,7 +274,7 @@ class LicenseAdmin(admin.ModelAdmin):
     list_display = ('name', 'desc')
 
 
-class MapPresetAdmin(SortableAdminMixin, admin.ModelAdmin):
+class MapPresetAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'base_layer', 'order')
     filter_horizontal = ('overlay_layers',)
 
@@ -304,7 +305,7 @@ class PhotoAdmin(ImportExportModelAdmin, admin. ModelAdmin):
         return False
 
 
-class BaseLayerAdmin(SortableAdminMixin, admin.ModelAdmin):
+class BaseLayerAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'slug', 'url', 'order')
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
