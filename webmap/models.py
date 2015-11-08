@@ -19,6 +19,13 @@ from colorful.fields import RGBColorField
 from .utils import SlugifyFileSystemStorage
 
 
+def get_default_status():
+    try:
+        return config.DEFAULT_STATUS_ID
+    except AttributeError:
+        return 2
+
+
 class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
@@ -52,7 +59,7 @@ class Layer(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = get_default_status()
         except django.db.utils.ProgrammingError:
             pass
         return super(Layer, self).__init__(*args, **kwargs)
@@ -100,7 +107,7 @@ class Marker(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = get_default_status()
         except django.db.utils.ProgrammingError:
             pass
         return super(Marker, self).__init__(*args, **kwargs)
@@ -201,7 +208,7 @@ class Poi(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = get_default_status()
         except django.db.utils.ProgrammingError:
             pass
         return super(Poi, self).__init__(*args, **kwargs)
@@ -218,7 +225,7 @@ m2m_changed.connect(update_properties_cache, Poi.properties.through)
 
 
 class GpxPoiForm(ModelForm):
-    gpx_file =  forms.FileField(required=False, help_text=_(u"Upload geometry by GPX file"))
+    gpx_file = forms.FileField(required=False, help_text=_(u"Upload geometry by GPX file"))
 
     class Meta:
         model = Marker
@@ -229,18 +236,18 @@ class GpxPoiForm(ModelForm):
         if 'gpx_file' in self.cleaned_data:
             gpx_file = self.cleaned_data['gpx_file']
             if gpx_file:
-               gpx = gpxpy.parse(gpx_file.read())
-               if gpx.tracks:
-                   multiline = []
-                   for segment in gpx.tracks[0].segments:
-                       track_list_of_points = []
-                       for point in segment.points:
-                           point_in_segment = Point(point.longitude, point.latitude)
-                           track_list_of_points.append(point_in_segment.coords)
+                gpx = gpxpy.parse(gpx_file.read())
+                if gpx.tracks:
+                    multiline = []
+                    for segment in gpx.tracks[0].segments:
+                        track_list_of_points = []
+                        for point in segment.points:
+                            point_in_segment = Point(point.longitude, point.latitude)
+                            track_list_of_points.append(point_in_segment.coords)
 
-                       if len(track_list_of_points) > 1:
-                           multiline.append(LineString(track_list_of_points))
-                   cleaned_data['geom'] = MultiLineString(multiline)
+                        if len(track_list_of_points) > 1:
+                            multiline.append(LineString(track_list_of_points))
+                    cleaned_data['geom'] = MultiLineString(multiline)
 
 
 class Legend(models.Model):
@@ -308,7 +315,7 @@ class Property(models.Model):
 
     def __init__(self, *args, **kwargs):
         try:
-            self._meta.get_field('status').default = config.DEFAULT_STATUS_ID
+            self._meta.get_field('status').default = get_default_status()
         except django.db.utils.ProgrammingError:
             pass
         return super(Property, self).__init__(*args, **kwargs)
@@ -355,7 +362,7 @@ class MapPreset(models.Model):
     )
 
     def overlay_layers_slugs(self):
-       return [l.slug for l in self.overlay_layers.all()]
+        return [l.slug for l in self.overlay_layers.all()]
 
 
 @with_author
