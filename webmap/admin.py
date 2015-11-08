@@ -154,7 +154,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
             self.readonly_fields = PoiAdmin.readonly_fields
         return super(PoiAdmin, self).get_form(request, obj, **kwargs)
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         qs = super(PoiAdmin, self).queryset(request)
         qs = qs.annotate(Count('photos'))
         return qs
@@ -232,7 +232,7 @@ class MarkerStatusFilter(SimpleListFilter):
                 'display': title,
             }
 
-    def queryset(self, request, queryset):
+    def get_queryset(self, request, queryset):
         if self.value() == 'all':
             return queryset
         if not self.value() or self.value() == "visible":
