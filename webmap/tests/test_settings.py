@@ -1,5 +1,6 @@
 """Settings that need to be set in order to run the tests."""
 import os
+import sys
 
 DEBUG = True
 
@@ -7,6 +8,7 @@ SITE_ID = 1
 
 APP_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 DATABASES = {
     'default': {
@@ -42,6 +44,10 @@ COVERAGE_MODULE_EXCLUDES = [
 
 MIDDLEWARE_CLASSES = (
     'author.middlewares.AuthorDefaultBackendMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'author.middlewares.AuthorDefaultBackendMiddleware',
 )
 
 EXTERNAL_APPS = [
@@ -59,8 +65,16 @@ EXTERNAL_APPS = [
 ]
 
 INTERNAL_APPS = [
+    'author',
+    'colorful',
+    'adminsortable2',
+    'django.contrib.gis',
+    'constance.backends.database',
+    'constance',
+    'import_export',
     'webmap',
-    'webmap.tests.test_app',
+    'rest_framework',
+    'test_app',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS

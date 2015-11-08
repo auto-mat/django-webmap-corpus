@@ -1,0 +1,52 @@
+[
+    {
+        "fields": {
+            "desc": "",
+            "name": "Normal status",
+            "show": true,
+            "show_to_mapper": false
+        },
+        "model": "webmap.status",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "desc": "",
+            "enabled": true,
+            "icon": "",
+            "name": "Test layer",
+            "order": 1,
+            "remark": "",
+            "slug": "l",
+            "status": 2
+        },
+        "model": "webmap.layer",
+        "pk": 2
+    },
+    {
+        "fields": {},
+        "model": "webmap.overlaylayer",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "created_at": "2015-11-08T10:54:23.009",
+            "default_icon": "",
+            "desc": "",
+            "last_modification": "2015-11-08T10:54:23.009",
+            "layer": 2,
+            "line_color": "#ffc90e",
+            "line_width": 2.0,
+            "maxzoom": 10,
+            "menu_icon": "",
+            "minzoom": 1,
+            "name": "Test marker",
+            "order": 1,
+            "remark": "",
+            "slug": "test-marker",
+            "status": 2
+        },
+        "model": "webmap.marker",
+        "pk": 1
+    }
+]

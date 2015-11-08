@@ -10,7 +10,7 @@ Unfortunately there seems to be an issue with either South or syncdb so that
 defining two routers ("default" and "south") does not work.
 
 """
-from .test_settings import *  # NOQA
+from test_settings import *  # NOQA
 
 DATABASES = {
     'default': {
@@ -22,15 +22,6 @@ DATABASES = {
         'PORT': '',
     },
 }
-
-INSTALLED_APPS.append('author', )
-INSTALLED_APPS.append('django.contrib.gis', )
-INSTALLED_APPS.append('constance', )
-INSTALLED_APPS.append('import_export', )
-INSTALLED_APPS.append('positions', )
-INSTALLED_APPS.append('rest_framework', )
-INSTALLED_APPS.append('adminsortable2', )
-INSTALLED_APPS.append('constance.backends.database', )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
