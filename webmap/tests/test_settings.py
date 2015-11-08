@@ -8,7 +8,7 @@ SITE_ID = 1
 
 APP_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), APP_ROOT, '..')))
 
 DATABASES = {
     'default': {
@@ -62,9 +62,6 @@ EXTERNAL_APPS = [
     'django.contrib.sites',
     'django_jasmine',
     'django_nose',
-]
-
-INTERNAL_APPS = [
     'author',
     'colorful',
     'adminsortable2',
@@ -72,8 +69,11 @@ INTERNAL_APPS = [
     'constance.backends.database',
     'constance',
     'import_export',
-    'webmap',
     'rest_framework',
+]
+
+INTERNAL_APPS = [
+    'webmap',
     'test_app',
 ]
 
