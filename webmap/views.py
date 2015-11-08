@@ -1,7 +1,7 @@
 """Views for the webmap app."""
 # from django.views.generic import TemplateView
 
-from webmap import models
+import models
 from django import http
 from django.views.decorators.gzip import gzip_page
 from django.views.decorators.cache import never_cache, cache_page
