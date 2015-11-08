@@ -8,6 +8,5 @@ script: python webmap/tests/runtests.py
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - psql --no-password travis_ci_test -U postgres -c "create extension postgis"
-  - python manage.py migrate --settings=webmap.tests.test_settings
 addons:
   postgresql: "9.3"

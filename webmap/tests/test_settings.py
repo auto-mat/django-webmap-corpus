@@ -59,8 +59,8 @@ EXTERNAL_APPS = [
 ]
 
 INTERNAL_APPS = [
-    #'webmap',
-    #'webmap.tests.test_app',
+    'webmap',
+    'webmap.tests.test_app',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
