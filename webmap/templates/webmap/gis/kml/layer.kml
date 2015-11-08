@@ -2,11 +2,13 @@
 {% block placemarks %}
 {% for marker in markers %}
     <Style id="icon_{{ marker.id }}">
+     {% if place.marker.default_icon and place.marker.default_icon.url %}
      <IconStyle>
        <Icon>
          <href>http://{{ site }}{{ marker.default_icon.url }}</href>
        </Icon>
      </IconStyle>
+     {% endif %}
      <LineStyle>
        <color>ff{{ marker.line_color | cut:"#" }}</color>
        <width>{{ marker.line_width }}</width>
