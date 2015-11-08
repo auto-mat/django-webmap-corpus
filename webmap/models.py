@@ -22,8 +22,8 @@ from .utils import SlugifyFileSystemStorage
 def get_default_status():
     try:
         return config.DEFAULT_STATUS_ID
-    except AttributeError:
-        return 2
+    except:
+        return 0
 
 
 class Status(models.Model):
