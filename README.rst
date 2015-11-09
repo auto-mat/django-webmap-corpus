@@ -1,5 +1,7 @@
 .. image:: https://travis-ci.org/auto-mat/django-webmap-corpus.svg?branch=master
     :target: https://travis-ci.org/auto-mat/django-webmap-corpus
+.. image:: https://coveralls.io/repos/auto-mat/django-webmap-corpus/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/auto-mat/django-webmap-corpus?branch=master
 
 Django webmap corpus
 ====================
