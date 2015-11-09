@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import fgp
-import admin_image_widget
+from . import admin_image_widget
 import django
 import gpxpy
 

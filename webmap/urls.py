@@ -1,7 +1,7 @@
 """URLs for the webmap app."""
 from django.conf.urls import patterns, include, url
 from webmap import views
-from rest import router
+from .rest import router
 from django.conf import settings
 
 

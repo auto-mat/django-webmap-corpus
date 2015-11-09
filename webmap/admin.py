@@ -27,13 +27,13 @@ from django.contrib.gis.geos import Point
 # Finally, import our model from the working project
 # the geographic_admin folder must be on your python path
 # for this import to work correctly
-from models import GpxPoiForm, Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
+from .models import GpxPoiForm, Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
 
 USE_GOOGLE_TERRAIN_TILES = False
 
 
 class UserAdmin(UserAdmin):
-    list_display = ('__unicode__', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'get_groups', 'get_user_permissions')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'get_groups', 'get_user_permissions')
 
     def get_groups(self, obj):
         if obj:
