@@ -10,7 +10,6 @@ mock
 selenium
 
 -e git+https://github.com/petrdlouhy/django-author.git#egg=django-author
-south
 pillow
 django-finegrained-permissions
 psycopg2
