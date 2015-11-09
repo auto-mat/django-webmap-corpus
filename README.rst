@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/auto-mat/django-webmap-corpus.svg?branch=master
+    :target: https://travis-ci.org/auto-mat/django-webmap-corpus
+
 Django webmap corpus
 ====================
 
