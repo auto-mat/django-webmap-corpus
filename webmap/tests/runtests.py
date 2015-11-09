@@ -18,13 +18,18 @@ if not settings.configured:
     settings.configure(**test_settings.__dict__)
 
 
-from django_coverage.coverage_runner import CoverageRunner
 from django_nose import NoseTestSuiteRunner
 
 
-class NoseCoverageTestRunner(CoverageRunner, NoseTestSuiteRunner):
-    """Custom test runner that uses nose and coverage"""
-    pass
+try:
+    from django_coverage.coverage_runner import CoverageRunner
+    class NoseCoverageTestRunner(CoverageRunner, NoseTestSuiteRunner):
+        """Custom test runner that uses nose and coverage"""
+        pass
+except ImportError: # CoverageRunner doesn't work in Python 3
+    class NoseCoverageTestRunner(NoseTestSuiteRunner):
+        """Custom test runner that uses nose and coverage"""
+        pass
 
 
 def runtests(*test_args):

@@ -1,8 +1,8 @@
 sudo: false
 language: python
 python:
-  - "2.7"
   - "3.4"
+  - "2.7"
 env:
   - DJANGO_VERSION="Django>=1.7,<1.8"
   - DJANGO_VERSION="Django>=1.8,<1.9"
@@ -15,3 +15,5 @@ before_script:
   - psql --no-password travis_ci_test -U postgres -c "create extension postgis"
 addons:
   postgresql: "9.3"
+after_script:
+  - coveralls
