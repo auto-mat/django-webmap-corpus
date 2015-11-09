@@ -10,7 +10,7 @@ factory_boy
 mock
 selenium
 
-django-author>=0.2
+-e git+https://github.com/petrdlouhy/django-author.git#egg=django-author
 south
 pillow
 django-finegrained-permissions
