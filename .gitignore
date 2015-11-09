@@ -9,3 +9,5 @@ app_static/
 build/
 src/
 *.mo
+*.swp
+*~
