@@ -35,14 +35,6 @@ TEMPLATE_DIRS = (
     os.path.join(APP_ROOT, 'tests/test_app/templates'),
 )
 
-COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(
-    os.path.join(APP_ROOT, 'tests/coverage'))
-COVERAGE_CUSTOM_REPORTS = False
-COVERAGE_MODULE_EXCLUDES = [
-    'tests$', 'settings$', 'urls$', 'locale$',
-    'migrations', 'fixtures', 'admin$', 'django_extensions',
-]
-
 MIDDLEWARE_CLASSES = (
     'author.middlewares.AuthorDefaultBackendMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,7 +43,7 @@ MIDDLEWARE_CLASSES = (
     'author.middlewares.AuthorDefaultBackendMiddleware',
 )
 
-EXTERNAL_APPS = [
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -71,14 +63,8 @@ EXTERNAL_APPS = [
     'constance',
     'import_export',
     'rest_framework',
-]
-
-INTERNAL_APPS = [
     'webmap',
     'test_app',
 ]
-
-INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
-COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
 
 SECRET_KEY = 'foobar'

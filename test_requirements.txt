@@ -1,7 +1,6 @@
 django-nose
-coverage<4.0
+coverage
 coveralls
-django-coverage
 django-jasmine
 ipdb
 flake8
