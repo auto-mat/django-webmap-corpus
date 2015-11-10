@@ -20,20 +20,8 @@ if not settings.configured:
 
 from django_nose import NoseTestSuiteRunner
 
-
-try:
-    from django_coverage.coverage_runner import CoverageRunner
-    class NoseCoverageTestRunner(CoverageRunner, NoseTestSuiteRunner):
-        """Custom test runner that uses nose and coverage"""
-        pass
-except ImportError: # CoverageRunner doesn't work in Python 3
-    class NoseCoverageTestRunner(NoseTestSuiteRunner):
-        """Custom test runner that uses nose and coverage"""
-        pass
-
-
 def runtests(*test_args):
-    failures = NoseCoverageTestRunner(verbosity=2, interactive=True).run_tests(
+    failures = NoseTestSuiteRunner(verbosity=2, interactive=True).run_tests(
         test_args)
     sys.exit(failures)
 
