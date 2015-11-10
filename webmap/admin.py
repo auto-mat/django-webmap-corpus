@@ -232,7 +232,7 @@ class MarkerStatusFilter(SimpleListFilter):
                 'display': title,
             }
 
-    def get_queryset(self, request, queryset):
+    def queryset(self, request, queryset):
         if self.value() == 'all':
             return queryset
         if not self.value() or self.value() == "visible":
