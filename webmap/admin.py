@@ -155,7 +155,7 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
         return super(PoiAdmin, self).get_form(request, obj, **kwargs)
 
     def get_queryset(self, request):
-        qs = super(PoiAdmin, self).queryset(request)
+        qs = super(PoiAdmin, self).get_queryset(request)
         qs = qs.annotate(Count('photos'))
         return qs
 
