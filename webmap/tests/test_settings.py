@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django_nose',
     'author',
     'colorful',
+    'easy_thumbnails',
     'adminsortable2',
     'django.contrib.gis',
     'constance.backends.database',

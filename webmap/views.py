@@ -8,7 +8,10 @@ from django.views.decorators.cache import never_cache, cache_page
 from django.shortcuts import get_object_or_404
 from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q
-from django.contrib.sites.models import get_current_site
+try:
+    from django.contrib.sites.shortcuts import get_current_site
+except ImportError:
+    from django.contrib.sites.models import get_current_site
 
 
 @gzip_page
