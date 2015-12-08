@@ -13,6 +13,8 @@ from django import forms
 from author.decorators import with_author
 from constance.admin import config
 from easy_thumbnails.files import get_thumbnailer
+from django.utils.encoding import python_2_unicode_compatible
+from django.db.models.signals import m2m_changed, post_save, post_delete
 
 from colorful.fields import RGBColorField
 
@@ -26,6 +28,7 @@ def get_default_status():
         return 0
 
 
+@python_2_unicode_compatible
 class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
@@ -37,10 +40,11 @@ class Status(models.Model):
         verbose_name = _(u"status")
         verbose_name_plural = _("statuses")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class Layer(models.Model):
     "Vrstvy, ktere se zobrazi v konkretni mape"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"), default="")
@@ -64,7 +68,7 @@ class Layer(models.Model):
             pass
         return super(Layer, self).__init__(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -74,6 +78,7 @@ class OverlayLayer(Layer):
         verbose_name_plural = _(u"overlay layers")
 
 
+@python_2_unicode_compatible
 class Marker(models.Model):
     "Map markers with display style definition."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_("Name of the marker."))
@@ -120,7 +125,7 @@ class Marker(models.Model):
         verbose_name_plural = _(u"markers")
         ordering = ['order', ]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -142,10 +147,11 @@ class Sector(models.Model):
         verbose_name = _(u"sector")
         verbose_name_plural = _(u"sectors")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 @with_author
 @fgp.guard('importance', 'status', name='can_edit_advanced_fields')
 class Poi(models.Model):
@@ -191,7 +197,7 @@ class Poi(models.Model):
         verbose_name = _("place")
         verbose_name_plural = _("places")
 
-    def __unicode__(self):
+    def __str__(self):
         if self.name:
             return self.name
         return str(self.marker)
@@ -212,9 +218,6 @@ class Poi(models.Model):
         except django.db.utils.ProgrammingError:
             pass
         return super(Poi, self).__init__(*args, **kwargs)
-
-
-from django.db.models.signals import m2m_changed, post_save, post_delete
 
 
 def update_properties_cache(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -250,6 +253,7 @@ class GpxPoiForm(ModelForm):
                     cleaned_data['geom'] = MultiLineString(multiline)
 
 
+@python_2_unicode_compatible
 class Legend(models.Model):
     "map legend items of underlay"
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"))
@@ -261,7 +265,7 @@ class Legend(models.Model):
         verbose_name = _(u"legend item")
         verbose_name_plural = _(u"legend items")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def image_tag(self):
@@ -287,6 +291,7 @@ post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
 
 
+@python_2_unicode_compatible
 class Property(models.Model):
     "Place properties"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
@@ -304,7 +309,7 @@ class Property(models.Model):
         verbose_name_plural = _(u"properties")
         ordering = ['order']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def icon_tag(self):
@@ -321,6 +326,7 @@ class Property(models.Model):
         return super(Property, self).__init__(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class License(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"License name"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"License description."))
@@ -329,10 +335,11 @@ class License(models.Model):
         verbose_name = _(u"license")
         verbose_name_plural = _(u"licenses")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class BaseLayer(Layer):
     url = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Base layer tiles url. e.g. "))
 
@@ -340,7 +347,7 @@ class BaseLayer(Layer):
         verbose_name = _(u"base layer")
         verbose_name_plural = _(u"base layers")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -366,6 +373,7 @@ class MapPreset(models.Model):
 
 
 @with_author
+@python_2_unicode_compatible
 class Photo(models.Model):
     poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"), blank=True)
@@ -395,7 +403,7 @@ class Photo(models.Model):
     image_tag.short_description = _(u"image")
     image_tag.allow_tags = True
 
-    def __unicode__(self):
+    def __str__(self):
         if self.name:
             return self.name
         return self.poi.name

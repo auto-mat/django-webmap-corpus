@@ -114,7 +114,7 @@ def export_kml(modeladmin, request, queryset):
 class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     model = Poi
     form = GpxPoiForm
-    list_display = ['__unicode__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id', 'photo__count']
+    list_display = ['__str__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id', 'photo__count']
     list_filter = (PoiStatusFilter, 'status', SectorFilter, 'marker__layer', 'marker', 'properties')
     exclude = ('properties_cache', )
     readonly_fields = ("created_at", "last_modification", "author", "updated_by")
@@ -287,7 +287,7 @@ class LegendAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(ImportExportModelAdmin, admin. ModelAdmin):
     form = PhotoAdminForm
-    list_display = ('__unicode__', 'poi', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
+    list_display = ('__str__', 'poi', 'image_tag', 'author', 'photographer', 'created_at', 'last_modification', 'order', 'license', 'desc')
     readonly_fields = ('author', 'updated_by', 'created_at', 'last_modification')
     search_fields = ('name', 'poi__name', )
     raw_id_fields = ('poi', )
