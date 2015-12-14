@@ -269,7 +269,6 @@ class Legend(models.Model):
         return self.name
 
     def image_tag(self):
-        import admin_image_widget
         return admin_image_widget.list_display(self.image)
     image_tag.allow_tags = True
     image_tag.short_description = _(u"image")
@@ -313,7 +312,6 @@ class Property(models.Model):
         return self.name
 
     def icon_tag(self):
-        import admin_image_widget
         return admin_image_widget.list_display(self.default_icon)
     icon_tag.allow_tags = True
     icon_tag.short_description = _(u"icon")
@@ -398,7 +396,6 @@ class Photo(models.Model):
     objects = models.GeoManager()
 
     def image_tag(self):
-        import admin_image_widget
         return admin_image_widget.list_display(self.photo)
     image_tag.short_description = _(u"image")
     image_tag.allow_tags = True

@@ -48,5 +48,14 @@
         },
         "model": "webmap.marker",
         "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Test property",
+            "slug": "test-property",
+            "status": 2
+        },
+        "model": "webmap.property",
+        "pk": 1
     }
 ]
