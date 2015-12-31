@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BaseLayer',
             fields=[
-                ('layer_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='webmap.Layer')),
+                ('layer_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='webmap.Layer', on_delete=models.CASCADE)),
                 ('url', models.URLField(help_text='Base layer tiles url. e.g. ', null=True, verbose_name='URL', blank=True)),
             ],
             options={
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OverlayLayer',
             fields=[
-                ('layer_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='webmap.Layer')),
+                ('layer_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='webmap.Layer', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'overlay layer',
@@ -120,8 +120,8 @@ class Migration(migrations.Migration):
                 ('photo', models.ImageField(help_text='Upload photo in full resolution.', upload_to=b'photo', storage=webmap.utils.SlugifyFileSystemStorage(), verbose_name='photo')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created at', null=True)),
                 ('last_modification', models.DateTimeField(auto_now=True, verbose_name='last modification at', null=True)),
-                ('author', models.ForeignKey(related_name=b'photo_create', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('license', models.ForeignKey(verbose_name='license', to='webmap.License')),
+                ('author', models.ForeignKey(related_name=b'photo_create', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('license', models.ForeignKey(verbose_name='license', to='webmap.License', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['order'],
@@ -146,8 +146,8 @@ class Migration(migrations.Migration):
                 ('properties_cache', models.CharField(max_length=255, null=True, blank=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('last_modification', models.DateTimeField(auto_now=True, verbose_name='last modification at')),
-                ('author', models.ForeignKey(related_name=b'poi_create', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
-                ('marker', models.ForeignKey(related_name=b'pois', verbose_name='marker', to='webmap.Marker', help_text='Select icon, that will be shown in map')),
+                ('author', models.ForeignKey(related_name=b'poi_create', verbose_name='author', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
+                ('marker', models.ForeignKey(related_name=b'pois', verbose_name='marker', to='webmap.Marker', help_text='Select icon, that will be shown in map', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'place',
@@ -207,7 +207,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='property',
             name='status',
-            field=models.ForeignKey(verbose_name='status', to='webmap.Status'),
+            field=models.ForeignKey(verbose_name='status', to='webmap.Status', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -219,43 +219,43 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='poi',
             name='status',
-            field=models.ForeignKey(default=0, verbose_name='status', to='webmap.Status', help_text='POI status, determinse if it will be shown in map'),
+            field=models.ForeignKey(default=0, verbose_name='status', to='webmap.Status', help_text='POI status, determinse if it will be shown in map', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='poi',
             name='updated_by',
-            field=models.ForeignKey(related_name=b'poi_update', verbose_name='last updated by', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name=b'poi_update', verbose_name='last updated by', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='photo',
             name='poi',
-            field=models.ForeignKey(related_name=b'photos', verbose_name='poi', to='webmap.Poi'),
+            field=models.ForeignKey(related_name=b'photos', verbose_name='poi', to='webmap.Poi', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='photo',
             name='updated_by',
-            field=models.ForeignKey(related_name=b'photo_update', verbose_name='last updated by', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name=b'photo_update', verbose_name='last updated by', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='marker',
             name='layer',
-            field=models.ForeignKey(verbose_name='layer', to='webmap.Layer'),
+            field=models.ForeignKey(verbose_name='layer', to='webmap.Layer', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='marker',
             name='status',
-            field=models.ForeignKey(verbose_name='status', to='webmap.Status'),
+            field=models.ForeignKey(verbose_name='status', to='webmap.Status', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='layer',
             name='status',
-            field=models.ForeignKey(verbose_name='status', to='webmap.Status'),
+            field=models.ForeignKey(verbose_name='status', to='webmap.Status', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

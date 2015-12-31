@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(help_text='Name of preset', max_length=255, verbose_name='name')),
                 ('icon', models.ImageField(upload_to=b'preset_icons', storage=webmap.utils.SlugifyFileSystemStorage(), verbose_name='preset icon')),
-                ('base_layer', models.ForeignKey(verbose_name='base_layer', to='webmap.BaseLayer')),
+                ('base_layer', models.ForeignKey(verbose_name='base_layer', to='webmap.BaseLayer', on_delete=models.CASCADE)),
                 ('overlay_layers', models.ManyToManyField(to='webmap.OverlayLayer', null=True, verbose_name='overlay layers', blank=True)),
             ],
             options={

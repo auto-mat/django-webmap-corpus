@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mappreset',
             name='status',
-            field=models.ForeignKey(default=None, verbose_name='status', to='webmap.Status', null=True),
+            field=models.ForeignKey(default=None, verbose_name='status', to='webmap.Status', null=True, on_delete=models.CASCADE),
         ),
     ]

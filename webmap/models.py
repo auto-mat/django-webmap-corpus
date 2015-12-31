@@ -50,7 +50,7 @@ class Layer(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"), default="")
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_("Layer description."))
-    status = models.ForeignKey(Status, verbose_name=_("status"))
+    status = models.ForeignKey(Status, verbose_name=_("status"), on_delete=models.PROTECT)
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
     enabled = models.BooleanField(verbose_name=_(u"Enabled by defalut"), help_text=_(u"True = the layer is enabled on map load"), default=True)
@@ -85,8 +85,8 @@ class Marker(models.Model):
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"), null=True)
 
     # Relationships
-    layer = models.ForeignKey(Layer, verbose_name=_("layer"))
-    status = models.ForeignKey(Status, verbose_name=_("status"))
+    layer = models.ForeignKey(Layer, verbose_name=_("layer"), on_delete=models.PROTECT)
+    status = models.ForeignKey(Status, verbose_name=_("status"), on_delete=models.PROTECT)
 
     # content
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Detailed marker descrption."))
@@ -159,8 +159,8 @@ class Poi(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Exact place name"))
 
     # Relationships
-    marker = models.ForeignKey(Marker, limit_choices_to={'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois")
-    status = models.ForeignKey(Status, default=0, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"))
+    marker = models.ForeignKey(Marker, limit_choices_to={'status__show_to_mapper': 'True', 'layer__status__show_to_mapper': 'True'}, verbose_name=_(u"marker"), help_text=_("Select icon, that will be shown in map"), related_name="pois", on_delete=models.PROTECT)
+    status = models.ForeignKey(Status, default=0, help_text=_("POI status, determinse if it will be shown in map"), verbose_name=_(u"status"), on_delete=models.SET_DEFAULT)
     properties = models.ManyToManyField('Property', blank=True, help_text=_("POI properties"), verbose_name=_("properties"), limit_choices_to={'status__show_to_mapper': 'True'})
 
     importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
@@ -294,7 +294,7 @@ post_delete.connect(invalidate_cache)
 class Property(models.Model):
     "Place properties"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
-    status = models.ForeignKey(Status, verbose_name=_("status"))
+    status = models.ForeignKey(Status, verbose_name=_("status"), on_delete=models.PROTECT)
     as_filter = models.BooleanField(verbose_name=_("as filter?"), default=False, help_text=_(u"Show as a filter in right map menu?"))
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     # content
@@ -357,8 +357,8 @@ class MapPreset(models.Model):
 
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of preset"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Map preset description."))
-    status = models.ForeignKey(Status, verbose_name=_("status"), default=None, null=True)
-    base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"))
+    status = models.ForeignKey(Status, verbose_name=_("status"), default=None, null=True, on_delete=models.SET_NULL)
+    base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"), on_delete=models.PROTECT)
     overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     icon = models.ImageField(null=False, blank=False,
@@ -373,10 +373,10 @@ class MapPreset(models.Model):
 @with_author
 @python_2_unicode_compatible
 class Photo(models.Model):
-    poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"))
+    poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"), on_delete=models.PROTECT)
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"), blank=True)
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Photo description."))
-    license = models.ForeignKey(License, verbose_name=_("license"))
+    license = models.ForeignKey(License, verbose_name=_("license"), on_delete=models.PROTECT)
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
 
