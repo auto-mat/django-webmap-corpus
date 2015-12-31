@@ -1,14 +1,13 @@
 """URLs for the webmap app."""
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from webmap import views
 from .rest import router
 from django.conf import settings
 
 
-urlpatterns = patterns(
-    '',
-    (r'^kml/([-\w]+)/$', views.kml_view),
-    (r'^search/([- \w]+)/$', views.search_view),
+urlpatterns = (
+    url(r'^kml/([-\w]+)/$', views.kml_view),
+    url(r'^search/([- \w]+)/$', views.search_view),
 )
 
 if getattr(settings, 'REST_ENABLED', False):

@@ -10,7 +10,7 @@ for your app and run the tests as if you were calling ``./manage.py test``.
 import sys
 
 from django.conf import settings
-
+import warnings
 import test_settings
 
 
@@ -20,7 +20,9 @@ if not settings.configured:
 
 from django_nose import NoseTestSuiteRunner
 
+
 def runtests(*test_args):
+    warnings.simplefilter('always')
     failures = NoseTestSuiteRunner(verbosity=2, interactive=True).run_tests(
         test_args)
     sys.exit(failures)

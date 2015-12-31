@@ -31,9 +31,20 @@ STATICFILES_DIRS = (
     os.path.join(APP_ROOT, 'static'),
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(APP_ROOT, 'tests/test_app/templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(APP_ROOT, 'tests/test_app/templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': {
+                "django.contrib.auth.context_processors.auth",
+            },
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     'author.middlewares.AuthorDefaultBackendMiddleware',
