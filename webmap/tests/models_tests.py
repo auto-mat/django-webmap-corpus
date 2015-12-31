@@ -33,6 +33,28 @@ class WebmapTests(TestCase):
         response = self.client.get(reverse(views.search_view, args=("asdf",)))
         self.assertEqual(response.status_code, 200)
 
+    def test_poi_with_gpx(self):
+        """
+        test uploading poi with GPX
+        """
+        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        with open('webmap/tests/test_files/modranska-rokle.gpx', 'rb') as gpxfile:
+            post_data = {
+                'photos-TOTAL_FORMS': 0,
+                'photos-INITIAL_FORMS': 0,
+                'photos-MAX_NUM_FORMS': '',
+                'name': 'Testing POI',
+                'slug': 'testing-poi',
+                'importance': 0,
+                'geom': 'POINT(0 0)',
+                'licence': 0,
+                'marker': 1,
+                'status': 2,
+                'gpx_file': gpxfile,
+            }
+            response = self.client.post(reverse("admin:webmap_poi_add"), post_data, follow=True)
+        self.assertContains(response, "was added successfully", status_code=200)
+
 
 class AdminTest(tests.AdminSiteSmokeTest):
         fixtures = ['test']

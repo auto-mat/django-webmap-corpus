@@ -4,7 +4,7 @@
             "desc": "",
             "name": "Normal status",
             "show": true,
-            "show_to_mapper": false
+            "show_to_mapper": true
         },
         "model": "webmap.status",
         "pk": 2

@@ -3,6 +3,7 @@ import fgp
 from . import admin_image_widget
 import django
 import gpxpy
+import sys
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.gis.geos import Point, LineString, MultiLineString
@@ -239,7 +240,10 @@ class GpxPoiForm(ModelForm):
         if 'gpx_file' in self.cleaned_data:
             gpx_file = self.cleaned_data['gpx_file']
             if gpx_file:
-                gpx = gpxpy.parse(gpx_file.read())
+                if sys.version_info < (3, 0):
+                    gpx = gpxpy.parse(gpx_file.read())
+                else:
+                    gpx = gpxpy.parse(gpx_file.read().decode())
                 if gpx.tracks:
                     multiline = []
                     for segment in gpx.tracks[0].segments:
