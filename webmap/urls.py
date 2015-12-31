@@ -5,10 +5,10 @@ from .rest import router
 from django.conf import settings
 
 
-urlpatterns = (
+urlpatterns = [
     url(r'^kml/([-\w]+)/$', views.kml_view),
     url(r'^search/([- \w]+)/$', views.search_view),
-)
+]
 
 if getattr(settings, 'REST_ENABLED', False):
     urlpatterns.append(url(r'^', include(router.urls)))
