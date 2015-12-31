@@ -2,6 +2,7 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django_admin_smoke_tests import tests
 
 
 class WebmapTests(TestCase):
@@ -32,30 +33,7 @@ class WebmapTests(TestCase):
         response = self.client.get(reverse(views.search_view, args=("asdf",)))
         self.assertEqual(response.status_code, 200)
 
-    def test_admin_views(self):
-        """
-        test if we can see all admin pages
-        """
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
-        response = self.client.get(reverse("admin:webmap_baselayer_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_legend_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_license_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_mappreset_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_marker_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_overlaylayer_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_photo_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_poi_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_property_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_sector_changelist"))
-        self.assertEqual(response.status_code, 200)
-        response = self.client.get(reverse("admin:webmap_status_changelist"))
-        self.assertEqual(response.status_code, 200)
+
+class AdminTest(tests.AdminSiteSmokeTest):
+        fixtures = ['test']
+        exclude_apps = ['constance', ]
