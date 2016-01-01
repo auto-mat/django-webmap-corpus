@@ -168,7 +168,7 @@ class Poi(models.Model):
                  help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
 
     # Geographical intepretation
-    geom = models.GeometryField(verbose_name=_(u"place geometry"), srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
+    geom = models.GeometryCollectionField(verbose_name=_(u"place geometry"), srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
             Add line: Select line icon and by clicking to map draw the line. Finish drawing with double click.<br/>
             Add area: Select area icon and by clicking to mapy draw the area. Finish drawing with double click.<br/>
             Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""))
