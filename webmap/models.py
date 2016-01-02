@@ -6,7 +6,8 @@ import gpxpy
 import sys
 
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.gis.geos import Point, LineString, MultiLineString
+from django.contrib.gis.geos import Point, LineString, GeometryCollection
+from django.core.exceptions import ValidationError
 from django.contrib.gis.db import models
 from django.core.cache import cache
 from django.forms import ModelForm
@@ -240,21 +241,25 @@ class GpxPoiForm(ModelForm):
         if 'gpx_file' in self.cleaned_data:
             gpx_file = self.cleaned_data['gpx_file']
             if gpx_file:
-                if sys.version_info < (3, 0):
-                    gpx = gpxpy.parse(gpx_file.read())
-                else:
-                    gpx = gpxpy.parse(gpx_file.read().decode())
-                if gpx.tracks:
-                    multiline = []
-                    for segment in gpx.tracks[0].segments:
-                        track_list_of_points = []
-                        for point in segment.points:
-                            point_in_segment = Point(point.longitude, point.latitude)
-                            track_list_of_points.append(point_in_segment.coords)
+                try:
+                    if sys.version_info < (3, 0):
+                        gpx = gpxpy.parse(gpx_file.read())
+                    else:
+                        gpx = gpxpy.parse(gpx_file.read().decode())
+                    if gpx.tracks:
+                        multiline = []
+                        for track in gpx.tracks:
+                            for segment in track.segments:
+                                track_list_of_points = []
+                                for point in segment.points:
+                                    point_in_segment = Point(point.longitude, point.latitude)
+                                    track_list_of_points.append(point_in_segment.coords)
 
-                        if len(track_list_of_points) > 1:
-                            multiline.append(LineString(track_list_of_points))
-                    cleaned_data['geom'] = MultiLineString(multiline)
+                                if len(track_list_of_points) > 1:
+                                    multiline.append(LineString(track_list_of_points))
+                        cleaned_data['geom'] = GeometryCollection(multiline)
+                except Exception as e:
+                    raise ValidationError(u"Vadný GPX soubor %s" % e)
 
 
 @python_2_unicode_compatible
