@@ -1,6 +1,24 @@
 [
     {
         "fields": {
+            "date_joined": "2014-12-09T05:43:05.424",
+            "email": "testing.user@email.cz",
+            "first_name": "",
+            "groups": [],
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "last_login": "2016-01-02T17:13:18.751",
+            "last_name": "",
+            "password": "",
+            "user_permissions": [],
+            "username": "testing_user"
+        },
+        "model": "auth.user",
+        "pk": 1
+    },
+    {
+        "fields": {
             "desc": "",
             "name": "Normal status",
             "show": true,
@@ -48,6 +66,52 @@
         },
         "model": "webmap.marker",
         "pk": 1
+    },
+    {
+        "fields": {
+            "address": "adresa",
+            "author": 1,
+            "created_at": "2014-12-09T06:59:14.811",
+            "desc": "Popis",
+            "desc_extra": "",
+            "geom": "SRID=4326;GEOMETRYCOLLECTION (POINT (16.6113281250000000 49.1281127929689987))",
+            "importance": 0,
+            "last_modification": "2016-01-02T02:29:30.978",
+            "marker": 1,
+            "name": "asdf",
+            "properties": [
+                1
+            ],
+            "properties_cache": "vlastnost1",
+            "remark": "",
+            "status": 2,
+            "updated_by": 1,
+            "url": "http://www.seznam.cz/"
+        },
+        "model": "webmap.poi",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "address": "",
+            "author": 1,
+            "created_at": "2016-01-02T04:57:48.469",
+            "desc": "",
+            "desc_extra": "",
+            "geom": "SRID=4326;GEOMETRYCOLLECTION (LINESTRING (14.4050328000000007 50.0704149999999970, 14.4047093999999998 50.0708213999999998, 14.4044108000000008 50.0713172000000029, 14.4041311000000007 50.0717816000000013, 14.4040800999999998 50.0719034999999977, 14.4040320000000008 50.0720254000000011), LINESTRING (14.4084994999999996 50.0867276999999973, 14.4084813999999994 50.0867531999999969, 14.4084120999999996 50.0868506999999994, 14.4083386999999998 50.0869540999999998, 14.4082565999999996 50.0870591999999988, 14.4081808000000002 50.0871654000000035, 14.4081270000000004 50.0872353000000032, 14.4081756999999993 50.0873023999999987, 14.4085181999999996 50.0875471000000019, 14.4085766999999993 50.0875912999999997))",
+            "importance": 0,
+            "last_modification": "2016-01-02T17:19:12.294",
+            "marker": 1,
+            "name": "Place 1",
+            "properties": [],
+            "properties_cache": null,
+            "remark": "",
+            "status": 2,
+            "updated_by": 1,
+            "url": ""
+        },
+        "model": "webmap.poi",
+        "pk": 2
     },
     {
         "fields": {

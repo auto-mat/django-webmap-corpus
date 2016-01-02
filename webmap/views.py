@@ -22,7 +22,7 @@ def kml_view(request, layer_name):
     v = get_object_or_404(models.Layer, slug=layer_name, status__show=True)
 
     # all enabled pois in this layer
-    points = models.Poi.visible.filter(marker__layer=v).kml()
+    points = models.Poi.visible.filter(marker__layer=v)
     return render_to_kml("webmap/gis/kml/layer.kml", {
         'places': points,
         'markers': models.Marker.objects.all(),
@@ -42,7 +42,7 @@ def search_view(request, query):
         | Q(address__icontains=query)
         | Q(marker__name__icontains=query)).exclude(id__in=name_qs)
     # union qs doesn't hold order, so transform to lists and join
-    points = list(name_qs.kml()) + list(extra_qs.kml())
+    points = list(name_qs) + list(extra_qs)
     return render_to_kml("webmap/gis/kml/layer.kml", {
                          'places': points,
                          'site': get_current_site(request).domain,

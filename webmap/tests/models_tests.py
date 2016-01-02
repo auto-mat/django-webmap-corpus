@@ -22,7 +22,8 @@ class WebmapTests(TestCase):
         from webmap import views
         self.assertTrue(self.client.login(username='test_user', password='top_secret'))
         response = self.client.get(reverse(views.kml_view, args=("l",)))
-        self.assertEqual(response.status_code, 200)
+        print(response.content)
+        self.assertContains(response, "<name>Place 1</name>", status_code=200)
 
     def test_search_view(self):
         """
@@ -31,7 +32,8 @@ class WebmapTests(TestCase):
         from webmap import views
         self.assertTrue(self.client.login(username='test_user', password='top_secret'))
         response = self.client.get(reverse(views.search_view, args=("asdf",)))
-        self.assertEqual(response.status_code, 200)
+        print(response.content)
+        self.assertContains(response, "<name>asdf</name>", status_code=200)
 
     def test_poi_with_gpx(self):
         """
