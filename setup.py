@@ -65,6 +65,7 @@ install_requires = [
     'djangorestframework',
     'django-filter',
     'gpxpy',
+    'django-leaflet',
 ]
 
 

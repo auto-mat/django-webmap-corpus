@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # admin.py
 
-from django.conf import settings  # needed if we use the GOOGLE_MAPS_API_KEY from settings
-
 # Import the admin site reference from django.contrib.admin
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
@@ -13,23 +11,10 @@ from django.contrib.auth.admin import UserAdmin, User
 from django.contrib.gis.shortcuts import render_to_kml
 from django.db.models import Q, Count
 from constance.admin import config
+from leaflet.admin import LeafletGeoAdmin
 import fgp
 from django.core.urlresolvers import reverse
-
-# Grab the Admin Manager that automaticall initializes an OpenLayers map
-# for any geometry field using the in Google Mercator projection with OpenStreetMap basedata
-from django.contrib.gis.admin import OSMGeoAdmin
-from django.contrib.gis.geos import Point
-
-# Note, another simplier manager that does not reproject the data on OpenStreetMap is available
-# with from `django.contrib.gis.admin import GeoModelAdmin`
-
-# Finally, import our model from the working project
-# the geographic_admin folder must be on your python path
-# for this import to work correctly
 from .models import GpxPoiForm, Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
-
-USE_GOOGLE_TERRAIN_TILES = False
 
 
 class UserAdmin(UserAdmin):
@@ -111,7 +96,7 @@ def export_kml(modeladmin, request, queryset):
 
 
 @fgp.enforce
-class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
+class PoiAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     model = Poi
     form = GpxPoiForm
     list_display = ['__str__', 'status', 'marker', 'properties_list', 'last_modification', 'address', 'url', 'desc', 'id', 'photo_count']
@@ -128,23 +113,12 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
     inlines = [PhotoInline]
     list_max_show_all = 10000
     actions = [export_kml, ]
-    openlayers_url = 'django_webmap_corpus/js/OpenLayers.js'
-
-    if USE_GOOGLE_TERRAIN_TILES:
-        map_template = 'gis/admin/google.html'
-        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
-    else:
-        pass  # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
-
-    # Default GeoDjango OpenLayers map options
-    # Uncomment and modify as desired
-    # To learn more about this jargon visit:
-    # www.openlayers.org
 
     def get_form(self, request, obj=None, **kwargs):
-        pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-        pnt.transform(3857)
-        self.default_lon, self.default_lat = pnt.coords
+        self.settings_overrides = {
+            'DEFAULT_CENTER': (config.MAP_BASELAT, config.MAP_BASELON),
+            'DEFAULT_ZOOM': 12,
+        }
 
         if not request.user.is_superuser and request.user.has_perm(u'mapa.can_only_own_data_only') and obj and obj.author != request.user:
             self.fields = ('name', )
@@ -163,33 +137,17 @@ class PoiAdmin(OSMGeoAdmin, ImportExportModelAdmin):
         return obj.photos.count()
     photo_count.admin_order_field = 'photos__count'
 
-    default_zoom = 12
-    scrollable = True
-    map_width = 700
-    map_height = 500
-    map_srid = 3857
 
-
-class SectorAdmin(OSMGeoAdmin):
+class SectorAdmin(LeafletGeoAdmin):
     list_display = ('name',)
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
-    if USE_GOOGLE_TERRAIN_TILES:
-        map_template = 'gis/admin/google.html'
-        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js', 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s' % settings.GOOGLE_MAPS_API_KEY]
-    else:
-        pass  # defaults to OSMGeoAdmin presets of OpenStreetMap tiles
 
     def get_form(self, request, obj=None, **kwargs):
-        pnt = Point(config.MAP_BASELON, config.MAP_BASELAT, srid=4326)
-        pnt.transform(3857)
-        self.default_lon, self.default_lat = pnt.coords
+        self.settings_overrides = {
+            'DEFAULT_CENTER': (config.MAP_BASELAT, config.MAP_BASELON),
+            'DEFAULT_ZOOM': 12,
+        }
         return super(SectorAdmin, self).get_form(request, obj, **kwargs)
-
-    default_zoom = 12
-    scrollable = True
-    map_width = 700
-    map_height = 500
-    map_srid = 3857
 
 
 class MarkerInline(admin.TabularInline):

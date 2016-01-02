@@ -3,6 +3,7 @@
 """Settings that need to be set in order to run the tests."""
 import os
 import sys
+from django.utils.translation import ugettext_lazy as _
 
 DEBUG = True
 
@@ -69,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_jasmine',
     'django_nose',
+    'leaflet',
     'author',
     'colorful',
     'easy_thumbnails',
@@ -94,3 +96,21 @@ CONSTANCE_CONFIG = {
     'MAP_NEWS': ("Lorem ipsum", u'novinky mapy'),
 }
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (50.0866699218750000, 14.4387817382809995),
+    'TILES': [
+        (
+            _(u'cyklomapa'),
+            'http://tiles.prahounakole.cz/{z}/{x}/{y}.png',
+            {'attribution': u'&copy; přispěvatelé <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
+        (
+            _(u'Všeobecná mapa'),
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {'attribution': u'&copy; přispěvatelé <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
+    ],
+    'DEFAULT_ZOOM': 8,
+    'MIN_ZOOM': 8,
+    'MAX_ZOOM': 18,
+    'SPATIAL_EXTENT': [11.953, 48.517, 19.028, 51.097],
+}
