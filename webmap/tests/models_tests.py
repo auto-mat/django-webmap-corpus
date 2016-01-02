@@ -46,7 +46,7 @@ class WebmapTests(TestCase):
                 'name': 'Testing POI',
                 'slug': 'testing-poi',
                 'importance': 0,
-                'geom': 'POINT(0 0)',
+                'geom': 'GEOMETRYCOLLECTION(POINT(0 0))',
                 'licence': 0,
                 'marker': 1,
                 'status': 2,
