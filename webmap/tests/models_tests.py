@@ -37,12 +37,22 @@ class WebmapTests(TestCase):
         print(response.content)
         self.assertContains(response, "<name>asdf</name>", status_code=200)
 
+    def test_photo_preview_changelist(self):
+        """
+        test photo preview changelist
+        """
+        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        response = self.client.get(reverse("admin:webmap_photo_changelist"))
+        print(response.content)
+        self.assertContains(response, "Fotka 1", status_code=200)
+        self.assertContains(response, "210320151233.jpg.160x160_q85_detail.jpg", status_code=200)
+
     def test_photo_preview(self):
         """
         test photo preview
         """
         self.assertTrue(self.client.login(username='test_user', password='top_secret'))
-        response = self.client.get(reverse("admin:webmap_photo_changelist"))
+        response = self.client.get(reverse("admin:webmap_photo_change", args=(1,)))
         print(response.content)
         self.assertContains(response, "Fotka 1", status_code=200)
         self.assertContains(response, "210320151233.jpg.160x160_q85_detail.jpg", status_code=200)
