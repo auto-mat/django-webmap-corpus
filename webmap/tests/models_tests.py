@@ -1,6 +1,5 @@
 """Tests for the models of the webmap app."""
 from django.test import TestCase, RequestFactory
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django_admin_smoke_tests import tests
 from django.test.utils import override_settings
@@ -13,16 +12,13 @@ class WebmapTests(TestCase):
     def setUp(self):
                 # Every test needs access to the request factory.
         self.factory = RequestFactory()
-        self.user = User.objects.create_superuser(
-            username='test_user', email='test_user@test_user.com', password='top_secret')
-        self.user.save()
 
     def test_admin_filter_load(self):
         """
         test if we can download KML of places
         """
         from webmap import views
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        self.assertTrue(self.client.login(username='test_user', password='test'))
         response = self.client.get(reverse(views.kml_view, args=("l",)))
         print(response.content)
         self.assertContains(response, "<name>Place 1</name>", status_code=200)
@@ -32,7 +28,7 @@ class WebmapTests(TestCase):
         test if search view
         """
         from webmap import views
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        self.assertTrue(self.client.login(username='test_user', password='test'))
         response = self.client.get(reverse(views.search_view, args=("asdf",)))
         print(response.content)
         self.assertContains(response, "<name>asdf</name>", status_code=200)
@@ -41,7 +37,7 @@ class WebmapTests(TestCase):
         """
         test photo preview changelist
         """
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        self.assertTrue(self.client.login(username='superuser', password='test'))
         response = self.client.get(reverse("admin:webmap_photo_changelist"))
         print(response.content)
         self.assertContains(response, "Fotka 1", status_code=200)
@@ -51,7 +47,7 @@ class WebmapTests(TestCase):
         """
         test photo preview
         """
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        self.assertTrue(self.client.login(username='superuser', password='test'))
         response = self.client.get(reverse("admin:webmap_photo_change", args=(1,)))
         print(response.content)
         self.assertContains(response, "Fotka 1", status_code=200)
@@ -61,7 +57,7 @@ class WebmapTests(TestCase):
         """
         test uploading poi with GPX
         """
-        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        self.assertTrue(self.client.login(username='superuser', password='test'))
         with open('webmap/tests/test_files/modranska-rokle.gpx', 'rb') as gpxfile:
             post_data = {
                 'photos-TOTAL_FORMS': 0,

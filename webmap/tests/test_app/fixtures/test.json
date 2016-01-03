@@ -10,12 +10,30 @@
             "is_superuser": false,
             "last_login": "2016-01-02T17:13:18.751",
             "last_name": "",
-            "password": "",
+            "password": "pbkdf2_sha256$20000$91f1TPASND5r$2CHIO+yZYoFPWSZtlEuUKV/F3k3KM0MAyQ8WZYa+Ra0=",
             "user_permissions": [],
-            "username": "testing_user"
+            "username": "test_user"
         },
         "model": "auth.user",
         "pk": 1
+    },
+    {
+        "fields": {
+            "date_joined": "2014-12-09T05:43:05.424",
+            "email": "testing.user@email.cz",
+            "first_name": "",
+            "groups": [],
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "last_login": "2016-01-02T17:13:18.751",
+            "last_name": "",
+            "password": "pbkdf2_sha256$20000$91f1TPASND5r$2CHIO+yZYoFPWSZtlEuUKV/F3k3KM0MAyQ8WZYa+Ra0=",
+            "user_permissions": [],
+            "username": "superuser"
+        },
+        "model": "auth.user",
+        "pk": 2
     },
     {
         "fields": {
