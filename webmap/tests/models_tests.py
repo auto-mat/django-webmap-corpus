@@ -3,8 +3,10 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django_admin_smoke_tests import tests
+from django.test.utils import override_settings
 
 
+@override_settings(MEDIA_ROOT='webmap/tests')
 class WebmapTests(TestCase):
     fixtures = ['test']
 
@@ -34,6 +36,16 @@ class WebmapTests(TestCase):
         response = self.client.get(reverse(views.search_view, args=("asdf",)))
         print(response.content)
         self.assertContains(response, "<name>asdf</name>", status_code=200)
+
+    def test_photo_preview(self):
+        """
+        test photo preview
+        """
+        self.assertTrue(self.client.login(username='test_user', password='top_secret'))
+        response = self.client.get(reverse("admin:webmap_photo_changelist"))
+        print(response.content)
+        self.assertContains(response, "Fotka 1", status_code=200)
+        self.assertContains(response, "210320151233.jpg.160x160_q85_detail.jpg", status_code=200)
 
     def test_poi_with_gpx(self):
         """
