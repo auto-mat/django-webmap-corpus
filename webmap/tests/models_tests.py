@@ -53,6 +53,21 @@ class WebmapTests(TestCase):
         self.assertContains(response, "Fotka 1", status_code=200)
         self.assertContains(response, "210320151233.jpg.160x160_q85_detail.jpg", status_code=200)
 
+    def test_admin_poi_sector_filter(self):
+        """
+        test sector filter in poi admin
+        """
+        self.assertTrue(self.client.login(username='superuser', password='test'))
+        response = self.client.get("%s?sector=outer" % reverse("admin:webmap_poi_changelist"))
+        self.assertContains(response, "asdf", status_code=200)
+        self.assertContains(response, "Test marker", status_code=200)
+        self.assertContains(response, "Test property", status_code=200)
+
+        response = self.client.get("%s?sector=sector-1" % reverse("admin:webmap_poi_changelist"))
+        self.assertContains(response, "Place 1", status_code=200)
+        self.assertNotContains(response, "asdf", status_code=200)
+        self.assertContains(response, "Test marker", status_code=200)
+
     def test_poi_with_gpx(self):
         """
         test uploading poi with GPX

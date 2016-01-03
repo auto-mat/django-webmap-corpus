@@ -47,11 +47,11 @@ class SectorFilter(SimpleListFilter):
         if self.value() == "outer":
             for sector in Sector.objects.all():
                 qfilter = {}
-                qfilter[prefix + 'geom__intersects'] = sector.geom
+                qfilter[prefix + 'geom__bboverlaps'] = sector.geom  # was intersects, but does not work with GeometryCollection
                 queryset = queryset.exclude(**qfilter)
             return queryset
         qfilter = {}
-        qfilter[prefix + 'geom__intersects'] = Sector.objects.get(slug=self.value()).geom
+        qfilter[prefix + 'geom__bboverlaps'] = Sector.objects.get(slug=self.value()).geom
         return queryset.filter(**qfilter)
 
 
