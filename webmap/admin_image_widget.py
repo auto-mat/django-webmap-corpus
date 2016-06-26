@@ -27,8 +27,10 @@ def list_display(image):
     if file_name:
         file_path = '%s%s' % (settings.MEDIA_URL, file_name)
         try:            # is image
-            Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
-            return '<a target="_blank" href="%s">%s</a>' % (file_path, thumbnail(file_name),)
+            image = Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
+            image_tag = '<a target="_blank" href="%s">%s</a>' % (file_path, thumbnail(file_name),)
+            image.close()
+            return image_tag
         except IOError:  # not image
             return None
 
@@ -44,9 +46,10 @@ class AdminImageWidget(AdminFileWidget):
         if file_name:
             file_path = '%s%s' % (settings.MEDIA_URL, file_name)
             try:            # is image
-                Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
+                image = Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
                 output.append('<a target="_blank" href="%s">%s</a>' %
                     (file_path, thumbnail(file_name),))
+                image.close()
             except IOError:  # not image
                 output.append('%s <a target="_blank" href="%s">%s</a> <br />%s ' %
                     (_('Currently:'), file_path, file_name, _('Change:')))
