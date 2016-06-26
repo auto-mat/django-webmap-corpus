@@ -11,7 +11,7 @@ env:
 install:
   - pip install -q "$DJANGO_VERSION"
   - pip install -r test_requirements.txt
-script: coverage run webmap/tests/runtests.py
+script: python -Wall $VIRTUAL_ENV/bin/coverage run webmap/tests/runtests.py
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - psql --no-password travis_ci_test -U postgres -c "create extension postgis"
