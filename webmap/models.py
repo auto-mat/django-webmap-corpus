@@ -169,7 +169,7 @@ class Poi(models.Model):
                  help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
 
     # Geographical intepretation
-    geom = models.GeometryCollectionField(verbose_name=_(u"place geometry"), srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
+    geom = models.GeometryCollectionField(verbose_name=_(u"place geometry"), default=None, srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
             Add line: Select line icon and by clicking to map draw the line. Finish drawing with double click.<br/>
             Add area: Select area icon and by clicking to mapy draw the area. Finish drawing with double click.<br/>
             Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""))
@@ -388,6 +388,7 @@ class Photo(models.Model):
     license = models.ForeignKey(License, verbose_name=_("license"), on_delete=models.PROTECT)
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
+    status = models.ForeignKey(Status, default=None, help_text=_("Status, determine if the photo will be shown in map"), blank=False, null=True, verbose_name=_(u"status"), on_delete=models.SET_DEFAULT)
 
     photo = models.ImageField(null=False, blank=False,
         upload_to='photo', storage=SlugifyFileSystemStorage(),
