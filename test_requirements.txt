@@ -21,6 +21,6 @@ djangorestframework
 django-positions
 django-filter
 easy_thumbnails
-gpxpy
+django_gpxpy
 django-leaflet
 -e git+https://github.com/PetrDlouhy/django-admin-smoke-tests.git#egg=django-admin-smoke-tests  # the non-PIP source is for newest django-polymorphic, that defined both get_queryset and queryset

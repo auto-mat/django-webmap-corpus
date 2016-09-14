@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
-import fgp
-from . import admin_image_widget
-import django
-import gpxpy
-import sys
 
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.gis.geos import Point, LineString, GeometryCollection
-from django.core.exceptions import ValidationError
-from django.contrib.gis.db import models
-from django.core.cache import cache
-from django.forms import ModelForm
-from django import forms
 from author.decorators import with_author
-from constance.admin import config
-from easy_thumbnails.files import get_thumbnailer
-from django.utils.encoding import python_2_unicode_compatible
-from django.db.models.signals import m2m_changed, post_save, post_delete
 
 from colorful.fields import RGBColorField
 
+from constance.admin import config
+
+import django
+from django import forms
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import GeometryCollection
+from django.core.cache import cache
+from django.db.models.signals import m2m_changed, post_delete, post_save
+from django.forms import ModelForm
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
+
+from django_gpxpy import gpx_parse
+
+from easy_thumbnails.files import get_thumbnailer
+
+import fgp
+
+from . import admin_image_widget
 from .utils import SlugifyFileSystemStorage
 
 
@@ -241,25 +244,7 @@ class GpxPoiForm(ModelForm):
         if 'gpx_file' in self.cleaned_data:
             gpx_file = self.cleaned_data['gpx_file']
             if gpx_file:
-                try:
-                    if sys.version_info < (3, 0):
-                        gpx = gpxpy.parse(gpx_file.read())
-                    else:
-                        gpx = gpxpy.parse(gpx_file.read().decode())
-                    if gpx.tracks:
-                        multiline = []
-                        for track in gpx.tracks:
-                            for segment in track.segments:
-                                track_list_of_points = []
-                                for point in segment.points:
-                                    point_in_segment = Point(point.longitude, point.latitude)
-                                    track_list_of_points.append(point_in_segment.coords)
-
-                                if len(track_list_of_points) > 1:
-                                    multiline.append(LineString(track_list_of_points))
-                        cleaned_data['geom'] = GeometryCollection(multiline)
-                except Exception as e:
-                    raise ValidationError(u"Vadný GPX soubor %s" % e)
+                cleaned_data['geom'] = GeometryCollection(gpx_parse.parse_gpx_filefield(gpx_file))
 
 
 @python_2_unicode_compatible

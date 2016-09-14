@@ -64,7 +64,7 @@ install_requires = [
     'pillow',
     'djangorestframework',
     'django-filter',
-    'gpxpy',
+    'django-gpxpy',
     'django-leaflet',
 ]
 
