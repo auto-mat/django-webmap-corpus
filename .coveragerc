@@ -1,2 +1,3 @@
 [run]
 include = webmap*
+omit = webmap/migrations*
