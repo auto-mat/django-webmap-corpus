@@ -3,6 +3,7 @@
 """Settings that need to be set in order to run the tests."""
 import os
 import sys
+
 from django.utils.translation import ugettext_lazy as _
 
 DEBUG = True
@@ -10,7 +11,8 @@ DEBUG = True
 SITE_ID = 1
 
 APP_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..'))
+    os.path.join(os.path.dirname(__file__), '..'),
+)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), APP_ROOT, '..')))
 
 DATABASES = {

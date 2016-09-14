@@ -1,8 +1,9 @@
 """Tests for the models of the webmap app."""
-from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
-from django_admin_smoke_tests import tests
+from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
+
+from django_admin_smoke_tests import tests
 
 
 @override_settings(MEDIA_ROOT='webmap/tests')

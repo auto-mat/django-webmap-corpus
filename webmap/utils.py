@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 from django.core.files.storage import FileSystemStorage
 from django.template.defaultfilters import slugify
 

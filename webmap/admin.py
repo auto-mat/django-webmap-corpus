@@ -2,19 +2,25 @@
 # admin.py
 
 # Import the admin site reference from django.contrib.admin
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
+
+from constance.admin import config
+
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from import_export.admin import ImportExportModelAdmin
-from django.utils.translation import ugettext_lazy as _
-from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminMixin
-from django.contrib.auth.admin import UserAdmin, User
+from django.contrib.auth.admin import User, UserAdmin
 from django.contrib.gis.shortcuts import render_to_kml
-from django.db.models import Q, Count
-from constance.admin import config
-from leaflet.admin import LeafletGeoAdmin
-import fgp
 from django.core.urlresolvers import reverse
-from .models import GpxPoiForm, Poi, Photo, PhotoAdminForm, Marker, Property, LegendAdminForm, Legend, Sector, Status, License, BaseLayer, OverlayLayer, MapPreset
+from django.db.models import Count, Q
+from django.utils.translation import ugettext_lazy as _
+
+import fgp
+
+from import_export.admin import ImportExportModelAdmin
+
+from leaflet.admin import LeafletGeoAdmin
+
+from .models import BaseLayer, GpxPoiForm, Legend, LegendAdminForm, License, MapPreset, Marker, OverlayLayer, Photo, PhotoAdminForm, Poi, Property, Sector, Status
 
 
 class UserAdmin(UserAdmin):
@@ -68,9 +74,12 @@ class PoiStatusFilter(SimpleListFilter):
         for lookup, title in self.lookup_choices:
             yield {
                 'selected': self.value() == lookup,
-                'query_string': cl.get_query_string({
-                    self.parameter_name: lookup,
-                }, []),
+                'query_string': cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
                 'display': title,
             }
 
@@ -184,9 +193,12 @@ class MarkerStatusFilter(SimpleListFilter):
         for lookup, title in self.lookup_choices:
             yield {
                 'selected': self.value() == lookup,
-                'query_string': cl.get_query_string({
-                    self.parameter_name: lookup,
-                }, []),
+                'query_string': cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
                 'display': title,
             }
 

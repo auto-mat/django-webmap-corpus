@@ -8,17 +8,17 @@ for your app and run the tests as if you were calling ``./manage.py test``.
 
 """
 import sys
+import warnings
 
 from django.conf import settings
-import warnings
+
+from django_nose import NoseTestSuiteRunner
+
 import test_settings
 
 
 if not settings.configured:
     settings.configure(**test_settings.__dict__)
-
-
-from django_nose import NoseTestSuiteRunner
 
 
 def runtests(*test_args):

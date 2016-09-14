@@ -1,6 +1,7 @@
 from rest_framework import routers, serializers, viewsets
-from .models import Poi, Photo, Property, Marker, Layer
 from rest_framework import filters
+
+from .models import Layer, Marker, Photo, Poi, Property
 
 
 class PhotoItemSerializer(serializers.ModelSerializer):

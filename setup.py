@@ -27,9 +27,11 @@ For more information on creating source distributions, see
 http://docs.python.org/2/distutils/sourcedist.html
 
 """
-import sys
 import os
-from setuptools import setup, find_packages
+import sys
+
+from setuptools import find_packages, setup
+
 import webmap as app
 
 # Make sure the django.mo file also exists:
@@ -113,5 +115,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
-    ]
+    ],
 )

@@ -168,14 +168,22 @@ class Poi(models.Model):
     status = models.ForeignKey(Status, default=0, help_text=_("POI status, determine if it will be shown in map"), verbose_name=_(u"status"), on_delete=models.SET_DEFAULT)
     properties = models.ManyToManyField('Property', blank=True, help_text=_("POI properties"), verbose_name=_("properties"), limit_choices_to={'status__show_to_mapper': 'True'})
 
-    importance = models.SmallIntegerField(default=0, verbose_name=_(u"importance"),
-                 help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""))
+    importance = models.SmallIntegerField(
+        default=0,
+        verbose_name=_(u"importance"),
+        help_text=_(u"""Minimal zoom modificator (use 20+ to show always).<br/>"""),
+    )
 
     # Geographical intepretation
-    geom = models.GeometryCollectionField(verbose_name=_(u"place geometry"), default=None, srid=4326, help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
+    geom = models.GeometryCollectionField(
+        verbose_name=_(u"place geometry"),
+        default=None,
+        srid=4326,
+        help_text=_(u"""Add point: Select pencil with plus sign icon and place your point to the map.<br/>
             Add line: Select line icon and by clicking to map draw the line. Finish drawing with double click.<br/>
             Add area: Select area icon and by clicking to mapy draw the area. Finish drawing with double click.<br/>
-            Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""))
+            Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""),
+    )
     objects = models.GeoManager()
 
     # Own content (facultative)
@@ -355,8 +363,11 @@ class MapPreset(models.Model):
     base_layer = models.ForeignKey(BaseLayer, verbose_name=_("base layer"), on_delete=models.PROTECT)
     overlay_layers = models.ManyToManyField(OverlayLayer, blank=True, verbose_name=_("overlay layers"), limit_choices_to={'status__show_to_mapper': 'True'})
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
-    icon = models.ImageField(null=False, blank=False,
-        upload_to='preset_icons', storage=SlugifyFileSystemStorage(),
+    icon = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to='preset_icons',
+        storage=SlugifyFileSystemStorage(),
         verbose_name=_(u"preset icon"),
     )
 
@@ -375,8 +386,11 @@ class Photo(models.Model):
     photographer = models.CharField(max_length=255, verbose_name=_(u"Photography author"), blank=True, help_text=_(u"Full name of the author of the photography"))
     status = models.ForeignKey(Status, default=None, help_text=_("Status, determine if the photo will be shown in map"), blank=False, null=True, verbose_name=_(u"status"), on_delete=models.SET_DEFAULT)
 
-    photo = models.ImageField(null=False, blank=False,
-        upload_to='photo', storage=SlugifyFileSystemStorage(),
+    photo = models.ImageField(
+        null=False,
+        blank=False,
+        upload_to='photo',
+        storage=SlugifyFileSystemStorage(),
         verbose_name=_(u"photo"),
         help_text=_(u"Upload photo in full resolution."),
     )

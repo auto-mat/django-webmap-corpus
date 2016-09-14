@@ -1,11 +1,12 @@
 # originated from https://djangosnippets.org/snippets/2455/
-
-from django.contrib.admin.widgets import AdminFileWidget
-from django.utils.translation import ugettext as _
-from django.utils.safestring import mark_safe
-from django.conf import settings
-from PIL import Image
 import os
+
+from PIL import Image
+
+from django.conf import settings
+from django.contrib.admin.widgets import AdminFileWidget
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 
 try:
     from easy_thumbnails.files import get_thumbnailer
@@ -47,12 +48,16 @@ class AdminImageWidget(AdminFileWidget):
             file_path = '%s%s' % (settings.MEDIA_URL, file_name)
             try:            # is image
                 image = Image.open(os.path.join(settings.MEDIA_ROOT, file_name))
-                output.append('<a target="_blank" href="%s">%s</a>' %
-                    (file_path, thumbnail(file_name),))
+                output.append(
+                    '<a target="_blank" href="%s">%s</a>' %
+                    (file_path, thumbnail(file_name),),
+                )
                 image.close()
             except IOError:  # not image
-                output.append('%s <a target="_blank" href="%s">%s</a> <br />%s ' %
-                    (_('Currently:'), file_path, file_name, _('Change:')))
+                output.append(
+                    '%s <a target="_blank" href="%s">%s</a> <br />%s ' %
+                    (_('Currently:'), file_path, file_name, _('Change:')),
+                )
 
         output.append(super(AdminFileWidget, self).render(name, value, attrs))
         return mark_safe(u''.join(output))
