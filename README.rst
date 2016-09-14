@@ -2,6 +2,8 @@
     :target: https://travis-ci.org/auto-mat/django-webmap-corpus
 .. image:: https://coveralls.io/repos/auto-mat/django-webmap-corpus/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/auto-mat/django-webmap-corpus?branch=master
+.. image:: https://badge.fury.io/py/django-webmap-corpus.svg
+    :target: https://badge.fury.io/py/django-webmap-corpus
 
 Django webmap corpus
 ====================
