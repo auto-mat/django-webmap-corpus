@@ -251,7 +251,7 @@ class MapPresetAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmi
 
 class LegendAdmin(admin.ModelAdmin):
     form = LegendAdminForm
-    list_display = ('name', 'image_tag', 'desc',)
+    list_display = ('name', 'en_name', 'image_tag', 'desc',)
     prepopulated_fields = {'slug': ('name',)}
 
 

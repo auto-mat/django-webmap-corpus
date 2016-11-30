@@ -259,6 +259,7 @@ class GpxPoiForm(ModelForm):
 class Legend(models.Model):
     "map legend items of underlay"
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"))
+    en_name = models.CharField(unique=True, max_length=255, null=True, verbose_name=_(u"English name"))
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_(u"description"))
     image = models.ImageField(upload_to='ikony', storage=SlugifyFileSystemStorage(), verbose_name=_(u"image"))
