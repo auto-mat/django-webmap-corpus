@@ -87,7 +87,7 @@ setup(
     keywords='django, map',
     author='Petr Dlouhý',
     author_email='petr.dlouhy@email.cz',
-    url="https://https://github.com/PetrDlouhy/django-webmap-corpus",
+    url="https://github.com/auto-mat/django-webmap-corpus",
     packages=find_packages(),
     include_package_data=True,
     dependency_links=dependency_links,
