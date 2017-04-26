@@ -2,7 +2,6 @@ django-nose
 coverage
 coveralls
 django-jasmine
-ipdb
 flake8
 fabric
 factory_boy
