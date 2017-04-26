@@ -36,13 +36,15 @@ import webmap as app
 
 # Make sure the django.mo file also exists:
 try:
-    os.chdir('webmap')
-    from django.core.management.commands.compilemessages import compile_messages
-    compile_messages(sys.stderr)
+    os.chdir('isnull_filter')
+    from django.core import management
+    management.call_command('compilemessages', stdout=sys.stderr, verbosity=1)
 except ImportError:
-    pass
+    if 'sdist' in sys.argv:
+        raise
 finally:
     os.chdir('..')
+
 
 dev_requires = [
     'flake8',
