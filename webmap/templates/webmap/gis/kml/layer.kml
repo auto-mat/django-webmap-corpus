@@ -5,7 +5,7 @@
      {% if place.marker.default_icon and place.marker.default_icon.url %}
      <IconStyle>
        <Icon>
-         <href>http://{{ site }}{{ marker.default_icon.url }}</href>
+         <href>{{ marker.default_icon.url }}</href>
        </Icon>
      </IconStyle>
      {% endif %}
@@ -23,7 +23,7 @@
     <tag>{{ place.properties_cache }}</tag>
     <markerId>{{ place.marker.id }}</markerId>
     {% if place.marker.default_icon and place.marker.default_icon.url %}
-       <ikona>http://{{ site }}{{ place.marker.default_icon.url }}</ikona>
+       <ikona>{{ place.marker.default_icon.url }}</ikona>
        <styleUrl>#icon_{{ place.marker.id }}</styleUrl>
        <height>{{ place.marker.default_icon.height }}</height>
        <width>{{ place.marker.default_icon.width }}</width>
