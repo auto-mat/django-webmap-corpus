@@ -36,7 +36,7 @@ import webmap as app
 
 # Make sure the django.mo file also exists:
 try:
-    os.chdir('isnull_filter')
+    os.chdir('webmap')
     from django.core import management
     management.call_command('compilemessages', stdout=sys.stderr, verbosity=1)
 except ImportError:
