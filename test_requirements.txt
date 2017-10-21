@@ -16,7 +16,7 @@ django-import-export
 django-colorful
 django-constance[database]
 django-admin-sortable2
-djangorestframework
+djangorestframework<3.7  # Version 3.7 has problems with locale
 django-positions
 django-filter
 easy_thumbnails
