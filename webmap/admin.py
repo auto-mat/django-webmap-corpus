@@ -10,7 +10,10 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.admin import User, UserAdmin
 from django.contrib.gis.shortcuts import render_to_kml
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:  # Django<2.0
+    from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
 from django.utils.translation import ugettext_lazy as _
 

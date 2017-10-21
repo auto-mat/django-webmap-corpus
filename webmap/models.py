@@ -134,7 +134,7 @@ class Marker(models.Model):
         return self.name
 
 
-class VisibleManager(models.GeoManager):
+class VisibleManager(models.Manager):
     "Manager that will return objects visible on the map"
     def get_queryset(self):
         return super(VisibleManager, self).get_queryset().filter(status__show=True, marker__status__show=True, marker__layer__status__show=True)
@@ -146,7 +146,7 @@ class Sector(models.Model):
     slug = models.SlugField(unique=True, verbose_name=_(u"name in URL"))
 
     geom = models.PolygonField(verbose_name=_(u"area"), srid=4326, help_text=_(u"Sector area"))
-    objects = models.GeoManager()
+    objects = models.Manager()
 
     class Meta:
         verbose_name = _(u"sector")
@@ -184,7 +184,7 @@ class Poi(models.Model):
             Add area: Select area icon and by clicking to mapy draw the area. Finish drawing with double click.<br/>
             Object edition: Select the first icon and then select object in map. Draw points in map to move them, use points in the middle of sections to add new edges."""),
     )
-    objects = models.GeoManager()
+    objects = models.Manager()
 
     # Own content (facultative)
 
@@ -403,7 +403,7 @@ class Photo(models.Model):
         return get_thumbnailer(self.photo)['photo_thumb'].url
 
     # if we want to filter photos by poi position
-    objects = models.GeoManager()
+    objects = models.Manager()
 
     def image_tag(self):
         return admin_image_widget.list_display(self.photo)

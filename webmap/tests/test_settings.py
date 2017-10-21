@@ -52,13 +52,14 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = (
-    'author.middlewares.AuthorDefaultBackendMiddleware',
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'author.middlewares.AuthorDefaultBackendMiddleware',
 )
+
+MIDDLEWARE_CLASSES = MIDDLEWARE
 
 INSTALLED_APPS = [
     'django.contrib.admin',

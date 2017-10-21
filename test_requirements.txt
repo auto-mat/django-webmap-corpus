@@ -12,10 +12,10 @@ django-author
 pillow
 django-finegrained-permissions
 psycopg2
-django-import-export
+-e git+https://github.com/PetrDlouhy/django-import-export#egg=django-import-export  # for Django 2.0 fixes
 django-colorful
 django-constance[database]
-django-admin-sortable2
+-e git+https://github.com/PetrDlouhy/django-admin-sortable2@feature/django20#egg=django-admin-sortable2  # for Django 2.0 fixes
 djangorestframework<3.7  # Version 3.7 has problems with locale
 django-positions
 django-filter

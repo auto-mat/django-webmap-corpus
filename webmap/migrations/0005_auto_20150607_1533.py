@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mappreset',
             name='base_layer',
-            field=models.ForeignKey(verbose_name='base layer', to='webmap.BaseLayer'),
+            field=models.ForeignKey(verbose_name='base layer', to='webmap.BaseLayer', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]
