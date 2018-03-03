@@ -23,7 +23,7 @@ To get the latest commit from GitHub
 
 .. code-block:: bash
 
-    pip install -e git+https://github.com/PetrDlouhy/django-webmap-corpus.git#egg=webmap
+    pip install -e git+https://github.com/auto-mat/django-webmap-corpus.git#egg=webmap
 
 Add ``webmap`` to your ``INSTALLED_APPS``
 
@@ -40,6 +40,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
         'import_export',
         'webmap',
         'rest_framework',
+        'easy_thumbnails',
     )
 
 Add Author middleware

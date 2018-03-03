@@ -1,6 +1,6 @@
-from rest_framework import routers, serializers, viewsets
-from rest_framework import filters
 from django_filters import rest_framework
+
+from rest_framework import filters, routers, serializers, viewsets
 
 from .models import Layer, Marker, Photo, Poi, Property
 
