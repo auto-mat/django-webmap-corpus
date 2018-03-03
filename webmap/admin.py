@@ -8,7 +8,6 @@ from constance.admin import config
 
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from django.contrib.auth.admin import User, UserAdmin
 from django.contrib.gis.shortcuts import render_to_kml
 try:
     from django.urls import reverse
@@ -24,18 +23,6 @@ from import_export.admin import ImportExportModelAdmin
 from leaflet.admin import LeafletGeoAdmin
 
 from .models import BaseLayer, GpxPoiForm, Legend, LegendAdminForm, License, MapPreset, Marker, OverlayLayer, Photo, PhotoAdminForm, Poi, Property, Sector, Status
-
-
-class UserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'get_groups', 'get_user_permissions')
-
-    def get_groups(self, obj):
-        if obj:
-            return ", ".join([group.name for group in obj.groups.all()])
-
-    def get_user_permissions(self, obj):
-        if obj:
-            return ", ".join([user_permission.name for user_permission in obj.user_permissions.all()])
 
 
 class SectorFilter(SimpleListFilter):
@@ -282,6 +269,7 @@ class BaseLayerAdmin(SortableAdminMixin, ImportExportModelAdmin, admin.ModelAdmi
     list_display = ('name', 'slug', 'url', 'order')
     prepopulated_fields = {'slug': ('name',)}  # automatically make slug from name
 
+
 admin.site.register(Poi, PoiAdmin)
 admin.site.register(OverlayLayer, OverlayLayerAdmin)
 admin.site.register(Sector, SectorAdmin)
@@ -293,6 +281,3 @@ admin.site.register(Legend, LegendAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(BaseLayer, BaseLayerAdmin)
 admin.site.register(MapPreset, MapPresetAdmin)
-
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
