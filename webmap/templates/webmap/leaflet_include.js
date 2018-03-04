@@ -1,12 +1,3 @@
-geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
-
 function getStyle(feature){
     switch (feature.properties.marker) {
         {% for marker in markers %}
@@ -24,7 +15,9 @@ function getPointToLayer(feature, latlng){
     switch (feature.properties.marker){
         {% for marker in markers %}
             case {{ marker.id }}:
-                return L.marker(latlng, {icon: L.icon({ iconUrl:'{{ marker.default_icon.url }}'})});
+                return L.marker(latlng, {
+                    icon: L.icon({ iconUrl:'{{ marker.default_icon.url }}'}),
+                });
                 break;
         {% endfor %}
     }
@@ -48,6 +41,8 @@ geojsonOptions = {
     onEachFeature: onEachFeature,
 };
 
-$.getJSON("/webmap/geojson", function(geojson_layer){
+{% for layer in layers %}
+$.getJSON("/webmap/geojson/{{ layer.slug }}", function(geojson_layer){
     L.geoJSON(geojson_layer, geojsonOptions).addTo(window.map);
 });
+{% endfor %}

@@ -12,6 +12,8 @@ from django.views.decorators.gzip import gzip_page
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 
+from djgeojson.views import GeoJSONLayerView
+
 from . import models
 
 
@@ -78,4 +80,18 @@ class LeafletIncludeView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['markers'] = models.Marker.objects.all()
+        context['layers'] = models.OverlayLayer.objects.all()
         return context
+
+
+class WebmapGeoJsonView(GeoJSONLayerView):
+    model = models.Poi
+    properties = (
+        'marker',
+        'popup_url',
+        'name',
+    )
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(marker__layer__slug=self.kwargs['layer_slug'])
