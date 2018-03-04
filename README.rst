@@ -41,6 +41,7 @@ Add ``webmap`` to your ``INSTALLED_APPS``
         'webmap',
         'rest_framework',
         'easy_thumbnails',
+        'djgeojson',
     )
 
 Add Author middleware
@@ -81,6 +82,15 @@ Don't forget to migrate your database
     ./manage.py migrate webmap
 
 Note: If you don't have Constance migrated yet, remove the 'webmap' line from INSTALLED_APPS, then migrate Constance and then the line re-add and migrate again.
+
+
+If you want add layer with the POIs to your Leaflet map, just add following script after Leaflet initialization
+
+.. code-block:: html
+
+    <script src="{% url 'leaflet_include' %}"></script>
+
+It requires, that the Leaflet.Map object is assigned to `window.map` variable.
 
 
 Usage

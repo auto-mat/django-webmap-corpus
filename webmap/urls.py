@@ -2,7 +2,9 @@
 from django.conf import settings
 from django.conf.urls import include, url
 
-from webmap import views
+from djgeojson.views import GeoJSONLayerView
+
+from webmap import models, views
 
 from .rest import router
 
@@ -10,6 +12,16 @@ from .rest import router
 urlpatterns = [
     url(r'^kml/([-\w]+)/$', views.kml_view),
     url(r'^search/([- \w]+)/$', views.search_view),
+    url(r'^leaflet-include.js$', views.LeafletIncludeView.as_view(), name='leaflet_include'),
+    url(r'^geojson$', GeoJSONLayerView.as_view(
+        model=models.Poi,
+        properties=(
+            'marker',
+            'desc',
+            'desc_extra',
+            'name',
+        ),
+    ), name='data'),
 ]
 
 if getattr(settings, 'REST_ENABLED', False):

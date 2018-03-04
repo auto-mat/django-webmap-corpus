@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page, never_cache
 from django.views.decorators.gzip import gzip_page
+from django.views.generic.base import TemplateView
 
 from . import models
 
@@ -51,3 +52,12 @@ def search_view(request, query):
             'site': get_current_site(request).domain,
         },
     )
+
+
+class LeafletIncludeView(TemplateView):
+    template_name = "webmap/leaflet_include.js"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['markers'] = models.Marker.objects.all()
+        return context
