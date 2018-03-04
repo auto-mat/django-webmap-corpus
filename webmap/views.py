@@ -6,9 +6,11 @@ from django.contrib.gis.shortcuts import render_to_kml
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page, never_cache
 from django.views.decorators.gzip import gzip_page
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 
 from . import models
 
@@ -52,6 +54,22 @@ def search_view(request, query):
             'site': get_current_site(request).domain,
         },
     )
+
+
+class PopupView(DetailView):
+    @method_decorator(gzip_page)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    template_name = "popup.html"
+    model = models.Poi
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            'poi': self.object,
+            'fotky': self.object.photos.filter(status__show=True),
+            'can_change': self.request.user.has_perm('webmap.change_poi'),  # and poi.has_change_permission(request.user),
+        }
 
 
 class LeafletIncludeView(TemplateView):

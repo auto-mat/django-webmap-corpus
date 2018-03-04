@@ -15,6 +15,11 @@ from django.db.models.signals import m2m_changed, post_delete, post_save
 from django.forms import ModelForm
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+try:
+    from django.urls import reverse
+except ImportError:  # Django<2.0
+    from django.core.urlresolvers import reverse
+
 
 from django_gpxpy import gpx_parse
 
@@ -225,6 +230,10 @@ class Poi(models.Model):
     def properties_list(self):
         return u", ".join([p.name for p in self.properties.all()])
 
+    @property
+    def popup_url(self):
+        return reverse('popup_view', kwargs={'pk': self.id})
+
     def __init__(self, *args, **kwargs):
         try:
             self._meta.get_field('status').default = get_default_status()
@@ -237,6 +246,8 @@ def update_properties_cache(sender, instance, action, reverse, model, pk_set, **
     "Property cache actualization at POI save. It will not work yet after property removal."
     if action == 'post_add':
         instance.save_properties_cache()
+
+
 m2m_changed.connect(update_properties_cache, Poi.properties.through)
 
 
@@ -289,6 +300,8 @@ class LegendAdminForm(ModelForm):
 def invalidate_cache(sender, instance, **kwargs):
     if sender in [Status, Layer, Marker, Poi, Property, Legend, Sector]:
         cache.clear()
+
+
 post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
 

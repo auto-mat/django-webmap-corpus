@@ -31,10 +31,15 @@ function getPointToLayer(feature, latlng){
 };
 
 function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.desc) {
-        description = "<h4>" + feature.properties.name + "</h4>" + feature.properties.desc + "<br/><small>" + feature.properties.desc_extra + "</small>";
-        return layer.bindPopup(description);
-    }
+    layer.bindPopup("Loading...");
+    layer.on('click', function(e) {
+        var popup = e.target.getPopup();
+        var url=feature.properties.popup_url;
+        $.get(url).done(function(data) {
+            popup.setContent(data);
+            popup.update();
+        });
+    });
 }
 
 geojsonOptions = {
