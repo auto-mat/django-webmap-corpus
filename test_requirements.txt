@@ -15,7 +15,7 @@ psycopg2
 django-import-export
 django-colorful
 django-constance[database]
--e git+https://github.com/PetrDlouhy/django-admin-sortable2@feature/django20#egg=django-admin-sortable2  # for Django 2.0 fixes
+django-admin-sortable2
 djangorestframework
 django-positions
 django-filter
