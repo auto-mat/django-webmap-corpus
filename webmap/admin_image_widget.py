@@ -41,7 +41,7 @@ class AdminImageWidget(AdminFileWidget):
     A FileField Widget that displays an image instead of a file path
     if the current file is an image.
     """
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         output = []
         file_name = str(value)
         if file_name:
