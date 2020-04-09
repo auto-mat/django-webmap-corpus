@@ -2,14 +2,16 @@ sudo: false
 language: python
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
+  - "3.6"
+  - "3.7"
 env:
   - DJANGO_VERSION="Django>=1.8,<1.9 djangorestframework<3.7"
   - DJANGO_VERSION="Django>=1.9,<1.10 djangorestframework<3.7"
   - DJANGO_VERSION="Django>=1.10,<1.11"
-  - DJANGO_VERSION="Django>=1.11,<1.12"
-  - DJANGO_VERSION="Django>=2.0,<2.1"
+  - DJANGO_VERSION="Django>=2.1,<2.2"
+  - DJANGO_VERSION="Django>=2.2,<3.0"
+  - DJANGO_VERSION="Django>=3.0,<3.1"
   - DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
 install:
   - pip install -r test_requirements.txt
@@ -23,13 +25,19 @@ addons:
   postgresql: "9.6"
   apt:
      packages:
-        - postgresql-9.6-postgis-2.3
+        - postgresql-9.6-postgis-2.4
 after_script:
   - coveralls
 matrix:
    exclude:
       - python: "2.7"
         env: DJANGO_VERSION="Django>=2.0,<2.1"
+      - python: "2.7"
+        env: DJANGO_VERSION="Django>=2.1,<2.2"
+      - python: "2.7"
+        env: DJANGO_VERSION="Django>=2.2,<3.0"
+      - python: "2.7"
+        env: DJANGO_VERSION="Django>=3.0,<3.1"
       - python: "2.7"
         env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
       - python: "3.4"
