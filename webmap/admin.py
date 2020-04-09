@@ -14,6 +14,7 @@ try:
 except ImportError:  # Django<2.0
     from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 import fgp
@@ -210,7 +211,7 @@ class MarkerAdmin(SortableAdminMixin, admin.ModelAdmin):
 
     def default_icon_image(self, obj):
         if obj.default_icon:
-            return '<img src="%s"/>' % obj.default_icon.url
+            return format_html('<img src="{}"/>', obj.default_icon.url)
     default_icon_image.short_description = _("icon")
     default_icon_image.allow_tags = True
 
@@ -221,7 +222,12 @@ class MarkerAdmin(SortableAdminMixin, admin.ModelAdmin):
 
     def poi_count(self, obj):
         url = reverse('admin:webmap_poi_changelist')
-        return '<a href="{0}?marker__id__exact={1}&amp;statuses=all">{2}</a>'.format(url, obj.id, obj.pois.count())
+        return format_html(
+            '<a href="{0}?marker__id__exact={1}&amp;statuses=all">{2}</a>',
+            url,
+            obj.id,
+            obj.pois.count(),
+        )
     poi_count.short_description = _("count")
     poi_count.allow_tags = True
 
