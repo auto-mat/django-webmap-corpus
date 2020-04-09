@@ -4,8 +4,6 @@
 import os
 import sys
 
-from django.utils.translation import ugettext_lazy as _
-
 DEBUG = True
 
 SITE_ID = 1
@@ -104,11 +102,11 @@ LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (50.0866699218750000, 14.4387817382809995),
     'TILES': [
         (
-            _(u'cyklomapa'),
+            'cyklomapa',
             'http://tiles.prahounakole.cz/{z}/{x}/{y}.png',
             {'attribution': u'&copy; přispěvatelé <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
         (
-            _(u'Všeobecná mapa'),
+            'Všeobecná mapa',
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {'attribution': u'&copy; přispěvatelé <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
     ],
