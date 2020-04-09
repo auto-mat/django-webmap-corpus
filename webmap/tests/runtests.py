@@ -14,9 +14,10 @@ from django.conf import settings
 
 import test_settings
 
+settings_dict = {k: v for (k, v) in test_settings.__dict__.items() if k.isupper()}
 
 if not settings.configured:
-    settings.configure(**test_settings.__dict__)
+    settings.configure(**settings_dict)
 
 from django_nose import NoseTestSuiteRunner
 

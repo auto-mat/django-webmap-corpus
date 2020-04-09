@@ -13,7 +13,6 @@ from django.contrib.gis.geos import GeometryCollection
 from django.core.cache import cache
 from django.db.models.signals import m2m_changed, post_delete, post_save
 from django.forms import ModelForm
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from django_gpxpy import gpx_parse
@@ -33,7 +32,6 @@ def get_default_status():
         return 0
 
 
-@python_2_unicode_compatible
 class Status(models.Model):
     "Stavy zobrazeni konkretniho objektu, vrstvy apod. - aktivni, navrzeny, zruseny, ..."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
@@ -49,7 +47,6 @@ class Status(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class Layer(models.Model):
     "Vrstvy, ktere se zobrazi v konkretni mape"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Name of the layer"), default="")
@@ -83,7 +80,6 @@ class OverlayLayer(Layer):
         verbose_name_plural = _(u"overlay layers")
 
 
-@python_2_unicode_compatible
 class Marker(models.Model):
     "Map markers with display style definition."
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"), help_text=_("Name of the marker."))
@@ -156,7 +152,6 @@ class Sector(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 @with_author
 @fgp.guard('importance', 'status', name='can_edit_advanced_fields')
 class Poi(models.Model):
@@ -255,7 +250,6 @@ class GpxPoiForm(ModelForm):
                 cleaned_data['geom'] = GeometryCollection(gpx_parse.parse_gpx_filefield(gpx_file))
 
 
-@python_2_unicode_compatible
 class Legend(models.Model):
     "map legend items of underlay"
     name = models.CharField(unique=True, max_length=255, verbose_name=_(u"name"))
@@ -293,7 +287,6 @@ post_save.connect(invalidate_cache)
 post_delete.connect(invalidate_cache)
 
 
-@python_2_unicode_compatible
 class Property(models.Model):
     "Place properties"
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Status name"))
@@ -327,7 +320,6 @@ class Property(models.Model):
         return super(Property, self).__init__(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class License(models.Model):
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"License name"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"License description."))
@@ -340,7 +332,6 @@ class License(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class BaseLayer(Layer):
     url = models.URLField(null=True, blank=True, verbose_name=_("URL"), help_text=_(u"Base layer tiles url. e.g. "))
 
@@ -377,7 +368,6 @@ class MapPreset(models.Model):
 
 
 @with_author
-@python_2_unicode_compatible
 class Photo(models.Model):
     poi = models.ForeignKey(Poi, related_name="photos", verbose_name=_("poi"), on_delete=models.PROTECT)
     name = models.CharField(max_length=255, verbose_name=_(u"name"), help_text=_(u"Photo name"), blank=True)
