@@ -99,7 +99,7 @@ If you want to contribute to this project, please perform the following steps
 
     # Fork this repository
     # Clone your fork
-    mkvirtualenv -p python2.7 django-webmap-corpus
+    mkvirtualenv -p python django-webmap-corpus
     make develop
 
     git co -b feature_branch master
