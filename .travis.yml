@@ -24,6 +24,8 @@ addons:
   apt:
      packages:
         - postgresql-10-postgis-2.5
+        - libgdal-dev
+        - gdal-bin
 after_script:
   - coveralls
 matrix:
