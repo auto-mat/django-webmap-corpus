@@ -20,10 +20,10 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - psql --no-password travis_ci_test -U postgres -c "create extension postgis"
 addons:
-  postgresql: "9.6"
+  postgresql: "10"
   apt:
      packages:
-        - postgresql-9.6-postgis-2.4
+        - postgresql-10-postgis-2.5
 after_script:
   - coveralls
 matrix:
