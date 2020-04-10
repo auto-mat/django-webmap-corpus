@@ -15,7 +15,7 @@ except ImportError:  # Django<2.0
     from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
 from django.utils.html import format_html
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 import fgp
 

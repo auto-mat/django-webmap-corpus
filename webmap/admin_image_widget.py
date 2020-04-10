@@ -6,7 +6,7 @@ from PIL import Image
 from django.conf import settings
 from django.contrib.admin.widgets import AdminFileWidget
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 try:
     from easy_thumbnails.files import get_thumbnailer

@@ -13,7 +13,7 @@ from django.contrib.gis.geos import GeometryCollection
 from django.core.cache import cache
 from django.db.models.signals import m2m_changed, post_delete, post_save
 from django.forms import ModelForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_gpxpy import gpx_parse
 
