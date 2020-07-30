@@ -70,7 +70,6 @@ install_requires = [
     'django-filter',
     'django-gpxpy',
     'django-leaflet',
-    'django-filters',
 ]
 
 
