@@ -25,8 +25,8 @@
     {% if place.marker.default_icon and place.marker.default_icon.url %}
        <ikona>{{ place.marker.default_icon.url }}</ikona>
        <styleUrl>#icon_{{ place.marker.id }}</styleUrl>
-       <height>{{ place.marker.default_icon.height }}</height>
-       <width>{{ place.marker.default_icon.width }}</width>
+       <height>{{ place.marker.default_icon_height }}</height>
+       <width>{{ place.marker.default_icon_width }}</width>
     {% endif %}
     {% if place.geom.geom_type == 'Point' %}
        <zindex>3</zindex>
