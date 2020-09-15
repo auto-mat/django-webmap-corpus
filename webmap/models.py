@@ -56,7 +56,17 @@ class Layer(models.Model):
     order = models.IntegerField(verbose_name=_("order"), default=0, blank=False, null=False)
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
     enabled = models.BooleanField(verbose_name=_(u"Enabled by defalut"), help_text=_(u"True = the layer is enabled on map load"), default=True)
-    icon = models.ImageField(null=True, blank=True, upload_to='layer_icons', storage=SlugifyFileSystemStorage(), verbose_name=_("layer icon"))
+    icon_height = models.IntegerField(default=20)
+    icon_width = models.IntegerField(default=20)
+    icon = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='layer_icons',
+        storage=SlugifyFileSystemStorage(),
+        verbose_name=_("layer icon"),
+        height_field='icon_height',
+        width_field='icon_width',
+    )
 
     class Meta:
         verbose_name = _(u"layer")
@@ -94,8 +104,28 @@ class Marker(models.Model):
     remark = models.TextField(null=True, blank=True, help_text=_(u"Internal information about layer."), verbose_name=_("internal remark"))
 
     # Base icon and zoom dependent display range
-    default_icon = models.ImageField(null=True, blank=True, upload_to='icons', storage=SlugifyFileSystemStorage(), verbose_name=_("default icon"))
-    menu_icon = models.ImageField(null=True, blank=True, upload_to='icons/marker/menu', storage=SlugifyFileSystemStorage(), verbose_name=_("menu icon"))
+    default_icon_height = models.IntegerField(default=20)
+    default_icon_width = models.IntegerField(default=20)
+    default_icon = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='icons',
+        storage=SlugifyFileSystemStorage(),
+        verbose_name=_("default icon"),
+        height_field='default_icon_height',
+        width_field='default_icon_width',
+    )
+    menu_icon_height = models.IntegerField(default=20)
+    menu_icon_width = models.IntegerField(default=20)
+    menu_icon = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='icons/marker/menu',
+        storage=SlugifyFileSystemStorage(),
+        verbose_name=_("menu icon"),
+        height_field='menu_icon_height',
+        width_field='menu_icon_width',
+    )
     minzoom = models.PositiveIntegerField(default=1, verbose_name=_("Minimal zoom"), help_text=_(u"Minimal zoom in which the POIs of this marker will be shown on the map."))
     maxzoom = models.PositiveIntegerField(default=10, verbose_name=_("Maximal zoom"), help_text=_(u"Maximal zoom in which the POIs of this marker will be shown on the map."))
 
@@ -297,7 +327,17 @@ class Property(models.Model):
     slug = models.SlugField(unique=True, verbose_name=_("Name in URL"))
     desc = models.TextField(null=True, blank=True, verbose_name=_("description"), help_text=_(u"Property description."))
     remark = models.TextField(null=True, blank=True, verbose_name=_(u"Internal remark"), help_text=_(u"Internal information about the property."))
-    default_icon = models.ImageField(null=True, blank=True, upload_to='icons', storage=SlugifyFileSystemStorage(), verbose_name=_("default icon"))
+    default_icon_height = models.IntegerField(default=20)
+    default_icon_width = models.IntegerField(default=20)
+    default_icon = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='icons',
+        storage=SlugifyFileSystemStorage(),
+        verbose_name=_("default icon"),
+        height_field='default_icon_height',
+        width_field='default_icon_width',
+    )
 
     class Meta:
         verbose_name = _(u"property")
